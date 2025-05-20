@@ -1,0 +1,163 @@
+/* Reset e configurações básicas */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+}
+
+/* Container principal */
+.container {
+    display: flex;
+    max-width: 900px;
+    width: 100%;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Lado da imagem */
+.image-side {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #e0f7fa;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+.image-side img {
+    max-width: 100%;
+    border-radius: 10px 0 0 10px;
+}
+
+/* Lado do formulário */
+.form-side {
+    flex: 1;
+    padding: 40px;
+}
+
+h2 {
+    font-size: 24px;
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Fundo para os botões */
+.button-container {
+    background-color: #b2ebf2; /* Cor de fundo clara */
+    border-radius: 30px; /* Bordas arredondadas */
+    padding: 10px; /* Espaçamento interno */
+    display: inline-block;
+    margin: 0 auto 20px auto; /* Centraliza horizontalmente */
+}
+
+/* Estilo dos botões */
+.buttons {
+    display: flex;
+    justify-content: center;
+}
+
+.login-btn,
+.register-btn {
+    padding: 10px 30px;
+    margin: 0 5px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    background-color: #80deea;
+    color: #fff;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.login-btn.active {
+    background-color: #0097a7;
+}
+
+.register-btn.active {
+    background-color: #0097a7;
+}
+
+/* Parágrafo explicativo */
+p {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #777;
+}
+
+/* Estilo do formulário */
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+input {
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+/* Senha com ícone de visualização */
+.password-wrapper {
+    position: relative;
+}
+
+.toggle-password {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+/* Lembre-me e link de esquecimento */
+.remember-forgot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.forgot-password {
+    font-size: 12px;
+    color: #0097a7;
+    text-decoration: none;
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
+}
+
+/* Botão de envio */
+.submit-btn {
+    padding: 10px 0;
+    border: none;
+    background-color: #0097a7;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.submit-btn:hover {
+    background-color: #00796b;
+}
