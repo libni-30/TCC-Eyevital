@@ -1,71 +1,66 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EyeVital Login</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EyeVital Login</title>
+  <link rel="stylesheet" href="../CSS/styles.css" />
 </head>
 <body>
-    <div class="container">
-        <!-- Lado esquerdo com a imagem -->
-        <div class="image-side">
-            <img src="img1.webp" alt="Imagens EyeVital">
-        </div>
-
-        <!-- Lado direito com o formulário -->
-        <div class="form-side">
-            <h2>Bem Vindo ao EyeVital!</h2>
-            
-            <!-- Container para os botões -->
-            <div class="button-container">
-                <div class="buttons">
-                    <button id="login-btn" class="login-btn active">Login</button>
-                    <button id="register-btn" class="register-btn">Registrar</button>
-                </div>
-            </div>
-            
-            <p>Certifique-se se você já está registrado para que possa ter uma experiência melhor em nossa plataforma.</p>
-            
-            <!-- Formulário de login -->
-            <form id="login-form" class="form-content">
-                <label for="username">Email</label>
-                <input type="text" id="username" name="username" placeholder=" Insira seu Email">
-                <br>
-                <label for="password">Senha</label>
-                <div class="password-wrapper">
-                    <input type="password" id="password" name="password" placeholder="Insira sua senha">
-                </div>
-                
-                <div class="remember-forgot">
-                    <label><input type="checkbox" name="remember"> Lembre-me</label>
-                    <a href="#" class="forgot-password">Esqueceu sua senha?</a>
-                </div>
-                
-                <button type="submit" class="submit-btn">Login</button>
-            </form>
-            
-            <!-- Formulário de registro -->
-            <form id="register-form" class="form-content" style="display: none;">
-                <form id="login-form" class="form-content">
-                    <label for="username">Email</label>
-                    <input type="text" id="username" name="username" placeholder=" Insira seu Email">
-                <br>
-                <label for="new-username">Nome Usuário</label>
-                <input type="text" id="new-username" name="new-username" placeholder="Insira seu nome">
-                
-                <label for="new-password">Nova Senha</label>
-                <input type="password" id="new-password" name="new-password" placeholder="Insira sua senha">
-                
-                <button type="submit" class="submit-btn">Registrar</button>
-            </form>
-        </div>
+  <div class="container">
+    <!-- Lado esquerdo com a imagem -->
+    <div class="image-side">
+      <img src="../IMAGENS/img_login.png" alt="Imagem Login EyeVital" />
     </div>
 
-    <!-- Script para alternar entre botões -->
-    <script src="script.js"></script>
+    <!-- Lado direito com o formulário -->
+    <div class="form-side">
+      <h2>Bem Vindo ao EyeVital!</h2>
+
+      <div class="button-container">
+        <div class="buttons">
+          <button id="login-btn" class="login-btn active">Login</button>
+          <button id="register-btn" class="register-btn">Registrar</button>
+        </div>
+      </div>
+
+      <p>Certifique-se se você já está registrado para que possa ter uma experiência melhor em nossa plataforma.</p>
+
+      <!-- Formulário de Login -->
+      <form id="login-form" class="form-content">
+        <label for="username">Email</label>
+        <input type="text" id="username" name="username" placeholder="Insira seu Email" />
+
+        <label for="password">Senha</label>
+        <div class="password-wrapper">
+          <input type="password" id="password" name="password" placeholder="Insira sua senha" />
+          <img id="eye-icon" class="toggle-password" src="../IMAGENS/img_olhoaberto.png" alt="Mostrar senha" onclick="togglePassword()" />
+        </div>
+
+        <div class="remember-forgot">
+          <label><input type="checkbox" name="remember" /> Lembre-me</label>
+          <a href="#" class="forgot-password">Esqueceu sua senha?</a>
+        </div>
+
+        <button type="submit" class="submit-btn">Login</button>
+      </form>
+
+      <!-- Formulário de Registro -->
+      <form id="register-form" class="form-content" style="display: none;">
+        <label for="register-email">Email</label>
+        <input type="text" id="register-email" name="register-email" placeholder="Insira seu Email" />
+
+        <label for="new-username">Nome Usuário</label>
+        <input type="text" id="new-username" name="new-username" placeholder="Insira seu nome" />
+
+        <label for="new-password">Nova Senha</label>
+        <input type="password" id="new-password" name="new-password" placeholder="Insira sua senha" />
+
+        <button type="submit" class="submit-btn">Registrar</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="../JAVASCRIPT/script.js"></script>
 </body>
 </html>
-
-                
-

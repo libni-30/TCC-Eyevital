@@ -1,32 +1,35 @@
-// Seleção dos botões de Login e Registrar
-const loginBtn = document.getElementById('login-btn');
-const registerBtn = document.getElementById('register-btn');
+// Alternância entre formulários
+const loginBtn = document.getElementById("login-btn");
+const registerBtn = document.getElementById("register-btn");
+const loginForm = document.getElementById("login-form");
+const registerForm = document.getElementById("register-form");
 
-// Alternar entre botões
-loginBtn.addEventListener('click', function () {
-    // Adiciona a classe 'active' ao botão de Login e remove do botão Registrar
-    loginBtn.classList.add('active');
-    registerBtn.classList.remove('active');
-    
-    // Exibe o formulário de login
-    document.getElementById('login-form').style.display = 'block';
-    // Esconde o formulário de registro (se existir)
-    const registerForm = document.getElementById('register-form');
-    if (registerForm) {
-        registerForm.style.display = 'none';
-    }
+loginBtn.addEventListener("click", () => {
+  loginBtn.classList.add("active");
+  registerBtn.classList.remove("active");
+  loginForm.style.display = "block";
+  registerForm.style.display = "none";
 });
 
-registerBtn.addEventListener('click', function () {
-    // Adiciona a classe 'active' ao botão de Registrar e remove do botão Login
-    registerBtn.classList.add('active');
-    loginBtn.classList.remove('active');
-    
-    // Esconde o formulário de login
-    document.getElementById('login-form').style.display = 'none';
-    // Exibe o formulário de registro (se existir)
-    const registerForm = document.getElementById('register-form');
-    if (registerForm) {
-        registerForm.style.display = 'block';
-    }
+registerBtn.addEventListener("click", () => {
+  registerBtn.classList.add("active");
+  loginBtn.classList.remove("active");
+  loginForm.style.display = "none";
+  registerForm.style.display = "block";
 });
+
+// Mostrar/Ocultar senha
+function togglePassword() {
+  const passwordInput = document.querySelector("#password");
+  const eyeIcon = document.querySelector("#eye-icon");
+
+  if (passwordInput.type === "password") {
+    passwordInput.type = "text";
+    eyeIcon.src = "../IMAGENS/img_olhofechado.png";
+    eyeIcon.alt = "Ocultar senha";
+  } else {
+    passwordInput.type = "password";
+    eyeIcon.src = "../IMAGENS/img_olhoaberto.png";
+    eyeIcon.alt = "Mostrar senha";
+  }
+}
