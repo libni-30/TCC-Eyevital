@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-export default {
+module.exports = {
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
@@ -15,16 +15,6 @@ export default {
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif']
-      },
-      fontSize: {
-        'title': '2rem'
-      },
-      spacing: {
-        'form': '380px',
-        'container': '1100px'
-      },
-      borderRadius: {
-        'container': '2rem'
       }
     }
   },
