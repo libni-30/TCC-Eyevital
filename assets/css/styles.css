@@ -1,3 +1,6 @@
+/* Ícones Google Material Icons (precisa estar no topo para PostCSS) */
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
 /* Seção: CUIDAR DA VISÃO COMEÇA COM O SABER! */
 .saber-section {
     width: 100%;
@@ -143,8 +146,7 @@
     color: #4A4A68;
     margin: 0;
 }
-/* Ícones Google Material Icons */
-@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+/* (Import de Material Icons movido para o topo) */
 .voce-sabia {
     width: 100%;
     padding: 40px 0;
@@ -340,9 +342,9 @@ body {
     max-width: 1400px;
     margin: 0 auto;
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: space-between;
-    gap: 60px;
+    gap: 80px;
     padding: 0 60px;
 }
 .aprendizado-texto {
@@ -401,11 +403,12 @@ body {
     z-index: 2;
 }
 .aprendizado-figura img {
-    max-width: 460px;
+    max-width: 500px;
     width: 100%;
     height: auto;
     object-fit: contain;
-    border-radius: 8px;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
 }
 @media (max-width: 780px) {
     .aprendizado-figura img { max-width: 380px; }
@@ -415,39 +418,140 @@ body {
 }
 .decor-circle {
     position: absolute;
-    width: 14px;
-    height: 14px;
     border-radius: 50%;
-    background: linear-gradient(135deg,#FF8A65,#FFC3A8);
-    top: 60px;
-    left: 40px;
+}
+
+/* Círculo grande coral/salmão no canto superior direito */
+.decor-circle-right {
+    width: 220px;
+    height: 220px;
+    background: linear-gradient(135deg, #FF6F61, #FF8A80);
+    top: -60px;
+    right: -90px;
+    border-radius: 50%;
+    opacity: 0.9;
+    z-index: 0;
+}
+
+/* Bolinha pequena verde-água na esquerda */
+.decor-circle-left {
+    width: 18px;
+    height: 18px;
+    background: linear-gradient(135deg, #00C7A6, #40E0D0);
+    top: 30px;
+    left: 80px;
+    border-radius: 50%;
     z-index: 1;
 }
-.decor-circle-right {
-    width: 180px; /* tamanho original restaurado */
-    height: 180px;
-    background: #FF6F61;
-    top: -40px; /* posição original */
-    right: -70px; /* posição original */
-    left: auto;
-    opacity: 0.85; /* opacidade original */
-    border-bottom-left-radius: 120px;
-    border-top-left-radius: 120px; /* manter consistência de curva superior */
-    z-index: 0; /* atrás da imagem */
+
+/* Bolinhas pequenas espalhadas - inspiradas na referência */
+.decor-dot-1 {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: #40E0D0;
+    border-radius: 50%;
+    top: 100px;
+    left: 120px;
+    z-index: 1;
+    animation: float-1 4s ease-in-out infinite;
 }
-.decor-circle-left {
-    background: linear-gradient(135deg,#00C7A6,#40E0D0);
-    top: 18px;
-    left: 66px;
+
+.decor-dot-2 {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: #FF8A65;
+    border-radius: 50%;
+    top: 60px;
+    right: 150px;
+    z-index: 1;
+    animation: float-2 5s ease-in-out infinite;
+}
+
+.decor-dot-3 {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: #00C7A6;
+    border-radius: 50%;
+    top: 180px;
+    left: 50px;
+    z-index: 1;
+    animation: float-3 3.5s ease-in-out infinite;
+}
+
+.decor-dot-4 {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: #FFC3A8;
+    border-radius: 50%;
+    bottom: 80px;
+    right: 120px;
+    z-index: 1;
+    animation: float-4 6s ease-in-out infinite;
+}
+
+.decor-dot-5 {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    background: linear-gradient(135deg, #FF6F61, #FFC3A8);
+    border-radius: 50%;
+    bottom: 120px;
+    left: 90px;
+    z-index: 1;
+    animation: float-5 4.5s ease-in-out infinite;
+}
+
+/* Animações sutis para as bolinhas */
+@keyframes float-1 {
+    0%, 100% { transform: translateY(0px) scale(1); }
+    50% { transform: translateY(-8px) scale(1.1); }
+}
+
+@keyframes float-2 {
+    0%, 100% { transform: translateY(0px) translateX(0px); }
+    50% { transform: translateY(-12px) translateX(5px); }
+}
+
+@keyframes float-3 {
+    0%, 100% { transform: translateY(0px) scale(1); }
+    50% { transform: translateY(-6px) scale(1.2); }
+}
+
+@keyframes float-4 {
+    0%, 100% { transform: translateY(0px) translateX(0px); }
+    50% { transform: translateY(-10px) translateX(-3px); }
+}
+
+@keyframes float-5 {
+    0%, 100% { transform: translateY(0px) scale(1); }
+    50% { transform: translateY(-15px) scale(0.9); }
 }
 @media (max-width: 1100px) {
     .aprendizado-container { flex-direction: column; text-align: center; gap: 50px; padding: 0 40px; }
     .aprendizado-texto { max-width: 760px; }
     .aprendizado-icones { width: 100%; }
+    
+    /* Reposicionar bolinhas para layout mobile */
+    .decor-dot-1 { top: 80px; left: 60px; }
+    .decor-dot-2 { top: 40px; right: 80px; }
+    .decor-dot-3 { top: 140px; left: 30px; }
+    .decor-dot-4 { bottom: 60px; right: 60px; }
+    .decor-dot-5 { bottom: 100px; left: 50px; }
 }
 @media (max-width: 780px) {
     .icone-grid { grid-template-columns: repeat(3, 1fr); gap: 30px 34px; }
     .aprendizado-texto h2 { font-size: 1.7rem; }
+    
+    /* Reduzir tamanho das bolinhas em telas menores */
+    .decor-dot-1 { width: 6px; height: 6px; }
+    .decor-dot-2 { width: 8px; height: 8px; }
+    .decor-dot-3 { width: 4px; height: 4px; }
+    .decor-dot-4 { width: 7px; height: 7px; }
+    .decor-dot-5 { width: 10px; height: 10px; }
 }
 @media (max-width: 560px) {
     .icone-grid { grid-template-columns: repeat(2, 1fr); gap: 28px 30px; }
@@ -455,6 +559,9 @@ body {
     .aprendizado-texto h2 { font-size: 1.55rem; }
     .aprendizado-descricao { font-size: 0.9rem; }
     .decor-circle-right { display: none; }
+    
+    /* Ocultar algumas bolinhas em telas muito pequenas */
+    .decor-dot-3, .decor-dot-4 { display: none; }
 }
 
 /* Card individual de porcentagem */

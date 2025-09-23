@@ -8,5 +8,13 @@ export default defineConfig({
     port: 5173,
     host: true, // Permite acesso externo
     strictPort: false, // Permite tentar outras portas se 5173 estiver em uso
-  }
+  },
+  build: {
+    rollupOptions: {
+      input: {
+        index: 'index.html',
+        paginainicial: 'paginainicial.html',
+      },
+    },
+  },
 })

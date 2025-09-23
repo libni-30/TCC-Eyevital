@@ -1,8 +1,8 @@
-import AuthPage from './components/AuthPage'
+import PaginaInicial from './components/PaginaInicial'
 
 function App() {
   return (
-    <AuthPage />
+    <PaginaInicial />
   )
 }
 

@@ -1,4 +1,21 @@
-# React + TypeScript + Vite
+# TCC-Eyevital (React + TypeScript + Vite)
+
+Este projeto usa React com Vite. A página oficial do app é `paginainicial.html`. O arquivo `index.html` existe apenas para redirecionar automaticamente para `paginainicial.html` (compatível com GitHub Pages que exige `index.html`).
+
+## Como rodar
+
+- Desenvolvimento: `npm run dev` e acesse http://localhost:5173/paginainicial.html (a raiz também redireciona).
+- Build de produção: `npm run build` gera `dist/` com `paginainicial.html` e um `index.html` que redireciona.
+- Preview: `npm run preview` e acesse http://localhost:4173/paginainicial.html.
+
+## Estrutura de entradas HTML
+
+- `paginainicial.html`: entrada principal do app React (carrega `/src/main.tsx`).
+- `index.html`: somente redireciona para `paginainicial.html` para evitar conflitos de nome com outras páginas.
+
+---
+
+Conteúdo padrão do template Vite abaixo (para referência):
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
