@@ -1,0 +1,328 @@
+            <!-- Seção de serviços/cards -->
+            <!-- Esta seção foi movida para logo abaixo das porcentagens -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="O EYEVITAL oferece cuidados com a saúde ocular de forma inovadora e acessível, com testes interativos e conteúdo educativo personalizado.">
+    <meta name="keywords" content="saúde ocular, oftalmologia, testes visuais, cuidados com os olhos">
+    <meta name="author" content="EYEVITAL">
+    <meta name="theme-color" content="#40E0D0">
+    
+    <!-- Preload de recursos críticos -->
+    <link rel="preload" href="assets/css/styles.css" as="style">
+    <link rel="preload" href="IMAGENS/tela-inicial.png" as="image">
+    <link rel="preload" href="IMAGENS/img_login.png" as="image">
+    
+    <!-- Fontes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <title>Eyevital - Cuidando da Sua Saúde Ocular</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+
+    <!-- Fallback para imagens -->
+    <script>
+        function handleImageError(img) {
+            img.onerror = null;
+            img.src = 'assets/images/placeholder.png';
+        }
+    </script>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav-container">
+            <div class="logo">
+                <div class="logo-diamond"></div>
+                <div class="logo-text">EYEVITAL</div>
+            </div>
+            <nav class="nav-menu" role="navigation" aria-label="Menu principal">
+                <a href="#quem-somos" class="active" aria-current="page">Sobre nós</a>
+                <a href="#educacao">Educação</a>
+                <a href="#consultas">Consultas</a>
+                <a href="#contato">Contato</a>
+            </nav>
+            <div class="auth-buttons">
+                <a href="HTML/index.html" class="login-btn">Login</a>
+                <a href="HTML/index.html" class="register-btn">Registrar</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="hero-section">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    Cuide da sua visão com
+                    <div class="highlight-container">
+                        <span class="highlight">Inovação</span> e <span class="highlight">Simplicidade</span>
+                    </div>
+                </h1>
+                <p class="hero-description">
+                    Explore uma nova maneira de cuidar dos seus olhos 
+                    com tecnologia inovadora, testes interativos e 
+                    conteúdo educativo que se adapta às suas necessidades.
+                </p>
+            </div>
+            <div class="hero-image-container">
+                <!-- Balão do doutor -->
+                <div class="floating-card doctor">
+                    <div class="card-header">
+                        <img src="IMAGENS/img_login.png" alt="Doutor Queiroz" class="doctor-avatar">
+                        <div class="doctor-info">
+                            <div class="doctor-name">Doutor Queiroz</div>
+                            <div class="doctor-status">Respondeu as suas dúvidas!</div>
+                        </div>
+                    </div>
+                    <button class="view-button">Ver agora</button>
+                </div>
+                <img src="IMAGENS/tela-inicial.png" alt="Imagem de referência" class="student-img" style="position: absolute; right: 5%; bottom: 0; max-width: 400px; width: 100%; height: auto; z-index: 2;">
+                <!-- Balão de métricas -->
+                <div class="floating-card metrics">
+                    <div class="card-icon">📊</div>
+                    <div class="card-content">
+                        <div class="metric-number">250k</div>
+                        <div class="metric-label">Assinantes</div>
+                    </div>
+                </div>
+
+                <!-- Balão de parabéns -->
+                <div class="floating-card congrats">
+                    <div class="card-icon">✉️</div>
+                    <div class="card-content">
+                        <div class="card-title">Parabéns</div>
+                        <div class="card-subtitle">Você assistiu todas as aulas.</div>
+                    </div>
+                </div>
+                <!-- ...existing code... -->
+            </div>
+        </div>
+        <div class="wave-bottom">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" preserveAspectRatio="none">
+                <path fill="#ffffff" fill-opacity="1" d="M0,160L1440,320L1440,320L0,320Z"></path>
+            </svg>
+        </div>
+    </main>
+
+
+
+    <!-- Seção QUEM SOMOS -->
+    <section class="info-section">
+        <div class="decor decor-top-right"></div>
+        <h2 class="info-title">QUEM SOMOS</h2>
+        <p class="info-text">
+            Somos um time apaixonado por promover a saúde visual de forma prática e acessível. O EYEVITAL foi criado para ajudar você a cuidar melhor dos seus olhos, oferecendo orientações confiáveis e dicas simples para o bem-estar visual.
+        </p>
+        <div class="decor decor-mid-left"></div>
+    </section>
+
+   
+        <!-- Seção NOSSO OBJETIVO -->
+        <section class="info-section">
+                <div class="decor decor-mid-left"></div>
+                <h2 class="info-title">NOSSO OBJETIVO</h2>
+                <p class="info-text">
+                        Queremos ser seu guia na jornada por uma visão mais saudável. Através do nosso site, proporcionamos ferramentas e informações que facilitam o cuidado com a saúde ocular no dia a dia. Nosso foco é incentivar a prevenção e o cuidado contínuo, para que você enxergue o mundo com mais clareza e qualidade de vida.
+                </p>
+                <div class="decor decor-bottom-right"></div>
+        </section>
+
+                <!-- Seção de porcentagens e alternativas -->
+                        <section class="facts-section">
+                                <h2 class="facts-title">VOCÊ SABIA?</h2>
+                                <h3 class="facts-subtitle">Fatos Relevantes Sobre a Saúde dos Olhos</h3>
+                                <div class="facts-grid">
+                                        <div class="fact-card">
+                                                <span class="fact-percentage">80%</span>
+                                                <p>das causas de perda de visão podem ser prevenidas</p>
+                                        </div>
+                                        <div class="fact-card">
+                                                <span class="fact-percentage">90%</span>
+                                                <p>dos casos de cegueira causados por catarata podem ser revertidos com cirurgia</p>
+                                        </div>
+                                        <div class="fact-card">
+                                                <span class="fact-percentage">50%</span>
+                                                <p>das pessoas com glaucoma não sabem que têm a doença</p>
+                                        </div>
+                                        <div class="fact-card">
+                                                <span class="fact-percentage">90%</span>
+                                                <p>dos usuários de computador relatam sintomas de fadiga ocular digital</p>
+                                        </div>
+                                </div>
+                        </section>
+   
+                </div>
+               
+            </div>
+        </div>
+    </section>
+
+                        <!-- Seção de serviços/cards -->
+                        <!-- Título e subtítulo entre porcentagens e cards -->
+                        <section class="alternativas-section">
+                            <h2 class="facts-title">COMO NÃO SER PARTE DESSA PORCENTAGEM</h2>
+                            <p class="facts-subtitle">Aqui estão algumas alternativas que o nosso site lhe oferece.</p>
+                        </section>
+
+                        <section class="servicos-section">
+                            <div class="servicos-container">
+                                <div class="servicos-grid">
+                                                    <div class="servico-card">
+                                                        <div class="servico-icon icon-blue">
+                                                            <!-- Ícone papel -->
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none" viewBox="0 0 32 32"><rect x="8" y="8" width="16" height="20" rx="2" fill="#fff"/><rect x="12" y="12" width="8" height="2" rx="1" fill="#4A6CF7"/><rect x="12" y="16" width="8" height="2" rx="1" fill="#4A6CF7"/><rect x="12" y="20" width="8" height="2" rx="1" fill="#4A6CF7"/></svg>
+                                                        </div>
+                                                        <h3 class="servico-title">Faça nosso exame rápido</h3>
+                                                        <p class="servico-desc">Aqui disponibilizamos a oportunidade de você fazer uma avaliação rápida da sua visão.</p>
+                                                    </div>
+                                                    <div class="servico-card">
+                                                        <div class="servico-icon icon-cyan">
+                                                            <!-- Ícone calendário -->
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none" viewBox="0 0 32 32"><rect x="8" y="12" width="16" height="12" rx="2" fill="#fff"/><rect x="8" y="8" width="16" height="4" rx="1" fill="#1CC6F7"/><rect x="12" y="16" width="2" height="2" rx="1" fill="#1CC6F7"/><rect x="16" y="16" width="2" height="2" rx="1" fill="#1CC6F7"/><rect x="20" y="16" width="2" height="2" rx="1" fill="#1CC6F7"/></svg>
+                                                        </div>
+                                                        <h3 class="servico-title">Marque uma consulta</h3>
+                                                        <p class="servico-desc">Você pode agendar uma consulta com uma de nossas ópticas parceiras.</p>
+                                                    </div>
+                                                    <div class="servico-card">
+                                                        <div class="servico-icon icon-green">
+                                                            <!-- Ícone pessoas -->
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none" viewBox="0 0 32 32"><circle cx="16" cy="16" r="10" fill="#fff"/><circle cx="16" cy="16" r="5" fill="#3CFCA1"/><circle cx="12" cy="20" r="2" fill="#3CFCA1"/><circle cx="20" cy="20" r="2" fill="#3CFCA1"/></svg>
+                                                        </div>
+                                                        <h3 class="servico-title">Converse com um dos nossos especialistas</h3>
+                                                        <p class="servico-desc">Possibilitamos que você converse com especialistas no assunto.</p>
+                                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+ <!-- seção: CUIDAR DA VISÃO COMEÇA COM O SABER -->
+    <section class="visao-section">
+        <div class="visao-container">
+            <div class="visao-texto">
+                <h2>CUIDAR DA VISÃO COMEÇA COM O SABER!</h2>
+                <p>Aprender sobre saúde ocular nunca foi tão fácil! Nosso método de ensino traz informações simples e práticas, para todas as idades. Com conteúdos interativos e dinâmicos, queremos ajudar você a cuidar da visão de forma leve e divertida, promovendo hábitos saudáveis que fazem a diferença no dia a dia.</p>
+            </div>
+            <div class="visao-imagem">
+                <img src="IMAGENS/imagem oculos.jpg" alt="Óculos com vídeo demonstrativo" />
+                <button class="play-btn" aria-label="Reproduzir vídeo"></button>
+            </div>
+        </div>
+    </section>
+
+     <!-- Seção APRENDIZADO GUIADO POR ESPECIALISTAS -->
+    <section class="aprendizado-section" aria-labelledby="aprendizado-titulo">
+        <div class="aprendizado-container">
+            <div class="aprendizado-texto">
+                <h2 id="aprendizado-titulo"><span class="highlight-green">APRENDIZADO</span> GUIADO POR ESPECIALISTAS</h2>
+                <p class="aprendizado-descricao">
+                    Nossos professores, especialistas no assunto, estão prontos para tornar seu aprendizado leve e interativo.
+                    As aulas são pensadas para que você compreenda de forma simples os principais cuidados com a visão.
+                    Você vai ter acesso a vídeos, quizzes, dicas práticas e muito mais para aplicar no seu dia a dia. E o melhor:
+                    nossa equipe estará sempre por perto para tirar dúvidas e ajudar no que precisar, tornando todo o processo fácil e envolvente.
+                </p>
+            </div>
+            <div class="aprendizado-icones">
+                <figure class="aprendizado-figura">
+                    <img src="IMAGENS/desenho-visao.jpeg" alt="Ilustrações educativas sobre saúde da visão" loading="lazy">
+                </figure>
+                <div class="decor-circle decor-circle-left" aria-hidden="true"></div>
+                <div class="decor-circle decor-circle-right" aria-hidden="true"></div>
+            </div>
+        </div>
+    </section>
+
+
+    <footer class="footer">
+        <div class="footer-content">
+            <p class="copyright">&copy; 2025 Eyevital - Todos os direitos reservados</p>
+        </div>
+    </footer>
+
+    <script>
+        // Função para remover a classe active de todos os links
+        function removeAllActive() {
+            document.querySelectorAll('.nav-menu a').forEach(link => {
+                link.classList.remove('active');
+                link.removeAttribute('aria-current');
+            });
+        }
+
+        // Função para verificar se uma seção existe
+        function sectionExists(sectionId) {
+            return document.querySelector(sectionId) !== null;
+        }
+
+        // Função para mostrar mensagem de seção em desenvolvimento
+        function showDevelopmentMessage() {
+            const message = document.createElement('div');
+            message.className = 'development-message';
+            message.textContent = 'Esta seção está em desenvolvimento';
+            message.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: #fff;
+                padding: 15px 25px;
+                border-radius: 8px;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                z-index: 1000;
+                animation: fadeOut 3s forwards;
+            `;
+            document.body.appendChild(message);
+            setTimeout(() => message.remove(), 3000);
+        }
+
+        // Adicionar comportamento ao clicar nos links do menu
+        document.querySelectorAll('.nav-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const sectionId = this.getAttribute('href');
+                
+                // Remove active de todos os links
+                removeAllActive();
+                
+                // Adiciona active ao link clicado
+                this.classList.add('active');
+                this.setAttribute('aria-current', 'page');
+                
+                // Verifica se a seção existe antes de rolar
+                if (sectionExists(sectionId)) {
+                    document.querySelector(sectionId).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                } else {
+                    showDevelopmentMessage();
+                }
+            });
+        });
+
+        // Observador de interseção para atualizar menu ativo durante scroll
+        const sections = document.querySelectorAll('section[id]');
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.5
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.getAttribute('id');
+                    removeAllActive();
+                    document.querySelector(`.nav-menu a[href="#${id}"]`)?.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => observer.observe(section));
+
+        // Tratamento de erro para imagens
+        document.querySelectorAll('img').forEach(img => {
+            img.addEventListener('error', () => handleImageError(img));
+        });
+    </script>
+</body>
+</html>
