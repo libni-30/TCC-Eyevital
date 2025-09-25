@@ -11,7 +11,7 @@ Ajustes necessários:
 5. Para Login:
    - Campos: Email, Senha (com ícone olho para mostrar/ocultar), checkbox "Lembre-me", link "Esqueceu sua senha?" e botão Login.
 6. Para Registro:
-   - Campos: Nome de Usuário, Email, Nova Senha, Confirmação de Senha, botão Registrar.
+  - Campos: Nome de Usuário, Email, Senha, Confirmar Senha, botão Registrar.
    - Mesmo alinhamento, espaçamento e largura de campos que o Login.
 7. Responsividade:
    - Em telas pequenas, imagem deve ficar acima do formulário.
@@ -31,6 +31,8 @@ Copilot, reescreva o código abaixo como um componente React funcional em TypeSc
 
 
 
+<!-- LEGADO: Esta página estática foi substituída pelo componente React `AuthPage` em `src/components/AuthPage.tsx`. 
+Mantenha apenas para referência temporária. Pode ser removida após validar a migração completa. -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -66,8 +68,10 @@ Copilot, reescreva o código abaixo como um componente React funcional em TypeSc
 
         <label for="password">Senha</label>
         <div class="password-wrapper">
-          <input type="password" id="password" name="password" placeholder="Insira sua senha" />
-          <img id="eye-icon" class="toggle-password" src="../IMAGENS/img_olhoaberto.png" alt="Mostrar senha" onclick="togglePassword()" />
+          <input type="password" id="password" name="password" placeholder="Insira sua senha" aria-label="Senha" />
+          <button type="button" data-toggle-for="password" class="toggle-password" aria-pressed="false" aria-label="Mostrar senha">
+            <img src="../IMAGENS/img_olhoaberto.png" alt="" draggable="false" />
+          </button>
         </div>
 
         <div class="remember-forgot">
@@ -86,8 +90,23 @@ Copilot, reescreva o código abaixo como um componente React funcional em TypeSc
         <label for="new-username">Nome Usuário</label>
         <input type="text" id="new-username" name="new-username" placeholder="Insira seu nome" />
 
-        <label for="new-password">Nova Senha</label>
-        <input type="password" id="new-password" name="new-password" placeholder="Insira sua senha" />
+        <label for="register-password">Senha</label>
+        <div class="password-wrapper">
+          <input type="password" id="register-password" name="register-password" placeholder="Insira sua senha" aria-label="Senha" />
+          <button type="button" data-toggle-for="register-password" class="toggle-password" aria-pressed="false" aria-label="Mostrar senha">
+            <img src="../IMAGENS/img_olhoaberto.png" alt="" draggable="false" />
+          </button>
+        </div>
+        <span class="field-error" id="register-password-error" aria-live="polite"></span>
+
+        <label for="register-password-confirm">Confirmar Senha</label>
+        <div class="password-wrapper">
+          <input type="password" id="register-password-confirm" name="register-password-confirm" placeholder="Confirme sua senha" aria-label="Confirmar senha" />
+          <button type="button" data-toggle-for="register-password-confirm" class="toggle-password" aria-pressed="false" aria-label="Mostrar senha">
+            <img src="../IMAGENS/img_olhoaberto.png" alt="" draggable="false" />
+          </button>
+        </div>
+        <span class="field-error" id="register-password-confirm-error" aria-live="polite"></span>
 
         <button type="submit" class="submit-btn">Registrar</button>
       </form>

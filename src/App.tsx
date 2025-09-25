@@ -1,9 +1,8 @@
 import PaginaInicial from './components/PaginaInicial'
 
 function App() {
-  return (
-    <PaginaInicial />
-  )
+  console.log('[App] render');
+  return <PaginaInicial />
 }
 
 export default App

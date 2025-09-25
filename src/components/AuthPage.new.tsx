@@ -180,7 +180,7 @@ const AuthPage = () => {
 
               <button
                 type="submit"
-                className="w-full h-11 mt-6 flex items-center justify-center rounded-lg bg-[#00B9BC] text-white font-medium text-sm hover:bg-[#00B9BC]/90 transition-colors"
+                className="w-full h-11 mt-6 flex items-center justify-center rounded-full bg-[#00B9BC] text-white font-medium text-sm hover:bg-[#00B9BC]/90 transition-colors"
               >
                 {isLoginView ? 'Login' : 'Registrar'}
               </button>

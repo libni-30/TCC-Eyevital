@@ -3,17 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Redirecionando…</title>
-    <meta http-equiv="refresh" content="0; url=paginainicial.html" />
-  <link rel="icon" type="image/svg+xml" href="vite.svg" />
-    <script>
-      // Redireciona via JS (mais rápido e funciona mesmo sem meta refresh)
-      window.location.replace('paginainicial.html');
-    </script>
+    <title>Eyevital</title>
+    <link rel="icon" type="image/svg+xml" href="vite.svg" />
   </head>
   <body>
-    <noscript>
-      Se não redirecionar automaticamente, <a href="paginainicial.html">clique aqui</a>.
-    </noscript>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
