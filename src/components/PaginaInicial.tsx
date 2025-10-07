@@ -1,21 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import AuthPage from './AuthPage';
+import React, { useEffect } from 'react';
 import './PaginaInicial.css';
 
 const PaginaInicial: React.FC = () => {
-
-	const [authMode, setAuthMode] = useState<null | 'login' | 'register'>(null);
-
-	// Query param support (?auth=login|register)
-	useEffect(() => {
-		const params = new URLSearchParams(window.location.search);
-		const auth = params.get('auth');
-		if (auth === 'login' || auth === 'register') {
-			console.log('[PaginaInicial] Param auth detectado:', auth);
-			setAuthMode(auth);
-		}
-	}, []);
-
 	// Função para tratamento de erro de imagens
 	const handleImageError = (img: HTMLImageElement): void => {
 		img.onerror = null;
@@ -95,12 +81,6 @@ const PaginaInicial: React.FC = () => {
 		};
 	}, []);
 
-	// Render condicional único no final para manter ordem de hooks estável
-	if (authMode) {
-		console.log('[PaginaInicial] Renderizando AuthPage modo:', authMode);
-		return <AuthPage initialMode={authMode} />;
-	}
-
 	return (
 		<>
 			<header className="header">
@@ -138,8 +118,8 @@ const PaginaInicial: React.FC = () => {
 						</a>
 					</nav>
 					<div className="auth-buttons">
-						<button onClick={() => setAuthMode('login')} className="login-btn">Login</button>
-						<button onClick={() => setAuthMode('register')} className="register-btn">Registrar</button>
+						<a href="HTML/index.html" className="login-btn">Login</a>
+						<a href="HTML/index.html" className="register-btn">Registrar</a>
 					</div>
 				</nav>
 			</header>

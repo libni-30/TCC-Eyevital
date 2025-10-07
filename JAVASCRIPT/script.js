@@ -1,5 +1,3 @@
-// LEGADO: A lógica deste arquivo foi migrada para o componente React `AuthPage`.
-// Este script permanece apenas como referência temporária e poderá ser removido.
 // Alternância entre formulários
 const loginBtn = document.getElementById("login-btn");
 const registerBtn = document.getElementById("register-btn");
@@ -10,7 +8,6 @@ const registerPasswordConfirm = document.getElementById('register-password-confi
 const registerPasswordError = document.getElementById('register-password-error');
 const registerPasswordConfirmError = document.getElementById('register-password-confirm-error');
 let registerTouched = { password: false, confirm: false };
-let confirmBlurred = false;
 
 loginBtn.addEventListener("click", () => {
   loginBtn.classList.add("active");
@@ -71,15 +68,9 @@ function showPasswordErrors() {
     registerPassword.setAttribute('aria-invalid', 'true');
   }
 
-  if (registerTouched.confirm && registerPasswordConfirm.value !== '' ) {
-    const baseOk = registerPassword.value.trim().length >= 6;
-    const bothFilled = registerPassword.value.trim() !== '' && registerPasswordConfirm.value.trim() !== '';
-    const progressedEnough = registerPasswordConfirm.value.length >= registerPassword.value.length; // usuário já digitou o necessário
-    const shouldEvaluate = baseOk && bothFilled && (progressedEnough || confirmBlurred);
-    if (shouldEvaluate && !passwordsMatch()) {
-      if (registerPasswordConfirmError) registerPasswordConfirmError.textContent = 'As senhas não coincidem.';
-      registerPasswordConfirm.setAttribute('aria-invalid', 'true');
-    }
+  if (registerTouched.confirm && registerPasswordConfirm.value !== '' && !passwordsMatch()) {
+    if (registerPasswordConfirmError) registerPasswordConfirmError.textContent = 'As senhas não coincidem.';
+    registerPasswordConfirm.setAttribute('aria-invalid', 'true');
   }
 }
 
@@ -92,7 +83,6 @@ function resetRegisterForm() {
   if (registerPassword) registerPassword.value = '';
   if (registerPasswordConfirm) registerPasswordConfirm.value = '';
   registerTouched = { password: false, confirm: false };
-  confirmBlurred = false;
   if (registerPasswordError) registerPasswordError.textContent = '';
   if (registerPasswordConfirmError) registerPasswordConfirmError.textContent = '';
   if (registerPassword) registerPassword.removeAttribute('aria-invalid');
@@ -122,14 +112,13 @@ if (registerPasswordConfirm) {
     registerTouched.confirm = true; 
     showPasswordErrors();
   });
-  registerPasswordConfirm.addEventListener('blur', () => { registerTouched.confirm = true; confirmBlurred = true; showPasswordErrors(); });
+  registerPasswordConfirm.addEventListener('blur', () => { registerTouched.confirm = true; showPasswordErrors(); });
 }
 
 // Intercepta submit do formulário de registro para validar
 if (registerForm) {
   registerForm.addEventListener('submit', (e) => {
-  registerTouched = { password: true, confirm: true };
-  confirmBlurred = true;
+    registerTouched = { password: true, confirm: true };
     showPasswordErrors();
     if (!formPasswordsValid()) {
       e.preventDefault();
