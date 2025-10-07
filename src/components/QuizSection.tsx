@@ -10,7 +10,7 @@ const QuizSection: React.FC<QuizSectionProps> = ({ onImageError }) => {
       onImageError(img);
     } else {
       img.onerror = null;
-      img.src = 'assets/images/placeholder.png';
+      img.src = 'IMAGENS/desenho-visao.jpeg'; // fallback definitivo
     }
   };
 
@@ -24,8 +24,8 @@ const QuizSection: React.FC<QuizSectionProps> = ({ onImageError }) => {
             <h3 className="quiz-card-pergunta">O que pode ser feito para tratar o astigmatismo?</h3>
             <div className="quiz-card-imagem">
               <img 
-                src="IMAGENS/quiz-section.png" 
-                alt="Comparação visão sem e com astigmatismo" 
+                src="IMAGENS/astigmatismo-imagem.jpg" 
+                alt="Comparação da visão com e sem astigmatismo" 
                 loading="lazy"
                 onError={(e) => {
                   e.currentTarget.src = 'IMAGENS/desenho-visao.jpeg';
