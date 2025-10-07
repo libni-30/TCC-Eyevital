@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import './PaginaInicial.css';
+import QuizSection from './QuizSection';
 
 const PaginaInicial: React.FC = () => {
 	// Função para tratamento de erro de imagens
@@ -343,6 +344,9 @@ const PaginaInicial: React.FC = () => {
 					</div>
 				</div>
 			</section>
+
+			{/* Seção TESTE SEU CONHECIMENTO */}
+			<QuizSection onImageError={handleImageError} />
 
 			<footer className="footer">
 				<div className="footer-content">
