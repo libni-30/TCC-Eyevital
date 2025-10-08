@@ -825,6 +825,31 @@ body {
 .consultas-decor-ring {position:absolute;width:84px;height:84px;border:16px solid #ffffff;border-radius:50%;top:-40px;left:-46px;box-shadow:0 8px 24px -8px rgba(0,0,0,.15);z-index:3;}
 @media (max-width:1100px){.consultas-container{flex-direction:column;gap:70px;padding:0 40px;}.consultas-texto{align-items:center;text-align:center;}.consultas-descricao{max-width:640px;}}
 @media (max-width:640px){.consultas-container{gap:50px;padding:0 30px;}.consultas-titulo{font-size:1.7rem;margin-bottom:24px;}.consultas-decor-circle{width:240px;height:240px;bottom:-120px;}}
+/* ============================= */
+/* Seção TIPOS DE ESTRABISMO     */
+/* ============================= */
+.estrabismo-section{background:#ffffff;position:relative;padding:10px 0 100px;display:flex;justify-content:center;}
+.estrabismo-container{max-width:1400px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:100px;padding:0 60px;position:relative;}
+.estrabismo-texto{flex:1 1 580px;max-width:620px;display:flex;flex-direction:column;gap:28px;}
+.estrabismo-titulo{font-size:1.9rem;font-weight:700;letter-spacing:.5px;color:#23255A;margin:0;}
+.estrabismo-label{display:flex;align-items:center;gap:14px;margin:0 0 24px;}
+.estrabismo-label-line{display:inline-block;width:52px;height:2px;background:#c7cdd9;border-radius:2px;}
+.estrabismo-label-text{font-size:.7rem;letter-spacing:.25em;font-weight:600;color:#56607a;}
+.estrabismo-descricao{font-size:.95rem;line-height:1.85;color:#3d4a5a;font-weight:500;margin:0;max-width:520px;}
+.estrabismo-lista{margin:4px 0 0;padding:0 0 0 18px;display:flex;flex-direction:column;gap:8px;font-size:.85rem;color:#2f3d55;max-width:520px;}
+.estrabismo-lista li{line-height:1.55;}
+.estrabismo-cta{margin-top:38px;display:flex;justify-content:center;}
+.estrabismo-btn{position:relative;display:flex;align-items:center;gap:42px;padding:20px 120px 20px 58px;border:1.5px solid #18bccc;background:transparent;border-radius:46px;font-size:.9rem;font-weight:500;color:#127486;cursor:pointer;line-height:1;transition:.3s;font-family:'Inter',sans-serif;}
+.estrabismo-btn-icon{display:flex;align-items:center;justify-content:center;width:72px;height:72px;border:1.5px solid #18bccc;border-radius:50%;position:absolute;right:-1.5px;top:50%;transform:translateY(-50%);font-size:1.15rem;color:#00a6b8;background:#fff;}
+.estrabismo-btn:hover{background:#e9fbfd;}
+.estrabismo-btn:focus-visible{outline:3px solid #00d2c7;outline-offset:3px;}
+@media (max-width:640px){.estrabismo-btn{padding:16px 92px 16px 42px;gap:34px;}.estrabismo-btn-icon{width:64px;height:64px;}}
+.estrabismo-figura{flex:0 1 460px;max-width:460px;position:relative;margin:0;}
+.estrabismo-figura img{width:100%;height:auto;display:block;border-radius:16px;box-shadow:0 16px 48px -16px rgba(30,44,72,.30);background:#f2f4f7;}
+.estrabismo-decor-circle{position:absolute;width:210px;height:210px;background:#4b45f7;border-radius:50%;top:58%;left:-100px;transform:translateY(-50%);z-index:-1;box-shadow:0 24px 70px -18px rgba(75,69,247,.5);opacity:.92;}
+.estrabismo-decor-dot{position:absolute;width:72px;height:72px;border:14px solid #42e4d1;border-radius:50%;top:-34px;right:-34px;box-shadow:0 8px 22px -8px rgba(0,160,140,.32);}
+@media (max-width:1100px){.estrabismo-container{flex-direction:column;gap:70px;padding:0 40px;}.estrabismo-texto{text-align:center;}.estrabismo-lista{align-items:flex-start;text-align:left;}}
+@media (max-width:640px){.estrabismo-container{gap:50px;padding:0 30px;}.estrabismo-titulo{font-size:1.65rem;}}
 .quiz-icones-validacao .icone-erro { color:#ff4f63; }
 .quiz-icones-validacao .icone-acerto { color:#00b58e; }
 
