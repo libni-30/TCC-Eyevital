@@ -4,6 +4,7 @@ import QuizSection from './QuizSection';
 import FerramentaEspecialistasSection from './FerramentaEspecialistasSection';
 // ProfissionaisSection removido
 import ProfissionaisDisponiveisSection from './ProfissionaisDisponiveisSection';
+import ConsultasSection from './ConsultasSection';
 
 const PaginaInicial: React.FC = () => {
 	// Função para tratamento de erro de imagens
@@ -356,10 +357,11 @@ const PaginaInicial: React.FC = () => {
 
 			{/* Seção PROFISSIONAIS DISPONÍVEIS removida */}
 
-			{/* Seção PROFISSIONAIS SEMPRE A DISPOSIÇÃO (nova) */}
+			{/* Seção PROFISSIONAIS SEMPRE A DISPOSIÇÃO (final) */}
 			<ProfissionaisDisponiveisSection />
 
-			{/* Seção PROFISSIONAIS SEMPRE A DISPOSIÇÃO removida */}
+			{/* Nova Seção CONSULTAS ONLINE */}
+			<ConsultasSection onImageError={handleImageError} />
 
 			<footer className="footer">
 				<div className="footer-content">
