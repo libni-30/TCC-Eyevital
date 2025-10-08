@@ -1,6 +1,9 @@
 import React, { useEffect } from 'react';
 import './PaginaInicial.css';
 import QuizSection from './QuizSection';
+import FerramentaEspecialistasSection from './FerramentaEspecialistasSection';
+// ProfissionaisSection removido
+import ProfissionaisDisponiveisSection from './ProfissionaisDisponiveisSection';
 
 const PaginaInicial: React.FC = () => {
 	// Função para tratamento de erro de imagens
@@ -347,6 +350,16 @@ const PaginaInicial: React.FC = () => {
 
 			{/* Seção TESTE SEU CONHECIMENTO */}
 			<QuizSection onImageError={handleImageError} />
+
+			{/* Seção FERRAMENTA DOS ESPECIALISTAS */}
+			<FerramentaEspecialistasSection />
+
+			{/* Seção PROFISSIONAIS DISPONÍVEIS removida */}
+
+			{/* Seção PROFISSIONAIS SEMPRE A DISPOSIÇÃO (nova) */}
+			<ProfissionaisDisponiveisSection />
+
+			{/* Seção PROFISSIONAIS SEMPRE A DISPOSIÇÃO removida */}
 
 			<footer className="footer">
 				<div className="footer-content">
