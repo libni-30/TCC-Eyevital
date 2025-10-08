@@ -123,7 +123,7 @@ const PaginaInicial: React.FC = () => {
 					</nav>
 					<div className="auth-buttons">
 						<a href="HTML/index.html" className="login-btn">Login</a>
-						<a href="HTML/index.html" className="register-btn">Registrar</a>
+						<a href="HTML/index.html#register" className="register-btn">Registrar</a>
 					</div>
 				</nav>
 			</header>

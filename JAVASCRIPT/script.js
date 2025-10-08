@@ -125,3 +125,12 @@ if (registerForm) {
     }
   });
 }
+
+// Ajusta a aba inicial com base na URL (ex.: ?view=register ou #register)
+const params = new URLSearchParams(window.location.search);
+const requestedView = params.get('view');
+if ((requestedView && requestedView.toLowerCase() === 'register') || window.location.hash === '#register') {
+  if (typeof registerBtn?.click === 'function') {
+    registerBtn.click();
+  }
+}
