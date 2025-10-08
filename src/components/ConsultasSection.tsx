@@ -27,7 +27,7 @@ const ConsultasSection: React.FC<ConsultasSectionProps> = ({ onImageError }) => 
         {/* Coluna direita: texto */}
         <div className="consultas-texto">
           <h2 id="consultas-titulo" className="consultas-titulo">
-            CONSULTAS <span className="highlight-green">ONLINE</span>
+            CONSULTAS <span className="consultas-gradient">ONLINE</span>
           </h2>
           <p className="consultas-descricao">
             Nossas consultas são personalizadas, focadas em suas necessidades visuais. O especialista avalia sua saúde ocular,
