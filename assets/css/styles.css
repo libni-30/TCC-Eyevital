@@ -850,6 +850,49 @@ body {
 .estrabismo-decor-dot{position:absolute;width:72px;height:72px;border:14px solid #42e4d1;border-radius:50%;top:-34px;right:-34px;box-shadow:0 8px 22px -8px rgba(0,160,140,.32);}
 @media (max-width:1100px){.estrabismo-container{flex-direction:column;gap:70px;padding:0 40px;}.estrabismo-texto{text-align:center;}.estrabismo-lista{align-items:flex-start;text-align:left;}}
 @media (max-width:640px){.estrabismo-container{gap:50px;padding:0 30px;}.estrabismo-titulo{font-size:1.65rem;}}
+/* ============================= */
+/* Seção VEJA TAMBÉM            */
+/* ============================= */
+.vt-section{background:#fff;padding:20px 0 90px;display:flex;justify-content:center;}
+.vt-container{max-width:1200px;width:100%;padding:0 40px;margin:0 auto;}
+.vt-title{color:#23255A;font-size:1.6rem;font-weight:800;letter-spacing:.6px;text-align:center;margin:0 0 26px;}
+.vt-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:start;}
+.vt-card{display:grid;grid-template-columns:1fr;gap:16px;background:#fff;border-radius:16px;box-shadow:0 10px 28px rgba(0,0,0,.06);} 
+.vt-card-large{grid-template-columns:1fr;}
+.vt-right{display:grid;grid-template-rows:auto auto auto;gap:24px;}
+.vt-card-small{grid-template-columns:160px 1fr;align-items:center;padding:14px;}
+.vt-card-small.no-image{grid-template-columns:1fr;padding:16px 18px;}
+.vt-card-small.no-image .vt-content{padding:4px 4px 10px;}
+.vt-figure{position:relative;margin:0;}
+.vt-card-large .vt-figure img{width:100%;height:auto;display:block;border-radius:14px;}
+.vt-card-small .vt-figure img{width:160px;height:110px;object-fit:cover;border-radius:12px;display:block;}
+.vt-badge{position:absolute;right:10px;bottom:10px;background:#1cc6f7;color:#fff;font-weight:700;font-size:.7rem;padding:6px 12px;border-radius:16px;box-shadow:0 6px 16px rgba(28,198,247,.35);} 
+.vt-content{padding:8px 16px 16px;}
+.vt-card-title{color:#23255A;font-size:1.05rem;font-weight:700;margin:0 0 8px;}
+.vt-card-desc{color:#55607a;font-size:.9rem;line-height:1.7;margin:0;}
+.vt-link{display:inline-block;margin-top:14px;color:#1cc6f7;font-weight:700;text-decoration:none;}
+@media (max-width:980px){.vt-grid{grid-template-columns:1fr;}.vt-right{grid-template-columns:1fr;}}
+
+/* ============================= */
+/* Footer                        */
+/* ============================= */
+.site-footer{background:#232643;color:#cfd5e3;padding:34px 0 26px;margin-top:20px;}
+.footer-inner{max-width:1200px;margin:0 auto;padding:0 24px;}
+.footer-top{display:flex;justify-content:center;align-items:center;padding:18px 0 22px;border-bottom:1px solid rgba(255,255,255,.06);}
+.footer-brand{display:flex;align-items:center;gap:16px;}
+/* Replica do estilo do topo para o rodapé */
+.footer-logo{position:relative;display:inline-flex;align-items:center;color:#e8ecf7;font-weight:800;letter-spacing:2px;padding-left:20px;height:40px;}
+.footer-diamond{position:absolute;width:60px;height:60px;left:15px;top:50%;margin-top:-30px;transform:rotate(45deg);background-color:transparent;border:2px solid #00ffff;box-shadow:0 0 10px rgba(0,255,255,0.5),0 0 20px rgba(0,255,255,0.3),0 0 30px rgba(0,255,255,0.2);pointer-events:none;}
+.footer-name{position:relative;z-index:2;font-size:1.3rem;color:#ffffff;text-shadow:0 0 10px rgba(0,255,255,0.35),0 0 20px rgba(0,255,255,0.2);} 
+.footer-sep{display:inline-block;width:1px;height:26px;background:rgba(255,255,255,.15);margin:0 6px;}
+.footer-tagline{margin:0;color:#e8ecf7;font-weight:600;}
+.footer-bottom{display:flex;flex-direction:column;align-items:center;gap:8px;padding-top:16px;}
+.footer-links{display:flex;gap:14px;align-items:center;}
+.footer-links a{color:#cfd5e3;text-decoration:none;font-weight:500;}
+.footer-links a:hover{color:#ffffff;}
+.footer-divider{color:rgba(255,255,255,.35);}
+.footer-copy{color:#aeb7cc;font-size:.9rem;margin:0;}
+@media (max-width:640px){.footer-brand{flex-direction:column;gap:10px;}.footer-sep{display:none;}.footer-tagline{text-align:center;}}
 .quiz-icones-validacao .icone-erro { color:#ff4f63; }
 .quiz-icones-validacao .icone-acerto { color:#00b58e; }
 
