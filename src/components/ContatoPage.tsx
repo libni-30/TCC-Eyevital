@@ -4,6 +4,25 @@ import './ContatoPage.css';
 const ContatoPage: React.FC = () => {
   return (
     <div className="contato-page">
+      {/* Header replicado para esta página */}
+      <header className="header">
+        <nav className="nav-container">
+          <div className="logo">
+            <div className="logo-diamond"></div>
+            <a className="logo-text" href="/">EYEVITAL</a>
+          </div>
+          <nav className="nav-menu" role="navigation" aria-label="Menu principal">
+            <a href="/">Sobre nós</a>
+            <a href="/#educacao">Educação</a>
+            <a href="/#consultas">Consultas</a>
+            <a href="/contato" aria-current="page" className="active">Contato</a>
+          </nav>
+          <div className="auth-buttons">
+            <a href="HTML/index.html" className="login-btn">Login</a>
+            <a href="HTML/index.html#register" className="register-btn">Registrar</a>
+          </div>
+        </nav>
+      </header>
       <div className="contato-hero-spacer" />
       <div className="contato-container">
         <h1 className="contato-title">Contato</h1>
@@ -11,18 +30,18 @@ const ContatoPage: React.FC = () => {
         <div className="contato-grid">
           {/* Coluna esquerda */}
           <div className="contato-card">
-            <div className="contato-bloco">
+      <div className="contato-bloco">
               <div className="contato-icone">📞</div>
               <div>
-                <h3>Ligue para nós</h3>
+        <h3 style={{textTransform:'uppercase'}}>Ligue para nós</h3>
                 <p className="contato-texto">(11) 98765-4321<br/> (11) 91234-5678</p>
               </div>
             </div>
 
-            <div className="contato-bloco">
+      <div className="contato-bloco">
               <div className="contato-icone">📍</div>
               <div>
-                <h3>Localização</h3>
+        <h3 style={{textTransform:'uppercase'}}>Localização</h3>
                 <p className="contato-texto">
                   Rua Saúde dos Olhos, 123<br/>
                   Centro, São Paulo – SP<br/>
@@ -31,10 +50,10 @@ const ContatoPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="contato-bloco">
+      <div className="contato-bloco">
               <div className="contato-icone">⏰</div>
               <div>
-                <h3>Horário comercial</h3>
+        <h3 style={{textTransform:'uppercase'}}>Horário comercial</h3>
                 <p className="contato-texto">Seg – Sex: 9h–18h<br/> Sáb: 9h–12h</p>
               </div>
             </div>
@@ -42,7 +61,7 @@ const ContatoPage: React.FC = () => {
 
           {/* Coluna direita */}
           <div className="contato-card contato-outros">
-            <h3>Outros canais</h3>
+            <h3 style={{textTransform:'uppercase'}}>Outros canais</h3>
             <p>Quer saber mais? Fale conosco:</p>
 
             <a className="contato-link" href="mailto:contato@eyevital.com">
