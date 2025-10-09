@@ -10,7 +10,8 @@ const VejaTambemSection: React.FC = () => {
           {/* Card grande à esquerda */}
           <article className="vt-card vt-card-large">
             <figure className="vt-figure">
-              <img src="IMAGENS/imagem-olho.png" alt="Olho e anatomia" loading="lazy" />
+              {/* Imagem de anatomia como destaque principal (conforme referência) */}
+              <img src="IMAGENS/anatomia.png" alt="Diagrama de anatomia do olho" loading="lazy" />
               <span className="vt-badge">NEWS</span>
             </figure>
             <div className="vt-content">
@@ -22,21 +23,36 @@ const VejaTambemSection: React.FC = () => {
 
           {/* Coluna direita com 3 cards menores */}
           <div className="vt-right">
-            <article className="vt-card vt-card-small no-image">
+            {/* 1) Topo: imagem de colírio/olho */}
+            <article className="vt-card vt-card-small">
+              <figure className="vt-figure">
+                <img src="IMAGENS/imagem-olho.png" alt="Gota de colírio no olho" loading="lazy" />
+                <span className="vt-badge">NEWS</span>
+              </figure>
               <div className="vt-content">
                 <h3 className="vt-card-title">Cuidados diários com a saúde ocular</h3>
                 <p className="vt-card-desc">O uso correto de colírios é fundamental para manter os olhos hidratados e saudáveis. Saiba quando e como utilizá-los de forma segura, e evite hábitos que podem prejudicar sua visão no dia a dia.</p>
               </div>
             </article>
 
-            <article className="vt-card vt-card-small no-image">
+            {/* 2) Meio: desenho de correção visual */}
+            <article className="vt-card vt-card-small">
+              <figure className="vt-figure">
+                <img src="IMAGENS/desenho-visao.jpeg" alt="Ilustração de correção visual com lentes" loading="lazy" />
+                <span className="vt-badge">NEWS</span>
+              </figure>
               <div className="vt-content">
                 <h3 className="vt-card-title">Enxergando melhor com a correção ideal</h3>
                 <p className="vt-card-desc">Miopia e hipermetropia são comuns e têm correção simples com as lentes certas. Entenda como o tipo de lente ajuda o olho a focar corretamente, devolvendo nitidez e conforto visual.</p>
               </div>
             </article>
 
-            <article className="vt-card vt-card-small no-image">
+            {/* 3) Fundo: imagem de astigmatismo (estrada) */}
+            <article className="vt-card vt-card-small">
+              <figure className="vt-figure">
+                <img src="IMAGENS/visao-astigma.jpg" alt="Comparativo de visão com e sem astigmatismo" loading="lazy" />
+                <span className="vt-badge">NEWS</span>
+              </figure>
               <div className="vt-content">
                 <h3 className="vt-card-title">Astigmatismo: por que as imagens ficam borradas?</h3>
                 <p className="vt-card-desc">O astigmatismo ocorre quando a curvatura da córnea é irregular, causando distorção na formação da imagem. Veja como lentes específicas corrigem essa condição com eficiência.</p>
