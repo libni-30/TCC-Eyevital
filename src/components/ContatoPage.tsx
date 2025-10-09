@@ -9,13 +9,13 @@ const ContatoPage: React.FC = () => {
         <nav className="nav-container">
           <div className="logo">
             <div className="logo-diamond"></div>
-            <a className="logo-text" href="/">EYEVITAL</a>
+            <a className="logo-text" href="#/">EYEVITAL</a>
           </div>
           <nav className="nav-menu" role="navigation" aria-label="Menu principal">
-            <a href="/">Sobre nós</a>
-            <a href="/#educacao">Educação</a>
-            <a href="/#consultas">Consultas</a>
-            <a href="/contato" aria-current="page" className="active">Contato</a>
+            <a href="#/">Sobre nós</a>
+            <a href="#/">Educação</a>
+            <a href="#/">Consultas</a>
+            <a href="#/contato" aria-current="page" className="active">Contato</a>
           </nav>
           <div className="auth-buttons">
             <a href="HTML/index.html" className="login-btn">Login</a>
