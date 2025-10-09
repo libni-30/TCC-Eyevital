@@ -946,17 +946,13 @@ body {
 .hero-section {
     min-height: 100vh;
     position: relative;
-    overflow: hidden;
+    overflow: hidden; /* necessário para que o border-radius apareça */
     background-color: var(--background-color);
     padding: 0;
-    .hero-section {
-        background: #fff;
-        min-height: 500px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-    }}
+    /* Borda inferior arredondada contínua (formato de arco) */
+    border-bottom-left-radius: 50% 12%;
+    border-bottom-right-radius: 50% 12%;
+}
 
 .hero-container {
     display: flex;
@@ -1017,21 +1013,8 @@ body {
     object-fit: contain;
 }
 
-.wave-bottom {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    overflow: hidden;
-    line-height: 0;
-}
-
-.wave-bottom svg {
-    position: relative;
-    display: block;
-    width: 100%;
-    height: 180px;
-}
+/* O arco agora é feito via border-radius elíptico; desativa a onda SVG */
+.wave-bottom { display: none; }
 
 /* Estilos dos balões flutuantes */
 .floating-card {
