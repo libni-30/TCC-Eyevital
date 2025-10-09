@@ -117,12 +117,7 @@ const PaginaInicial: React.FC = () => {
 						>
 							Consultas
 						</a>
-						<a 
-							href="#contato"
-							onClick={(e) => handleNavClick(e, '#contato')}
-						>
-							Contato
-						</a>
+						<a href="/contato">Contato</a>
 					</nav>
 					<div className="auth-buttons">
 						<a href="HTML/index.html" className="login-btn">Login</a>
