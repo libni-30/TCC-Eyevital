@@ -1,6 +1,6 @@
 import React from 'react';
 import './ContatoPage.css';
-import { PhoneIcon, MapPinIcon, ClockIcon, EnvelopeIcon, CameraIcon } from '@heroicons/react/24/outline';
+import { PhoneIcon, MapPinIcon, ClockIcon, EnvelopeIcon } from '@heroicons/react/24/outline';
 
 const ContatoPage: React.FC = () => {
   return (
@@ -65,11 +65,15 @@ const ContatoPage: React.FC = () => {
             <p>Quer saber mais? Fale conosco:</p>
 
             <a className="contato-link" href="mailto:contato@eyevital.com">
-              <span className="contato-icone" aria-hidden="true"><EnvelopeIcon /></span>
+              <span className="contato-icone" aria-hidden="true">
+                <img src="/IMAGENS/email-logo.png" alt="E-mail" />
+              </span>
               <span className="contato-social-label">E-mail: contato@eyevital.com</span>
             </a>
             <a className="contato-link" href="#" aria-label="Instagram Eyevital">
-              <span className="contato-icone" aria-hidden="true"><CameraIcon /></span>
+              <span className="contato-icone" aria-hidden="true">
+                <img src="/IMAGENS/ista-logo.png" alt="Instagram" />
+              </span>
               <span className="contato-social-label">Instagram: @eyevital</span>
             </a>
             <a className="contato-link" href="#" aria-label="Facebook Eyevital">
