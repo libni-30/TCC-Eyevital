@@ -24,8 +24,7 @@ const ContatoPage: React.FC = () => {
         </nav>
       </header>
       <div className="contato-hero-spacer" />
-      <div className="contato-container">
-        <h1 className="contato-title">Contato</h1>
+  <div className="contato-container">
 
         <div className="contato-grid">
           {/* Coluna esquerda */}
