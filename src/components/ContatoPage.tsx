@@ -1,6 +1,6 @@
 import React from 'react';
 import './ContatoPage.css';
-import { PhoneIcon, MapPinIcon, ClockIcon, EnvelopeIcon } from '@heroicons/react/24/outline';
+import { PhoneIcon, MapPinIcon, ClockIcon } from '@heroicons/react/24/outline';
 
 const ContatoPage: React.FC = () => {
   return (
@@ -77,7 +77,9 @@ const ContatoPage: React.FC = () => {
               <span className="contato-social-label">Instagram: @eyevital</span>
             </a>
             <a className="contato-link" href="#" aria-label="Facebook Eyevital">
-              <span className="contato-icone" aria-hidden="true"><EnvelopeIcon /></span>
+              <span className="contato-icone" aria-hidden="true">
+                <img src="/IMAGENS/facebook-logo.webp" alt="Facebook" />
+              </span>
               <span className="contato-social-label">Fb.com/eyevital</span>
             </a>
           </div>
