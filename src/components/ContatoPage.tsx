@@ -61,31 +61,31 @@ const ContatoPage: React.FC = () => {
 
           {/* Coluna direita */}
           <div className="contato-card contato-outros">
-            <h3 style={{textTransform:'uppercase'}}>Outros canais</h3>
-            <p>Quer saber mais? Fale conosco:</p>
+            <h3 className="contato-outros-title">Outros canais</h3>
+            <p className="contato-intro">Quer saber mais?<br/>Fale conosco:</p>
 
-            <a className="contato-link" href="mailto:contato@eyevital.com">
+            <div className="contato-infoline" aria-label="E-mail">
               <span className="contato-icone" aria-hidden="true">
                 <img src="/IMAGENS/email-logo.png" alt="E-mail" />
               </span>
               <span className="contato-social-label">E-mail: contato@eyevital.com</span>
-            </a>
-            <a className="contato-link" href="#" aria-label="Instagram Eyevital">
+            </div>
+            <div className="contato-infoline" aria-label="Instagram Eyevital">
               <span className="contato-icone" aria-hidden="true">
                 <img src="/IMAGENS/ista-logo.png" alt="Instagram" />
               </span>
               <span className="contato-social-label">Instagram: @eyevital</span>
-            </a>
-            <a className="contato-link" href="#" aria-label="Facebook Eyevital">
+            </div>
+            <div className="contato-infoline" aria-label="Facebook Eyevital">
               <span className="contato-icone" aria-hidden="true">
                 <img src="/IMAGENS/facebook-logo.webp" alt="Facebook" />
               </span>
               <span className="contato-social-label">Fb.com/eyevital</span>
-            </a>
+            </div>
           </div>
         </div>
       </div>
-      <footer className="site-footer" style={{marginTop: 40}}>
+  <footer className="site-footer">
         <div className="footer-inner">
           <div className="footer-top">
             <div className="footer-brand">

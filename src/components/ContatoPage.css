@@ -3,6 +3,8 @@
 .contato-page {
   background: #ffffff;
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .contato-hero-spacer { /* espaço para o header fixo existente */
@@ -12,7 +14,8 @@
 .contato-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 40px 24px 0;
+  padding: 28px 24px 0; /* menos espaço acima do bloco */
+  flex: 1 0 auto; /* ocupa o espaço e empurra o footer para baixo */
 }
 
 .contato-title {
@@ -32,13 +35,13 @@
 .contato-card {
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  gap: 18px; /* reduzir espaços entre blocos da coluna esquerda */
 }
 
 .contato-bloco {
   display: grid;
   grid-template-columns: 40px 1fr;
-  gap: 14px;
+  gap: 10px; /* ícone mais próximo do texto */
 }
 
 .contato-icone {
@@ -81,8 +84,23 @@
 }
 
 .contato-outros p {
-  margin: 0 0 14px;
+  margin: 0 0 8px; /* menos espaço entre intro e lista */
   color: #3f4a66;
+}
+
+.contato-outros-title {
+  margin: 0 0 12px;
+  font-size: 1.05rem;
+  font-weight: 900;
+  color: #233055; /* azul escuro */
+  letter-spacing: .6px;
+  text-transform: uppercase;
+}
+
+.contato-intro {
+  margin: 0 0 18px;
+  color: #3f4a66;
+  line-height: 1.6;
 }
 
 .contato-link {
@@ -97,6 +115,36 @@
 
 .contato-social-label { color: #3f4a66; }
 
+/* versão informativa (não clicável) */
+.contato-infoline {
+  display: grid;
+  grid-template-columns: 32px 1fr; /* ícone mais compacto */
+  gap: 8px; /* texto mais próximo do ícone */
+  align-items: center;
+  padding: 6px 0; /* menos espaço vertical por linha */
+  color: #233055;
+  cursor: default;
+}
+
+/* reduzir espaçamentos gerais dentro do bloco de 'Outros canais' */
+.contato-card.contato-outros { gap: 12px; }
+.contato-card.contato-outros h3 { margin: 0 0 6px; }
+
+/* tornar o ícone do bloco 'Outros canais' mais discreto */
+.contato-card.contato-outros .contato-icone {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+}
+.contato-card.contato-outros .contato-icone svg,
+.contato-card.contato-outros .contato-icone img {
+  width: 18px;
+  height: 18px;
+}
+
 @media (max-width: 900px) {
   .contato-grid { grid-template-columns: 1fr; gap: 36px; }
 }
+
+/* rodapé sem espaço extra abaixo na página de contato */
+.site-footer { margin-top: 0; }
