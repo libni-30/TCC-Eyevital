@@ -50,7 +50,7 @@ const VejaTambemSection: React.FC = () => {
             {/* 3) Fundo: imagem de astigmatismo (estrada) */}
             <article className="vt-card vt-card-small">
               <figure className="vt-figure">
-                <img src="IMAGENS/visao-astigma.jpg" alt="Comparativo de visão com e sem astigmatismo" loading="lazy" />
+                <img src="IMAGENS/modelo-visao.jpg" alt="Exemplo de astigmatismo" loading="lazy" />
                 <span className="vt-badge">NEWS</span>
               </figure>
               <div className="vt-content">

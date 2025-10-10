@@ -1,5 +1,6 @@
 import React from 'react';
 import './ContatoPage.css';
+import { PhoneIcon, MapPinIcon, ClockIcon, EnvelopeIcon, CameraIcon } from '@heroicons/react/24/outline';
 
 const ContatoPage: React.FC = () => {
   return (
@@ -29,16 +30,16 @@ const ContatoPage: React.FC = () => {
         <div className="contato-grid">
           {/* Coluna esquerda */}
           <div className="contato-card">
-      <div className="contato-bloco">
-              <div className="contato-icone">📞</div>
+            <div className="contato-bloco">
+              <div className="contato-icone" aria-hidden="true"><PhoneIcon /></div>
               <div>
         <h3 style={{textTransform:'uppercase'}}>Ligue para nós</h3>
                 <p className="contato-texto">(11) 98765-4321<br/> (11) 91234-5678</p>
               </div>
             </div>
 
-      <div className="contato-bloco">
-              <div className="contato-icone">📍</div>
+            <div className="contato-bloco">
+              <div className="contato-icone" aria-hidden="true"><MapPinIcon /></div>
               <div>
         <h3 style={{textTransform:'uppercase'}}>Localização</h3>
                 <p className="contato-texto">
@@ -49,8 +50,8 @@ const ContatoPage: React.FC = () => {
               </div>
             </div>
 
-      <div className="contato-bloco">
-              <div className="contato-icone">⏰</div>
+            <div className="contato-bloco">
+              <div className="contato-icone" aria-hidden="true"><ClockIcon /></div>
               <div>
         <h3 style={{textTransform:'uppercase'}}>Horário comercial</h3>
                 <p className="contato-texto">Seg – Sex: 9h–18h<br/> Sáb: 9h–12h</p>
@@ -64,15 +65,15 @@ const ContatoPage: React.FC = () => {
             <p>Quer saber mais? Fale conosco:</p>
 
             <a className="contato-link" href="mailto:contato@eyevital.com">
-              <span className="contato-icone">📧</span>
+              <span className="contato-icone" aria-hidden="true"><EnvelopeIcon /></span>
               <span className="contato-social-label">E-mail: contato@eyevital.com</span>
             </a>
             <a className="contato-link" href="#" aria-label="Instagram Eyevital">
-              <span className="contato-icone">📸</span>
+              <span className="contato-icone" aria-hidden="true"><CameraIcon /></span>
               <span className="contato-social-label">Instagram: @eyevital</span>
             </a>
             <a className="contato-link" href="#" aria-label="Facebook Eyevital">
-              <span className="contato-icone">📘</span>
+              <span className="contato-icone" aria-hidden="true"><EnvelopeIcon /></span>
               <span className="contato-social-label">Fb.com/eyevital</span>
             </a>
           </div>

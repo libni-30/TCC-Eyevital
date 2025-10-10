@@ -48,9 +48,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 22px;
   background: #eef4fb;
-  color: #1d63d6;
+  color: #233055; /* azul escuro */
+}
+
+/* dimensiona os SVGs importados (Heroicons) para caber no bloco */
+.contato-icone svg {
+  width: 24px;
+  height: 24px;
 }
 
 .contato-bloco h3 {
