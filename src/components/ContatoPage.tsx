@@ -1,8 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './ContatoPage.css';
 import { PhoneIcon, MapPinIcon, ClockIcon } from '@heroicons/react/24/outline';
+import AuthModal from './AuthModal';
 
 const ContatoPage: React.FC = () => {
+  // Simulação de autenticação
+  const [isLoggedIn] = useState<boolean>(false);
+  const [showAuthModal, setShowAuthModal] = useState<boolean>(false);
+
+  const handleProtectedClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (!isLoggedIn) {
+      e.preventDefault();
+      setShowAuthModal(true);
+    }
+  };
   return (
     <div className="contato-page">
       {/* Header replicado para esta página */}
@@ -14,8 +25,8 @@ const ContatoPage: React.FC = () => {
           </div>
           <nav className="nav-menu" role="navigation" aria-label="Menu principal">
             <a href="#/">Sobre nós</a>
-            <a href="#/">Educação</a>
-            <a href="#/">Consultas</a>
+            <a href="#/" onClick={handleProtectedClick}>Educação</a>
+            <a href="#/" onClick={handleProtectedClick}>Consultas</a>
             <a href="#/contato" aria-current="page" className="active">Contato</a>
           </nav>
           <div className="auth-buttons">
@@ -109,6 +120,11 @@ const ContatoPage: React.FC = () => {
           </div>
         </div>
       </footer>
+
+      {/* Modal de autenticação */}
+      <AuthModal open={showAuthModal} onClose={() => setShowAuthModal(false)}>
+        Você precisa estar logado para acessar esta área. Caso ainda não tenha uma conta, registre-se e depois faça login.
+      </AuthModal>
     </div>
   );
 };

@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './PaginaInicial.css';
+import AuthModal from './AuthModal';
 import QuizSection from './QuizSection';
 import FerramentaEspecialistasSection from './FerramentaEspecialistasSection';
 // ProfissionaisSection removido
@@ -9,6 +10,9 @@ import EstrabismoSection from './EstrabismoSection';
 import VejaTambemSection from './VejaTambemSection';
 
 const PaginaInicial: React.FC = () => {
+	// Simula estado de autenticação (trocar para true para permitir acesso)
+	const [isLoggedIn] = useState<boolean>(false);
+	const [showAuthModal, setShowAuthModal] = useState<boolean>(false);
 	// Função para tratamento de erro de imagens
 	const handleImageError = (img: HTMLImageElement): void => {
 		img.onerror = null;
@@ -37,8 +41,8 @@ const PaginaInicial: React.FC = () => {
 		setTimeout(() => message.remove(), 3000);
 	};
 
-	// Handler para clique nos links do menu
-	const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, sectionId: string): void => {
+		// Handler para clique nos links do menu (ancoras internas)
+		const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, sectionId: string): void => {
 		e.preventDefault();
     
 		// Remove active de todos os links
@@ -56,7 +60,21 @@ const PaginaInicial: React.FC = () => {
 		} else {
 			showDevelopmentMessage();
 		}
-	};
+		};
+
+		// Intercepta cliques para Educação/Consultas: bloqueia se não logado
+		const handleProtectedClick = (e: React.MouseEvent<HTMLAnchorElement>, target: string) => {
+			if (!isLoggedIn) {
+				e.preventDefault();
+				setShowAuthModal(true);
+				return;
+			}
+			// Se estiver logado, permite a navegação normal (ancora para seção ou rota)
+			// Para seções internas, use o mesmo handler
+			if (target.startsWith('#')) {
+				handleNavClick(e, target);
+			}
+		};
 
 	useEffect(() => {
 		// Observador de interseção para atualizar menu ativo durante scroll
@@ -107,13 +125,13 @@ const PaginaInicial: React.FC = () => {
 						</a>
 						<a 
 							href="#educacao"
-							onClick={(e) => handleNavClick(e, '#educacao')}
+							onClick={(e) => handleProtectedClick(e, '#educacao')}
 						>
 							Educação
 						</a>
 						<a 
 							href="#consultas"
-							onClick={(e) => handleNavClick(e, '#consultas')}
+							onClick={(e) => handleProtectedClick(e, '#consultas')}
 						>
 							Consultas
 						</a>
@@ -197,7 +215,12 @@ const PaginaInicial: React.FC = () => {
 						<path fill="#ffffff" fillOpacity="1" d="M0,160L1440,320L1440,320L0,320Z"></path>
 					</svg>
 				</div>
-			</main>
+						</main>
+
+						{/* Modal de autenticação */}
+						<AuthModal open={showAuthModal} onClose={() => setShowAuthModal(false)}>
+							Você precisa estar logado para acessar esta área. Caso ainda não tenha uma conta, registre-se e depois faça login.
+						</AuthModal>
 
 			{/* Seção QUEM SOMOS */}
 			<section className="info-section" id="quem-somos">
