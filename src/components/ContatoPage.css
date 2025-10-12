@@ -12,9 +12,9 @@
 }
 
 .contato-container {
-  max-width: 1200px;
+  max-width: 1280px; /* amplia a largura útil para afastar mais as colunas */
   margin: 0 auto;
-  padding: 28px 24px 0; /* menos espaço acima do bloco */
+  padding: 28px 16px 0; /* menos recuo lateral para aproximar das bordas */
   flex: 1 0 auto; /* ocupa o espaço e empurra o footer para baixo */
 }
 
@@ -28,7 +28,7 @@
 .contato-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 48px;
+  gap: 72px; /* mais espaço entre as colunas */
   align-items: start;
 }
 
@@ -144,6 +144,15 @@
 
 @media (max-width: 900px) {
   .contato-grid { grid-template-columns: 1fr; gap: 36px; }
+}
+
+/* Em telas largas, fixe a largura das colunas e distribua o espaço entre elas
+   para deixar a coluna esquerda mais à esquerda e 'Outros canais' mais à direita */
+@media (min-width: 1200px) {
+  .contato-grid {
+    grid-template-columns: 520px 520px;
+    justify-content: space-between;
+  }
 }
 
 /* rodapé sem espaço extra abaixo na página de contato */
