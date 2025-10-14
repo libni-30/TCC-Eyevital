@@ -8,10 +8,14 @@ import ProfissionaisDisponiveisSection from './ProfissionaisDisponiveisSection';
 import ConsultasSection from './ConsultasSection';
 import EstrabismoSection from './EstrabismoSection';
 import VejaTambemSection from './VejaTambemSection';
+import { useAuth } from '../context/AuthContext';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 const PaginaInicial: React.FC = () => {
-	// Simula estado de autenticação (trocar para true para permitir acesso)
-	const [isLoggedIn] = useState<boolean>(false);
+	const { user, logout } = useAuth();
+	const navigate = useNavigate();
+	const location = useLocation();
+	const isLoggedIn = !!user;
 	const [showAuthModal, setShowAuthModal] = useState<boolean>(false);
 	// Função para tratamento de erro de imagens
 	const handleImageError = (img: HTMLImageElement): void => {
@@ -62,19 +66,7 @@ const PaginaInicial: React.FC = () => {
 		}
 		};
 
-		// Intercepta cliques para Educação/Consultas: bloqueia se não logado
-		const handleProtectedClick = (e: React.MouseEvent<HTMLAnchorElement>, target: string) => {
-			if (!isLoggedIn) {
-				e.preventDefault();
-				setShowAuthModal(true);
-				return;
-			}
-			// Se estiver logado, permite a navegação normal (ancora para seção ou rota)
-			// Para seções internas, use o mesmo handler
-			if (target.startsWith('#')) {
-				handleNavClick(e, target);
-			}
-		};
+		// Navegação protegida agora é tratada diretamente nos links de menu.
 
 	useEffect(() => {
 		// Observador de interseção para atualizar menu ativo durante scroll
@@ -106,6 +98,18 @@ const PaginaInicial: React.FC = () => {
 		};
 	}, []);
 
+	// Fecha modal automaticamente ao autenticar
+	useEffect(() => {
+		if (isLoggedIn && showAuthModal) setShowAuthModal(false);
+	}, [isLoggedIn, showAuthModal]);
+
+	// Se o usuário sair manualmente enquanto está numa rota protegida, manda para home
+	useEffect(() => {
+		if (!isLoggedIn && (location.pathname === '/educacao' || location.pathname === '/consultas')) {
+			navigate('/');
+		}
+	}, [isLoggedIn, location.pathname, navigate]);
+
 	return (
 		<>
 			<header className="header">
@@ -115,32 +119,48 @@ const PaginaInicial: React.FC = () => {
 						<div className="logo-text">EYEVITAL</div>
 					</div>
 					<nav className="nav-menu" role="navigation" aria-label="Menu principal">
-						<a 
-							href="#quem-somos" 
-							className="active" 
+						<a
+							href="#quem-somos"
+							className="active"
 							aria-current="page"
 							onClick={(e) => handleNavClick(e, '#quem-somos')}
 						>
 							Sobre nós
 						</a>
-						<a 
-							href="#educacao"
-							onClick={(e) => handleProtectedClick(e, '#educacao')}
+						<Link
+							to="/educacao"
+							onClick={(e) => {
+								if (!isLoggedIn) { e.preventDefault(); setShowAuthModal(true); }
+							}}
 						>
 							Educação
-						</a>
-						<a 
-							href="#consultas"
-							onClick={(e) => handleProtectedClick(e, '#consultas')}
+						</Link>
+						<Link
+							to="/consultas"
+							onClick={(e) => {
+								if (!isLoggedIn) { e.preventDefault(); setShowAuthModal(true); }
+							}}
 						>
 							Consultas
-						</a>
-						<a href="#/contato">Contato</a>
+						</Link>
+						<Link to="/contato">Contato</Link>
 					</nav>
-					<div className="auth-buttons">
-						<a href="HTML/index.html" className="login-btn">Login</a>
-						<a href="HTML/index.html#register" className="register-btn">Registrar</a>
-					</div>
+					{isLoggedIn ? (
+						<div className="auth-buttons">
+							<span className="user-label">{user?.username || user?.email}</span>
+							<button
+								className="login-btn"
+								onClick={async () => { await logout(); navigate('/'); }}
+							>
+								Sair
+							</button>
+						</div>
+					) : (
+						<div className="auth-buttons">
+							<Link to="/auth" className="login-btn">Login</Link>
+							<Link to="/auth?mode=register" className="register-btn">Registrar</Link>
+						</div>
+					)}
 				</nav>
 			</header>
 

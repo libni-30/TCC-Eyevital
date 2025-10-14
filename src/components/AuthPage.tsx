@@ -1,4 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { useAuth } from '../context/AuthContext';
+import { useLocation, useNavigate } from 'react-router-dom';
+import './AuthPage.css';
 
 interface FormData {
   email: string;
@@ -9,7 +12,12 @@ interface FormData {
 }
 
 const AuthPage = () => {
-  const [isLoginView, setIsLoginView] = useState(true);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { login, register, user } = useAuth();
+  const params = useMemo(() => new URLSearchParams(location.search), [location.search]);
+  const defaultMode = params.get('mode') === 'register' ? false : true;
+  const [isLoginView, setIsLoginView] = useState(defaultMode);
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     email: '',
@@ -19,9 +27,37 @@ const AuthPage = () => {
     rememberMe: false
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (user) {
+      // Redireciona para a rota original protegida (from) ou home
+      const state = location.state as { from?: string } | null
+      const target = state?.from || '/'
+      navigate(target, { replace: true })
+    }
+  }, [user, navigate, location.state]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
+    setError(null);
+    setLoading(true);
+    try {
+      if (isLoginView) {
+        await login(formData.email, formData.password);
+      } else {
+        if (formData.password !== formData.confirmPassword) {
+          setError('As senhas não coincidem');
+          return;
+        }
+        await register(formData.email, formData.password, formData.username);
+      }
+    } catch (err: any) {
+      setError(err?.message || 'Falha na autenticação');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,164 +69,75 @@ const AuthPage = () => {
   };
 
   return (
-    <main className="min-h-screen bg-[#E8F4F8] flex items-center justify-center">
-      <div className="w-full max-w-[1280px] min-h-screen md:min-h-0 bg-white md:bg-transparent flex flex-col md:flex-row md:rounded-3xl md:shadow-none">
-        {/* Lado esquerdo - Imagem */}
-        <div className="w-full md:w-1/2 flex items-center justify-center p-8">
-          <img
-            src="/IMAGENS/img_login.png"
-            alt="EyeVital Login"
-            className="w-[80%] max-w-[400px] h-auto"
-          />
+    <main className="auth-screen">
+      <div className="auth-shell">
+        <div className="auth-side">
+          <div className="auth-side-inner">
+            <img src="/IMAGENS/img_login.png" alt="EyeVital" className="auth-illustration" />
+          </div>
         </div>
-
-        {/* Lado direito - Formulário */}
-        <div className="w-full md:w-1/2 flex items-center justify-center p-8">
-          <div className="w-full max-w-[400px] bg-white rounded-2xl md:shadow-xl p-8">
-            <h2 className="text-3xl font-bold text-center text-gray-900 mb-6">
-              Bem Vindo ao EyeVital!
-            </h2>
-
-            {/* Botões de alternância */}
-            <div className="flex justify-center gap-4 mb-6">
+        <div className="auth-form-wrapper">
+          <div className="auth-card">
+            <h2 className="auth-title">Bem Vindo ao EyeVital!</h2>
+            <div className="auth-toggle">
               <button
                 type="button"
                 onClick={() => setIsLoginView(true)}
-                className={`px-8 py-2.5 rounded-full transition-all text-sm font-medium ${
-                  isLoginView
-                    ? 'bg-[#00B9BC] text-white'
-                    : 'bg-gray-100 text-gray-500'
-                }`}
+                className={`toggle-btn ${isLoginView ? 'active' : ''}`}
               >
                 Login
               </button>
               <button
                 type="button"
                 onClick={() => setIsLoginView(false)}
-                className={`px-8 py-2.5 rounded-full transition-all text-sm font-medium ${
-                  !isLoginView
-                    ? 'bg-[#00B9BC] text-white'
-                    : 'bg-gray-100 text-gray-500'
-                }`}
+                className={`toggle-btn ${!isLoginView ? 'active' : ''}`}
               >
                 Registrar
               </button>
             </div>
-
-            <p className="text-center text-gray-600 text-sm mb-8">
-              Certifique-se se você já está registrado para que possa ter uma
-              experiência melhor em nossa plataforma.
-            </p>
-
-            {/* Formulário */}
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <p className="auth-sub">Certifique-se se você já está registrado para que possa ter uma experiência melhor em nossa plataforma.</p>
+            {error && <div className="auth-error">{error}</div>}
+            <form onSubmit={handleSubmit} className="auth-form">
               {!isLoginView && (
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Nome de Usuário
-                  </label>
-                  <input
-                    type="text"
-                    name="username"
-                    value={formData.username}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-[#00B9BC] focus:border-[#00B9BC] text-sm"
-                    placeholder="Insira seu nome"
-                  />
+                <div className="field">
+                  <label>Nome de Usuário</label>
+                  <input type="text" name="username" value={formData.username} onChange={handleInputChange} placeholder="Insira seu nome" />
                 </div>
               )}
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-[#00B9BC] focus:border-[#00B9BC] text-sm"
-                  placeholder="Insira seu email"
-                />
+              <div className="field">
+                <label>Email</label>
+                <input type="email" name="email" value={formData.email} onChange={handleInputChange} placeholder="Insira seu email" />
               </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Senha
-                </label>
-                <div className="relative">
-                  <input
-                    type={showPassword ? 'text' : 'password'}
-                    name="password"
-                    value={formData.password}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-[#00B9BC] focus:border-[#00B9BC] text-sm"
-                    placeholder="Insira sua senha"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2"
-                  >
-                    <img
-                      src={`/IMAGENS/${showPassword ? 'img_olhofechado.png' : 'img_olhoaberto.png'}`}
-                      alt={showPassword ? 'Ocultar senha' : 'Mostrar senha'}
-                      className="w-5 h-5"
-                    />
+              <div className="field">
+                <label>Senha</label>
+                <div className="password-wrapper">
+                  <input type={showPassword ? 'text' : 'password'} name="password" value={formData.password} onChange={handleInputChange} placeholder="Insira sua senha" />
+                  <button type="button" className="eye-btn" onClick={() => setShowPassword(!showPassword)}>
+                    <img src={`/IMAGENS/${showPassword ? 'img_olhofechado.png' : 'img_olhoaberto.png'}`} alt="Toggle" />
                   </button>
                 </div>
               </div>
-
               {!isLoginView && (
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Confirmar Senha
-                  </label>
-                  <input
-                    type="password"
-                    name="confirmPassword"
-                    value={formData.confirmPassword}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-[#00B9BC] focus:border-[#00B9BC] text-sm"
-                    placeholder="Confirme sua senha"
-                  />
+                <div className="field">
+                  <label>Confirmar Senha</label>
+                  <input type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleInputChange} placeholder="Confirme sua senha" />
                 </div>
               )}
-
               {isLoginView && (
-                <div className="flex items-center justify-between">
-                  <label className="flex items-center">
-                    <input
-                      type="checkbox"
-                      name="rememberMe"
-                      checked={formData.rememberMe}
-                      onChange={handleInputChange}
-                      className="h-4 w-4 rounded border-gray-300 text-[#00B9BC] focus:ring-[#00B9BC]"
-                    />
-                    <span className="ml-2 text-sm text-gray-600">Lembre-me</span>
-                  </label>
-                  <a
-                    href="#"
-                    className="text-sm text-[#00B9BC] hover:text-[#00B9BC]/80"
-                  >
-                    Esqueceu sua senha?
-                  </a>
+                <div className="extras">
+                  <label className="remember"><input type="checkbox" name="rememberMe" checked={formData.rememberMe} onChange={handleInputChange} /> <span>Lembre-me</span></label>
+                  <a href="#" className="forgot">Esqueceu sua senha?</a>
                 </div>
               )}
-
-              <button
-                type="submit"
-                /* Largura total do formulário para manter tamanho idêntico nos dois modos */
-                className="w-full h-11 mt-6 flex items-center justify-center rounded-full bg-[#00B9BC] text-white font-medium text-sm hover:bg-[#00B9BC]/90 transition-colors"
-              >
-                {isLoginView ? 'Login' : 'Registrar'}
+              <button type="submit" className="submit-btn" disabled={loading}>
+                {loading ? 'Aguarde...' : isLoginView ? 'Login' : 'Registrar'}
               </button>
             </form>
           </div>
         </div>
       </div>
     </main>
-  );
+  )
 };
 
 export default AuthPage;
