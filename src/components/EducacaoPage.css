@@ -1,0 +1,3 @@
+/* Espaço para o header fixo + herdar estilos globais de header/nav */
+.educacao-page { background: #ffffff; min-height: 100vh; display: flex; flex-direction: column; }
+.educacao-hero-spacer { height: 90px; }

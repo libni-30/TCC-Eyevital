@@ -1,0 +1,3 @@
+/* Espaço para o header fixo + herdar estilos globais de header/nav */
+.consultas-page { background: #ffffff; min-height: 100vh; display: flex; flex-direction: column; }
+.consultas-hero-spacer { height: 90px; }
