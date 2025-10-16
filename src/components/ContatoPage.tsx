@@ -2,18 +2,14 @@ import React, { useState } from 'react';
 import './ContatoPage.css';
 import { PhoneIcon, MapPinIcon, ClockIcon } from '@heroicons/react/24/outline';
 import AuthModal from './AuthModal';
+import { useAuth } from '../context/AuthContext';
+import { Link } from 'react-router-dom';
 
 const ContatoPage: React.FC = () => {
-  // Simulação de autenticação
-  const [isLoggedIn] = useState<boolean>(false);
+  const { user, logout } = useAuth();
+  const isLoggedIn = !!user;
   const [showAuthModal, setShowAuthModal] = useState<boolean>(false);
 
-  const handleProtectedClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    if (!isLoggedIn) {
-      e.preventDefault();
-      setShowAuthModal(true);
-    }
-  };
   return (
     <div className="contato-page">
       {/* Header replicado para esta página */}
@@ -21,18 +17,39 @@ const ContatoPage: React.FC = () => {
         <nav className="nav-container">
           <div className="logo">
             <div className="logo-diamond"></div>
-            <a className="logo-text" href="#/">EYEVITAL</a>
+            <Link className="logo-text" to="/">EYEVITAL</Link>
           </div>
           <nav className="nav-menu" role="navigation" aria-label="Menu principal">
-            <a href="#/">Sobre nós</a>
-            <a href="#/" onClick={handleProtectedClick}>Educação</a>
-            <a href="#/" onClick={handleProtectedClick}>Consultas</a>
-            <a href="#/contato" aria-current="page" className="active">Contato</a>
+            <Link to="/">Sobre nós</Link>
+            <Link
+              to="/educacao"
+              onClick={(e) => {
+                if (!isLoggedIn) { e.preventDefault(); setShowAuthModal(true); }
+              }}
+            >
+              Educação
+            </Link>
+            <Link
+              to="/consultas"
+              onClick={(e) => {
+                if (!isLoggedIn) { e.preventDefault(); setShowAuthModal(true); }
+              }}
+            >
+              Consultas
+            </Link>
+            <Link to="/contato" aria-current="page" className="active">Contato</Link>
           </nav>
-          <div className="auth-buttons">
-            <a href="HTML/index.html" className="login-btn">Login</a>
-            <a href="HTML/index.html#register" className="register-btn">Registrar</a>
-          </div>
+          {isLoggedIn ? (
+            <div className="auth-buttons">
+              <span className="user-label">{user?.username || user?.email}</span>
+              <button onClick={logout} className="logout-btn">Sair</button>
+            </div>
+          ) : (
+            <div className="auth-buttons">
+              <Link to="/auth?mode=login" className="login-btn">Login</Link>
+              <Link to="/auth?mode=register" className="register-btn">Registrar</Link>
+            </div>
+          )}
         </nav>
       </header>
       <div className="contato-hero-spacer" />

@@ -21,8 +21,25 @@
 .auth-form { display:flex; flex-direction:column; gap:18px; }
 .field { display:flex; flex-direction:column; gap:6px; }
 .field label { font-size:.78rem; font-weight:600; color:#20323c; letter-spacing:.5px; }
-.field input { background:#fff; border:1.5px solid #c8d8dd; border-radius:14px; padding:12px 16px; font-size:.85rem; outline:none; transition:border-color .2s, box-shadow .2s; }
-.field input:focus { border-color:#00B9BC; box-shadow:0 0 0 3px rgba(0,185,188,.20); }
+.field input { 
+  background:#fff; 
+  border:2px solid #00B9BC; 
+  border-radius:14px; 
+  padding:12px 16px; 
+  font-size:.85rem; 
+  outline:none; 
+  transition:border-color .2s, box-shadow .2s;
+  color:#0d1f2e;
+}
+.field input::placeholder {
+  color:#95b3ba;
+  font-size:.85rem;
+  font-weight:400;
+}
+.field input:focus { 
+  border-color:#00B9BC; 
+  box-shadow:0 0 0 3px rgba(0,185,188,.20); 
+}
 .password-wrapper { position:relative; }
 .password-wrapper input { width:100%; }
 .eye-btn { position:absolute; right:10px; top:50%; transform:translateY(-50%); background:transparent; border:none; padding:2px; cursor:pointer; display:flex; }
@@ -31,10 +48,11 @@
 
 /* Extras */
 .extras { display:flex; align-items:center; justify-content:space-between; margin-top:-4px; }
-.remember { display:flex; align-items:center; gap:6px; font-size:.72rem; color:#2c434b; font-weight:500; }
-.remember input { accent-color:#00B9BC; width:14px; height:14px; }
-.forgot { font-size:.7rem; font-weight:600; color:#0096a0; text-decoration:none; letter-spacing:.4px; }
-.forgot:hover { text-decoration:underline; }
+.remember { display:flex; align-items:center; gap:8px; font-size:.75rem; color:#2c434b; font-weight:500; cursor:pointer; }
+.remember input { accent-color:#00B9BC; width:16px; height:16px; cursor:pointer; }
+.remember span { user-select:none; }
+.forgot { font-size:.72rem; font-weight:600; color:#00B9BC; text-decoration:none; letter-spacing:.4px; }
+.forgot:hover { text-decoration:underline; color:#008a8d; }
 
 /* Botão submit */
 .submit-btn { margin-top:12px; background:#00B9BC; color:#fff; font-weight:600; font-size:.9rem; border:none; height:48px; border-radius:999px; cursor:pointer; display:flex; align-items:center; justify-content:center; letter-spacing:.5px; box-shadow:0 10px 30px -10px rgba(0,150,155,.55); transition:.3s; }

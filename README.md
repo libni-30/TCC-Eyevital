@@ -42,7 +42,59 @@ O backend Express está em `server/` e expõe endpoints de autenticação e saú
 - `GET /auth/me` (Authorization: Bearer <token>)
 - `POST /auth/logout`
 
-### Passos para conectar ao Neon
+### 🔐 Como obter e configurar as credenciais do Neon
+
+**⚠️ IMPORTANTE:** As credenciais do banco **NUNCA** devem ser commitadas no GitHub por segurança!
+
+#### **Para o dono do projeto (você):**
+
+1. **Obter credenciais do Neon:**
+   - Acesse https://console.neon.tech
+   - Faça login e selecione seu projeto
+   - Vá em **Dashboard** → **Connection Details**
+   - Copie a **Connection String** completa:
+     ```
+     postgres://usuario:senha@ep-xxxxx-pooler.us-east-1.aws.neon.tech/neondb?sslmode=require
+     ```
+
+2. **Salvar localmente (já feito):**
+   - Você já tem o arquivo `server/.env` configurado localmente
+   - Este arquivo está no `.gitignore` e **não** vai para o GitHub
+
+3. **Guardar com segurança:**
+   - **Opção 1:** Salve num gerenciador de senhas (1Password, Bitwarden, etc.)
+   - **Opção 2:** Arquivo criptografado local
+   - **Opção 3:** Nuvem privada (Google Drive pessoal, OneDrive, etc.)
+
+#### **Para outros desenvolvedores (colaboradores):**
+
+Quando alguém clonar este repositório, deve seguir estes passos:
+
+1. **Copiar o arquivo de exemplo:**
+   ```bash
+   cd server
+   cp .env.example .env
+   ```
+
+2. **Preencher com as credenciais reais:**
+   - Você (dono) deve compartilhar as credenciais de forma segura (não por email ou chat público!)
+   - Use: Slack privado, Discord DM, 1Password compartilhado, ou encontro presencial
+
+3. **Editar `server/.env`:**
+   ```bash
+   DATABASE_URL=postgres://[CREDENCIAL_RECEBIDA_DO_DONO]
+   JWT_SECRET=[SEGREDO_RECEBIDO_DO_DONO]
+   ```
+
+#### **Para deploy em produção:**
+
+Quando fizer deploy (Vercel, Railway, Render, etc.):
+- **NÃO** use o arquivo `.env` 
+- Configure as variáveis de ambiente no painel da plataforma
+- Exemplo Vercel: Settings → Environment Variables
+- Exemplo Railway: Variables tab
+
+### Passos para conectar ao Neon (continuação)
 
 1. Crie um banco no Neon e copie a connection string completa (incluindo `?sslmode=require`).
 2. Em `server/.env` (crie a partir de `server/.env.example`):

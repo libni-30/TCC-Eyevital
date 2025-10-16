@@ -43,7 +43,15 @@ app.use(cors({
 }))
 app.use(express.json())
 
+// Log de todas as requests
+app.use((req, res, next) => {
+  console.log(`📨 ${req.method} ${req.url}`)
+  next()
+})
+
 async function ensureSchema() {
+  console.log('🔄 Iniciando ensureSchema...')
+  console.log('📊 Criando tabela users...')
   await pool.query(`
     CREATE TABLE IF NOT EXISTS users (
       id BIGSERIAL PRIMARY KEY,
@@ -53,6 +61,7 @@ async function ensureSchema() {
       created_at TIMESTAMPTZ DEFAULT now()
     );
   `)
+  console.log('📊 Criando tabela educacao_materials...')
   await pool.query(`
     CREATE TABLE IF NOT EXISTS educacao_materials (
       id BIGSERIAL PRIMARY KEY,
@@ -63,6 +72,7 @@ async function ensureSchema() {
       updated_at TIMESTAMPTZ DEFAULT now()
     );
   `)
+  console.log('📊 Criando tabela consultas...')
   await pool.query(`
     CREATE TABLE IF NOT EXISTS consultas (
       id BIGSERIAL PRIMARY KEY,
@@ -74,10 +84,12 @@ async function ensureSchema() {
       created_at TIMESTAMPTZ DEFAULT now()
     );
   `)
+  console.log('📊 Criando índices...')
   await pool.query('CREATE INDEX IF NOT EXISTS idx_consultas_user_id ON consultas(user_id);')
   await pool.query('CREATE INDEX IF NOT EXISTS idx_educacao_created_at ON educacao_materials(created_at);')
-  // ping inicial ao banco
+  console.log('🏓 Ping inicial ao banco...')
   await pool.query('SELECT 1')
+  console.log('✅ Schema configurado com sucesso!')
 }
 
 function signToken(user) {
@@ -264,8 +276,11 @@ app.delete('/consultas/:id', authMiddleware, async (req, res) => {
 
 ensureSchema()
   .then(() => {
-    // Bind em 0.0.0.0 para aceitar localhost (IPv6 ::1) e 127.0.0.1
-    app.listen(PORT, '0.0.0.0', () => console.log(`API listening on http://localhost:${PORT}`))
+    // Bind sem especificar host (usa default)
+    app.listen(PORT, () => {
+      console.log(`✅ API listening on http://localhost:${PORT}`)
+      console.log(`📡 Servidor pronto para receber conexões`)
+    })
   })
   .catch((err) => {
     console.error('Falha ao iniciar API:', err)

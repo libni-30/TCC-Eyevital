@@ -1199,14 +1199,25 @@ body {
 .auth-buttons {
     display: flex;
     gap: 1rem;
+    align-items: center;
 }
 
-.login-btn, .register-btn {
+.user-label {
+    color: var(--text-color);
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+.login-btn, .register-btn, .logout-btn {
     padding: 0.5rem 1.5rem;
     border-radius: 20px;
     font-weight: 500;
     text-decoration: none;
     transition: all 0.3s ease;
+    cursor: pointer;
+    border: none;
+    font-family: inherit;
+    font-size: inherit;
 }
 
 .login-btn {
@@ -1214,10 +1225,30 @@ body {
     color: var(--primary-color);
 }
 
+.login-btn:hover {
+    background-color: rgba(255, 255, 255, 0.9);
+    transform: translateY(-2px);
+}
+
 .register-btn {
     background-color: transparent;
     border: 2px solid var(--text-color);
     color: var(--text-color);
+}
+
+.register-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+.logout-btn {
+    background-color: var(--text-color);
+    color: var(--primary-color);
+}
+
+.logout-btn:hover {
+    background-color: rgba(255, 255, 255, 0.9);
+    transform: translateY(-2px);
 }
 
 /* Hero Section */
