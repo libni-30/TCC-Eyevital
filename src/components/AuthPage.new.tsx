@@ -33,7 +33,15 @@ const AuthPage = () => {
   };
 
   return (
-    <main className="min-h-screen bg-[#E8F4F8] flex items-center justify-center">
+    <main className="min-h-screen bg-[#E8F4F8] flex items-center justify-center relative">
+      {/* Botão Voltar */}
+      <a
+        href="/"
+        className="absolute top-4 right-4 md:top-8 md:right-8 px-6 py-2 bg-white text-[#00B9BC] rounded-full font-medium text-sm hover:bg-gray-50 transition-colors shadow-md flex items-center gap-2"
+      >
+        ← Voltar
+      </a>
+
       <div className="w-full max-w-[1280px] min-h-screen md:min-h-0 bg-white md:bg-transparent flex flex-col md:flex-row md:rounded-3xl md:shadow-none">
         {/* Lado esquerdo - Imagem */}
         <div className="w-full md:w-1/2 flex items-center justify-center p-8">

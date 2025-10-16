@@ -1,5 +1,22 @@
 /* Tailwind v4 core import (inclui preflight + utilities) */
 @import "tailwindcss";
+
+/* Reset global para remover qualquer espaçamento */
+html, body {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100%;
+  height: 100%;
+}
+
+/* Remove padding do root em todas as páginas */
+#root {
+  padding: 0 !important;
+  margin: 0 !important;
+  width: 100%;
+  min-height: 100%;
+}
+
 button:hover {
   border-color: #646cff;
 }

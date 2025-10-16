@@ -69,7 +69,34 @@ const AuthPage = () => {
   };
 
   return (
-    <main className="auth-screen">
+    <main className="auth-screen" style={{ position: 'relative' }}>
+      {/* Botão Voltar */}
+      <a
+        href="/#/"
+        style={{
+          position: 'absolute',
+          top: '16px',
+          right: '16px',
+          padding: '10px 24px',
+          backgroundColor: 'white',
+          color: '#00B9BC',
+          borderRadius: '999px',
+          fontWeight: '500',
+          fontSize: '14px',
+          textDecoration: 'none',
+          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          zIndex: 1000,
+          transition: 'background-color 0.2s'
+        }}
+        onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f9fafb'}
+        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'white'}
+      >
+        ← Voltar
+      </a>
+
       <div className="auth-shell">
         <div className="auth-side">
           <div className="auth-side-inner">
