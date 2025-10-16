@@ -19,6 +19,7 @@ const AuthPage = () => {
   const defaultMode = params.get('mode') === 'register' ? false : true;
   const [isLoginView, setIsLoginView] = useState(defaultMode);
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     email: '',
     password: '',
@@ -147,7 +148,12 @@ const AuthPage = () => {
               {!isLoginView && (
                 <div className="field">
                   <label>Confirmar Senha</label>
-                  <input type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleInputChange} placeholder="Confirme sua senha" />
+                  <div className="password-wrapper">
+                    <input type={showConfirmPassword ? 'text' : 'password'} name="confirmPassword" value={formData.confirmPassword} onChange={handleInputChange} placeholder="Confirme sua senha" />
+                    <button type="button" className="eye-btn" onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
+                      <img src={`/IMAGENS/${showConfirmPassword ? 'img_olhofechado.png' : 'img_olhoaberto.png'}`} alt="Toggle" />
+                    </button>
+                  </div>
                 </div>
               )}
               {isLoginView && (
