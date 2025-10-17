@@ -76,14 +76,46 @@ export default function ConsultasPage() {
         </section>
         <FaqGrid
           items={[
-            { id: 'q1', question: 'Preciso ir ao oftalmologista mesmo sem sentir dor?' },
-            { id: 'q2', question: 'Assistir TV de perto estraga a visão?' },
-            { id: 'q3', question: 'Usar óculos por muito tempo piora a visão?' },
-            { id: 'q4', question: 'Colírio pode ser usado todo dia?' },
-            { id: 'q5', question: 'O que é conjuntivite?' },
-            { id: 'q6', question: 'Ficar muito tempo no celular prejudica os olhos?' },
-            { id: 'q7', question: 'Cenoura realmente ajuda na visão?' },
-            { id: 'q8', question: 'Posso usar lentes de contato dormindo?' },
+            {
+              id: 'q1',
+              question: 'Preciso ir ao oftalmologista mesmo sem sentir dor?',
+              answer: 'Sim. É importante fazer exames regulares para detectar problemas antes que apareçam sintomas.'
+            },
+            {
+              id: 'q2',
+              question: 'Assistir TV de perto estraga a visão?',
+              answer: 'Não estraga, mas pode causar cansaço nos olhos. É bom fazer pausas e manter distância adequada.'
+            },
+            {
+              id: 'q3',
+              question: 'Usar óculos por muito tempo piora a visão?',
+              answer: 'Não. Óculos corrigem a visão e não causam dependência.'
+            },
+            {
+              id: 'q4',
+              question: 'Colírio pode ser usado todo dia?',
+              answer: 'Apenas se for indicado por um médico. O uso errado pode causar irritações ou esconder problemas.'
+            },
+            {
+              id: 'q5',
+              question: 'O que é conjuntivite?',
+              answer: 'É uma inflamação nos olhos que causa vermelhidão, coceira e secreção. Pode ser contagiosa.'
+            },
+            {
+              id: 'q6',
+              question: 'Ficar muito tempo no celular prejudica os olhos?',
+              answer: 'Sim. Pode causar olho seco e fadiga ocular. Faça pausas a cada 20 minutos.'
+            },
+            {
+              id: 'q7',
+              question: 'Cenoura realmente ajuda na visão?',
+              answer: 'Sim. É rica em vitamina A, que é importante para a saúde dos olhos, mas sozinha não melhora a visão.'
+            },
+            {
+              id: 'q8',
+              question: 'Posso usar lentes de contato dormindo?',
+              answer: 'Não é recomendado, a menos que sejam específicas para isso. Pode causar infecções.'
+            },
           ]}
         />
       </main>
