@@ -2,6 +2,49 @@
 
 Este projeto usa React com Vite. A página oficial do app é `paginainicial.html`. O arquivo `index.html` existe apenas para redirecionar automaticamente para `paginainicial.html` (compatível com GitHub Pages que exige `index.html`).
 
+## ✨ Funcionalidades Principais
+
+- 🔐 **Autenticação JWT** - Sistema completo de registro, login e proteção de rotas
+- 💬 **Chat com Especialista** - Sistema completo com limite de 10 perguntas por usuário
+  - ✅ Histórico de mensagens persistido
+  - ✅ Resposta automática do especialista
+  - ✅ Contador em tempo real
+  - ✅ Bloqueio após limite
+  - 📖 Documentação: [CHAT-IMPLEMENTATION.md](./CHAT-IMPLEMENTATION.md) | [GUIA-RAPIDO.md](./GUIA-RAPIDO.md)
+- 📚 **Área Educacional** - Materiais sobre saúde ocular (FAQ, artigos, quiz)
+- 👨‍⚕️ **Profissionais** - Listagem de clínicas e especialistas parceiros
+- 📞 **Contato** - Informações de contato após limite do chat
+
+## 🚀 Início Rápido
+
+**Opção 1 - Script Automático (Windows):**
+
+```bash
+# Duplo clique em:
+setup-rapido.bat
+```
+
+**Opção 2 - Manual:**
+
+```bash
+# 1. Instalar dependências
+cd server && npm install
+cd .. && npm install
+
+# 2. Configurar .env files (ver seção abaixo)
+
+# 3. Inicializar banco
+cd server && node scripts/init-db.js
+
+# 4. Iniciar backend (terminal 1)
+cd server && node index.js
+
+# 5. Iniciar frontend (terminal 2)
+npm run dev
+```
+
+Acesse: http://localhost:5173/paginainicial.html
+
 ## Como rodar
 
 - Desenvolvimento: `npm run dev` e acesse http://localhost:5173/paginainicial.html (a raiz também redireciona).
@@ -32,15 +75,34 @@ Arquivos sensíveis `.env*` já estão no `.gitignore` (não serão commitados).
 
 ## Backend / API e Banco (Neon Postgres)
 
-O backend Express está em `server/` e expõe endpoints de autenticação e saúde:
+O backend Express está em `server/` e expõe os seguintes endpoints:
 
-- `GET /health` – saúde da API
-- `GET /db/health` – teste simples de conexão ao banco
-- `GET /db/info` – informações do usuário/banco/versão
+**Autenticação:**
+
 - `POST /auth/register` { email, password, username? }
 - `POST /auth/login` { email, password }
 - `GET /auth/me` (Authorization: Bearer <token>)
 - `POST /auth/logout`
+
+**Chat com Especialista:**
+
+- `GET /chat/messages` – histórico de mensagens (protegido)
+- `GET /chat/count` – quantidade de perguntas feitas (protegido)
+- `POST /chat/send` – enviar mensagem (limite 10 perguntas, protegido)
+- `DELETE /chat/clear` – limpar histórico (dev only, protegido)
+
+**Educação:**
+
+- `GET /educacao` – listar materiais educacionais
+- `GET /educacao/:id` – detalhes de material
+
+**Saúde:**
+
+- `GET /health` – saúde da API
+- `GET /db/health` – teste de conexão ao banco
+- `GET /db/info` – informações do banco
+
+📖 **Documentação completa do chat:** [CHAT-IMPLEMENTATION.md](./CHAT-IMPLEMENTATION.md)
 
 ### 🔐 Como obter e configurar as credenciais do Neon
 
@@ -49,6 +111,7 @@ O backend Express está em `server/` e expõe endpoints de autenticação e saú
 #### **Para o dono do projeto (você):**
 
 1. **Obter credenciais do Neon:**
+
    - Acesse https://console.neon.tech
    - Faça login e selecione seu projeto
    - Vá em **Dashboard** → **Connection Details**
@@ -58,6 +121,7 @@ O backend Express está em `server/` e expõe endpoints de autenticação e saú
      ```
 
 2. **Salvar localmente (já feito):**
+
    - Você já tem o arquivo `server/.env` configurado localmente
    - Este arquivo está no `.gitignore` e **não** vai para o GitHub
 
@@ -71,12 +135,14 @@ O backend Express está em `server/` e expõe endpoints de autenticação e saú
 Quando alguém clonar este repositório, deve seguir estes passos:
 
 1. **Copiar o arquivo de exemplo:**
+
    ```bash
    cd server
    cp .env.example .env
    ```
 
 2. **Preencher com as credenciais reais:**
+
    - Você (dono) deve compartilhar as credenciais de forma segura (não por email ou chat público!)
    - Use: Slack privado, Discord DM, 1Password compartilhado, ou encontro presencial
 
@@ -89,7 +155,8 @@ Quando alguém clonar este repositório, deve seguir estes passos:
 #### **Para deploy em produção:**
 
 Quando fizer deploy (Vercel, Railway, Render, etc.):
-- **NÃO** use o arquivo `.env` 
+
+- **NÃO** use o arquivo `.env`
 - Configure as variáveis de ambiente no painel da plataforma
 - Exemplo Vercel: Settings → Environment Variables
 - Exemplo Railway: Variables tab
@@ -146,7 +213,6 @@ Invoke-RestMethod -Uri http://127.0.0.1:3000/auth/login -Method Post -ContentTyp
 
 Se precisar criar novas tabelas, edite `server/scripts/init-db.js` e rode novamente `npm run db:init` (as operações são idempotentes para CREATE TABLE/INDEX usados aqui).
 
-
 ## Estrutura de entradas HTML
 
 - `paginainicial.html`: entrada principal do app React (carrega `/src/main.tsx`).
@@ -169,9 +235,9 @@ If you are developing a production application, we recommend updating the config
 
 ```js
 export default tseslint.config([
-  globalIgnores(['dist']),
+  globalIgnores(["dist"]),
   {
-    files: ['**/*.{ts,tsx}'],
+    files: ["**/*.{ts,tsx}"],
     extends: [
       // Other configs...
 
@@ -180,46 +246,46 @@ export default tseslint.config([
       // Alternatively, use this for stricter rules
       ...tseslint.configs.strictTypeChecked,
       // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+      ...tseslint.configs.stylisticTypeChecked
 
       // Other configs...
     ],
     languageOptions: {
       parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
+        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
+        tsconfigRootDir: import.meta.dirname
+      }
       // other options...
-    },
-  },
-])
+    }
+  }
+]);
 ```
 
 You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
 ```js
 // eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+import reactX from "eslint-plugin-react-x";
+import reactDom from "eslint-plugin-react-dom";
 
 export default tseslint.config([
-  globalIgnores(['dist']),
+  globalIgnores(["dist"]),
   {
-    files: ['**/*.{ts,tsx}'],
+    files: ["**/*.{ts,tsx}"],
     extends: [
       // Other configs...
       // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
+      reactX.configs["recommended-typescript"],
       // Enable lint rules for React DOM
-      reactDom.configs.recommended,
+      reactDom.configs.recommended
     ],
     languageOptions: {
       parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
+        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
+        tsconfigRootDir: import.meta.dirname
+      }
       // other options...
-    },
-  },
-])
+    }
+  }
+]);
 ```
