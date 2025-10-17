@@ -40,46 +40,30 @@ app.use((req, res, next) => {
 })
 
 async function ensureSchema() {
-  console.log('🔄 Iniciando ensureSchema...')
-  console.log('📊 Criando tabela users...')
-  await pool.query(`
-    CREATE TABLE IF NOT EXISTS users (
-      id BIGSERIAL PRIMARY KEY,
-      email TEXT UNIQUE NOT NULL,
-      username TEXT,
-      password_hash TEXT NOT NULL,
-      created_at TIMESTAMPTZ DEFAULT now()
-    );
-  `)
-  console.log('📊 Criando tabela educacao_materials...')
-  await pool.query(`
-    CREATE TABLE IF NOT EXISTS educacao_materials (
-      id BIGSERIAL PRIMARY KEY,
-      titulo TEXT NOT NULL,
-      conteudo TEXT,
-      categoria TEXT,
-      created_at TIMESTAMPTZ DEFAULT now(),
-      updated_at TIMESTAMPTZ DEFAULT now()
-    );
-  `)
-  console.log('📊 Criando tabela consultas...')
-  await pool.query(`
-    CREATE TABLE IF NOT EXISTS consultas (
-      id BIGSERIAL PRIMARY KEY,
-      user_id BIGINT REFERENCES users(id) ON DELETE CASCADE,
-      titulo TEXT NOT NULL,
-      descricao TEXT,
-      data_horario TIMESTAMPTZ,
-      status TEXT DEFAULT 'pendente',
-      created_at TIMESTAMPTZ DEFAULT now()
-    );
-  `)
-  console.log('📊 Criando índices...')
-  await pool.query('CREATE INDEX IF NOT EXISTS idx_consultas_user_id ON consultas(user_id);')
-  await pool.query('CREATE INDEX IF NOT EXISTS idx_educacao_created_at ON educacao_materials(created_at);')
-  console.log('🏓 Ping inicial ao banco...')
-  await pool.query('SELECT 1')
-  console.log('✅ Schema configurado com sucesso!')
+  // Verificação rápida: apenas valida se as tabelas existem
+  // Para inicializar o schema, use: npm run db:init
+  try {
+    const checkTables = await pool.query(`
+      SELECT table_name 
+      FROM information_schema.tables 
+      WHERE table_schema = 'public' 
+      AND table_name IN ('users', 'consultas', 'educacao_materials')
+    `)
+    
+    if (checkTables.rowCount < 3) {
+      console.warn('⚠️  ATENÇÃO: Tabelas do banco não encontradas ou incompletas!')
+      console.warn('⚠️  Execute: npm run db:init')
+      console.warn('⚠️  Servidor continuará, mas algumas funcionalidades podem falhar.')
+    } else {
+      console.log('✅ Schema validado - tabelas presentes')
+    }
+    
+    // Teste de conectividade simples
+    await pool.query('SELECT 1')
+  } catch (err) {
+    console.error('❌ Erro ao validar schema:', err.message)
+    console.warn('⚠️  Servidor continuará, mas funcionalidades podem falhar')
+  }
 }
 
 function signToken(user) {
