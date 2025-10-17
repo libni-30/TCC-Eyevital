@@ -307,12 +307,10 @@ app.post("/chat/send", authMiddleware, async (req, res) => {
     const count = parseInt(countResult.rows[0].count, 10);
 
     if (count >= 10) {
-      return res
-        .status(403)
-        .json({
-          error: "limit_reached",
-          message: "Você atingiu o limite de 10 perguntas"
-        });
+      return res.status(403).json({
+        error: "limit_reached",
+        message: "Você atingiu o limite de 10 perguntas"
+      });
     }
 
     // Salvar mensagem do usuário
