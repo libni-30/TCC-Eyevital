@@ -3,8 +3,8 @@ import ContatoPage from './components/ContatoPage'
 import { HashRouter, Routes, Route } from 'react-router-dom'
 import AuthPage from './components/AuthPage'
 import ProtectedRoute from './components/ProtectedRoute'
-import EducacaoPage from './components/EducacaoPage.tsx'
-import ConsultasPage from './components/ConsultasPage.tsx'
+import EducacaoPage from './components/EducacaoPage'
+import ConsultasPage from './components/ConsultasPage'
 
 // Exemplo de uso da API (opcional):
 // import { get } from './lib/api'

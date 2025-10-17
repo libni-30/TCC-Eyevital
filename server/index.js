@@ -29,18 +29,8 @@ const pool = new Pool({
   ssl: { rejectUnauthorized: false },
 })
 
-// CORS: permitir localhost e 127.0.0.1 (ambos usados no frontend)
-const allowedOrigins = new Set([
-  'http://localhost:5173',
-  'http://127.0.0.1:5173'
-])
-app.use(cors({
-  origin: (origin, cb) => {
-    if (!origin || allowedOrigins.has(origin)) return cb(null, true)
-    return cb(new Error('Origin not allowed: ' + origin))
-  },
-  credentials: false,
-}))
+// CORS: ambiente de desenvolvimento — refletir qualquer origin (localhost, 127.0.0.1, etc.)
+app.use(cors({ origin: true, credentials: false }))
 app.use(express.json())
 
 // Log de todas as requests
@@ -187,6 +177,29 @@ app.post('/auth/logout', (req, res) => {
   res.json({ ok: true })
 })
 
+// DEV ONLY: reset de senha para ambiente local (NÃO habilitar em produção)
+app.post('/auth/dev-reset-password', async (req, res) => {
+  try {
+    if (process.env.NODE_ENV === 'production') {
+      return res.status(403).json({ error: 'forbidden_in_production' })
+    }
+    const devKey = req.headers['x-dev-key']
+    const expected = process.env.DEV_RESET_KEY || 'devkey'
+    if (devKey !== expected) {
+      return res.status(403).json({ error: 'invalid_dev_key' })
+    }
+    const { email, newPassword } = req.body || {}
+    if (!email || !newPassword) return res.status(400).json({ error: 'email_and_password_required' })
+    const hash = await bcrypt.hash(newPassword, 10)
+    const r = await pool.query('UPDATE users SET password_hash=$2 WHERE email=$1 RETURNING id', [email, hash])
+    if (r.rowCount === 0) return res.status(404).json({ error: 'not_found' })
+    res.json({ ok: true })
+  } catch (err) {
+    console.error('dev-reset-password error:', err)
+    res.status(500).json({ error: 'server_error' })
+  }
+})
+
 // ------------------ EDUCACAO (publico leitura) ------------------
 app.get('/educacao', async (req, res) => {
   try {
@@ -276,8 +289,9 @@ app.delete('/consultas/:id', authMiddleware, async (req, res) => {
 
 ensureSchema()
   .then(() => {
-    // Bind sem especificar host (usa default)
-    app.listen(PORT, () => {
+    // Bind em todas as interfaces para aceitar localhost e 127.0.0.1
+    const HOST = process.env.HOST || '0.0.0.0'
+    app.listen(PORT, HOST, () => {
       console.log(`✅ API listening on http://localhost:${PORT}`)
       console.log(`📡 Servidor pronto para receber conexões`)
     })

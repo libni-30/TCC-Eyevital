@@ -125,6 +125,8 @@ npm run dev
 VITE_API_BASE_URL=http://127.0.0.1:3000
 ```
 
+> Dica: Se ao reabrir o VS Code aparecer "Failed to fetch" no Login/Registro, é porque os servidores pararam. Suba novamente o backend (cd server; npm start) e o frontend (npm run dev) e confirme que o `.env` da raiz aponta para a mesma porta da API (ex.: `VITE_API_BASE_URL=http://127.0.0.1:3001` se a API estiver na 3001).
+
 ### Testes rápidos (PowerShell)
 
 Registro + /auth/me:

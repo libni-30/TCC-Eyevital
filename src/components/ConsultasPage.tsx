@@ -2,7 +2,8 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import AuthModal from './AuthModal'
-import ConsultasSection from './ConsultasSection'
+import ChatIntro from './ChatIntro'
+import FaqGrid from './FaqGrid'
 import './ConsultasPage.css'
 
 export default function ConsultasPage() {
@@ -10,10 +11,6 @@ export default function ConsultasPage() {
   const isLoggedIn = !!user
   const [showAuthModal, setShowAuthModal] = useState(false)
 
-  const handleImageError = (img: HTMLImageElement): void => {
-    img.onerror = null
-    img.src = 'assets/images/placeholder.png'
-  }
 
   return (
     <div className="consultas-page">
@@ -69,15 +66,26 @@ export default function ConsultasPage() {
       <div className="consultas-hero-spacer" />
 
       <main style={{ paddingBottom: 64 }}>
+        {/* Bloco de chat abaixo do header */}
+        <ChatIntro limit={10} />
         <section style={{ maxWidth: 1180, margin: '0 auto', padding: '0 24px' }}>
           <h1 style={{ fontSize: '2rem', fontWeight: 700, marginBottom: 24 }}>Área de Consultas</h1>
           <p style={{ marginBottom: 40, lineHeight: 1.5 }}>
             Agendamento e acompanhamento de consultas com profissionais parceiros.
           </p>
         </section>
-        <div style={{ maxWidth: 1180, margin: '0 auto', padding: '0 24px' }}>
-          <ConsultasSection onImageError={handleImageError} />
-        </div>
+        <FaqGrid
+          items={[
+            { id: 'q1', question: 'Preciso ir ao oftalmologista mesmo sem sentir dor?' },
+            { id: 'q2', question: 'Assistir TV de perto estraga a visão?' },
+            { id: 'q3', question: 'Usar óculos por muito tempo piora a visão?' },
+            { id: 'q4', question: 'Colírio pode ser usado todo dia?' },
+            { id: 'q5', question: 'O que é conjuntivite?' },
+            { id: 'q6', question: 'Ficar muito tempo no celular prejudica os olhos?' },
+            { id: 'q7', question: 'Cenoura realmente ajuda na visão?' },
+            { id: 'q8', question: 'Posso usar lentes de contato dormindo?' },
+          ]}
+        />
       </main>
 
       {/* Rodapé padrão do site */}
