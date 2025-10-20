@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext'
 import AuthModal from './AuthModal'
 import QuizSection from './QuizSection'
 import EstrabismoSection from './EstrabismoSection'
+import VideosSection from './VideosSection'
 import './EducacaoPage.css'
 
 export default function EducacaoPage() {
@@ -70,6 +71,10 @@ export default function EducacaoPage() {
             Conteúdos interativos, quizzes e materiais para apoiar o seu aprendizado sobre saúde visual.
           </p>
         </section>
+
+        {/* Seção de Vídeos Educativos */}
+        <VideosSection />
+
         <div style={{ maxWidth: 1180, margin: '0 auto', padding: '0 24px', display: 'grid', gap: 48 }}>
           <QuizSection onImageError={handleImageError} />
           <EstrabismoSection onImageError={handleImageError} />

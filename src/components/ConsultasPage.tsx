@@ -64,16 +64,17 @@ export default function ConsultasPage() {
 
       {/* Espaço para compensar o header fixo */}
       <div className="consultas-hero-spacer" />
-
       <main style={{ paddingBottom: 64 }}>
         {/* Bloco de chat abaixo do header */}
         <ChatIntro limit={10} />
+        
         <section style={{ maxWidth: 1180, margin: '0 auto', padding: '0 24px' }}>
           <h1 style={{ fontSize: '2rem', fontWeight: 700, marginBottom: 24 }}>Área de Consultas</h1>
           <p style={{ marginBottom: 40, lineHeight: 1.5 }}>
             Agendamento e acompanhamento de consultas com profissionais parceiros.
           </p>
         </section>
+
         <FaqGrid
           items={[
             {
