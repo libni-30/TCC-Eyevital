@@ -2,13 +2,14 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import AuthModal from './AuthModal'
+import UserProfileDropdown from './UserProfileDropdown'
 import QuizSection from './QuizSection'
 import EstrabismoSection from './EstrabismoSection'
 import VideosSection from './VideosSection'
 import './EducacaoPage.css'
 
 export default function EducacaoPage() {
-  const { user, logout } = useAuth()
+  const { user } = useAuth()
   const isLoggedIn = !!user
   const [showAuthModal, setShowAuthModal] = useState(false)
 
@@ -48,10 +49,7 @@ export default function EducacaoPage() {
             <Link to="/contato">Contato</Link>
           </nav>
           {isLoggedIn ? (
-            <div className="auth-buttons">
-              <span className="user-label">{user?.username || user?.email}</span>
-              <button className="logout-btn" onClick={async () => { await logout() }}>Sair</button>
-            </div>
+            <UserProfileDropdown />
           ) : (
             <div className="auth-buttons">
               <Link to="/auth?mode=login" className="login-btn">Login</Link>

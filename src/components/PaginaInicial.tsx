@@ -10,9 +10,10 @@ import EstrabismoSection from './EstrabismoSection';
 import VejaTambemSection from './VejaTambemSection';
 import { useAuth } from '../context/AuthContext';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import UserProfileDropdown from './UserProfileDropdown';
 
 const PaginaInicial: React.FC = () => {
-	const { user, logout } = useAuth();
+	const { user } = useAuth();
 	const navigate = useNavigate();
 	const location = useLocation();
 	const isLoggedIn = !!user;
@@ -146,15 +147,7 @@ const PaginaInicial: React.FC = () => {
 						<Link to="/contato">Contato</Link>
 					</nav>
 					{isLoggedIn ? (
-						<div className="auth-buttons">
-							<span className="user-label">{user?.username || user?.email}</span>
-							<button
-								className="login-btn"
-								onClick={async () => { await logout(); navigate('/'); }}
-							>
-								Sair
-							</button>
-						</div>
+						<UserProfileDropdown />
 					) : (
 						<div className="auth-buttons">
 							<Link to="/auth" className="login-btn">Login</Link>

@@ -2,12 +2,13 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import AuthModal from './AuthModal'
+import UserProfileDropdown from './UserProfileDropdown'
 import ChatIntro from './ChatIntro'
 import FaqGrid from './FaqGrid'
 import './ConsultasPage.css'
 
 export default function ConsultasPage() {
-  const { user, logout } = useAuth()
+  const { user } = useAuth()
   const isLoggedIn = !!user
   const [showAuthModal, setShowAuthModal] = useState(false)
 
@@ -44,15 +45,7 @@ export default function ConsultasPage() {
             <Link to="/contato">Contato</Link>
           </nav>
           {isLoggedIn ? (
-            <div className="auth-buttons">
-              <span className="user-label">{user?.username || user?.email}</span>
-              <button
-                className="logout-btn"
-                onClick={async () => { await logout() }}
-              >
-                Sair
-              </button>
-            </div>
+            <UserProfileDropdown />
           ) : (
             <div className="auth-buttons">
               <Link to="/auth?mode=login" className="login-btn">Login</Link>

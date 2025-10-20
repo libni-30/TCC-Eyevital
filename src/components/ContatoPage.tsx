@@ -3,10 +3,11 @@ import './ContatoPage.css';
 import { PhoneIcon, MapPinIcon, ClockIcon } from '@heroicons/react/24/outline';
 import AuthModal from './AuthModal';
 import { useAuth } from '../context/AuthContext';
+import UserProfileDropdown from './UserProfileDropdown';
 import { Link } from 'react-router-dom';
 
 const ContatoPage: React.FC = () => {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const isLoggedIn = !!user;
   const [showAuthModal, setShowAuthModal] = useState<boolean>(false);
 
@@ -40,10 +41,7 @@ const ContatoPage: React.FC = () => {
             <Link to="/contato" aria-current="page" className="active">Contato</Link>
           </nav>
           {isLoggedIn ? (
-            <div className="auth-buttons">
-              <span className="user-label">{user?.username || user?.email}</span>
-              <button onClick={logout} className="logout-btn">Sair</button>
-            </div>
+            <UserProfileDropdown />
           ) : (
             <div className="auth-buttons">
               <Link to="/auth?mode=login" className="login-btn">Login</Link>
