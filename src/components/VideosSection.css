@@ -1,7 +1,7 @@
 .videos-section {
   background: linear-gradient(135deg, #e0f2fe 0%, #dbeafe 100%);
   padding: 80px 24px;
-  margin: 60px 0;
+  margin: 0;
 }
 
 .videos-container {
@@ -11,7 +11,7 @@
 
 .videos-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   margin-bottom: 48px;
 }
@@ -22,11 +22,6 @@
   color: #0891b2;
   letter-spacing: 0.5px;
   margin: 0;
-}
-
-.videos-nav {
-  display: flex;
-  gap: 12px;
 }
 
 .nav-btn {
@@ -183,6 +178,13 @@
   overflow: hidden;
 }
 
+.video-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
 .video-watch-btn {
   display: inline-flex;
   align-items: center;
@@ -196,13 +198,60 @@
   font-size: 0.9375rem;
   cursor: pointer;
   transition: all 0.3s ease;
-  align-self: flex-start;
+  flex: 1;
+  justify-content: center;
 }
 
 .video-watch-btn:hover {
   background: #0891b2;
   color: white;
   transform: translateX(4px);
+}
+
+.video-eye-indicator {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  border: 2px solid;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+/* Vídeo não assistido - azul claro */
+.video-eye-indicator.unwatched {
+  border-color: #0891b2;
+  color: #0891b2;
+  background: rgba(8, 145, 178, 0.1);
+}
+
+.video-eye-indicator.unwatched:hover {
+  background: rgba(8, 145, 178, 0.2);
+  transform: scale(1.05);
+}
+
+/* Vídeo assistido - cinza */
+.video-eye-indicator.watched {
+  border-color: #94a3b8;
+  color: #94a3b8;
+  background: rgba(148, 163, 184, 0.1);
+}
+
+.video-eye-indicator.watched:hover {
+  background: rgba(148, 163, 184, 0.2);
+  transform: scale(1.05);
+}
+
+.video-eye-indicator svg {
+  transition: transform 0.3s ease;
+}
+
+.video-eye-indicator:hover svg {
+  transform: scale(1.1);
 }
 
 .video-watch-btn svg {
@@ -215,8 +264,14 @@
 
 .videos-footer {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  align-items: center;
   padding-top: 24px;
+}
+
+.videos-nav {
+  display: flex;
+  gap: 12px;
 }
 
 .videos-see-all {

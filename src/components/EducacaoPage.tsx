@@ -65,15 +65,15 @@ export default function EducacaoPage() {
       <div className="educacao-hero-spacer" />
 
       <main style={{ paddingBottom: 64 }}>
-        <section style={{ maxWidth: 1180, margin: '0 auto', padding: '0 24px' }}>
+        {/* Seção de Vídeos Educativos colada ao header */}
+        <VideosSection />
+
+        <section style={{ maxWidth: 1180, margin: '0 auto', padding: '0 24px', marginTop: 60 }}>
           <h1 style={{ fontSize: '2rem', fontWeight: 700, marginBottom: 24 }}>Área de Educação</h1>
           <p style={{ marginBottom: 40, lineHeight: 1.5 }}>
             Conteúdos interativos, quizzes e materiais para apoiar o seu aprendizado sobre saúde visual.
           </p>
         </section>
-
-        {/* Seção de Vídeos Educativos */}
-        <VideosSection />
 
         <div style={{ maxWidth: 1180, margin: '0 auto', padding: '0 24px', display: 'grid', gap: 48 }}>
           <QuizSection onImageError={handleImageError} />

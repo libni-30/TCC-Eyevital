@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import './VideosSection.css'
 
 interface Video {
@@ -54,28 +55,35 @@ const defaultVideos: Video[] = [
 ]
 
 export default function VideosSection({ videos = defaultVideos }: VideosSectionProps) {
+  // Estado para rastrear vídeos assistidos (armazenado no localStorage)
+  const [watchedVideos, setWatchedVideos] = useState<Set<string>>(() => {
+    const stored = localStorage.getItem('watchedVideos')
+    return stored ? new Set(JSON.parse(stored)) : new Set()
+  })
+
+  // Salvar no localStorage quando o estado mudar
+  useEffect(() => {
+    localStorage.setItem('watchedVideos', JSON.stringify([...watchedVideos]))
+  }, [watchedVideos])
+
+  // Marcar vídeo como assistido
+  const markAsWatched = (videoId: string) => {
+    setWatchedVideos(prev => new Set([...prev, videoId]))
+  }
+
+  // Verificar se vídeo foi assistido
+  const isWatched = (videoId: string) => watchedVideos.has(videoId)
+
   return (
     <section className="videos-section">
       <div className="videos-container">
         <div className="videos-header">
           <h2 className="videos-title">VÍDEOS</h2>
-          <div className="videos-nav">
-            <button className="nav-btn nav-prev" aria-label="Vídeo anterior">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </button>
-            <button className="nav-btn nav-next" aria-label="Próximo vídeo">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </button>
-          </div>
         </div>
 
         <div className="videos-grid">
           {videos.map((video) => (
-            <article key={video.id} className="video-card">
+            <article key={video.id} className="video-card" data-watched={isWatched(video.id)}>
               <div className="video-thumbnail">
                 <div className="video-placeholder">
                   <span className="video-icon">{video.icon}</span>
@@ -108,13 +116,25 @@ export default function VideosSection({ videos = defaultVideos }: VideosSectionP
                 <h3 className="video-title">{video.title}</h3>
                 <p className="video-description">{video.description}</p>
                 
-                <button className="video-watch-btn">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                    <circle cx="12" cy="12" r="3"/>
-                  </svg>
-                  <span>Assistir</span>
-                </button>
+                <div className="video-footer">
+                  <button 
+                    className="video-watch-btn"
+                    onClick={() => markAsWatched(video.id)}
+                  >
+                    <span>Assistir</span>
+                  </button>
+                  
+                  <button 
+                    className={`video-eye-indicator ${isWatched(video.id) ? 'watched' : 'unwatched'}`}
+                    aria-label={isWatched(video.id) ? 'Vídeo já assistido' : 'Vídeo não assistido'}
+                    title={isWatched(video.id) ? 'Você já assistiu este vídeo' : 'Você ainda não assistiu este vídeo'}
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                      <circle cx="12" cy="12" r="3"/>
+                    </svg>
+                  </button>
+                </div>
               </div>
             </article>
           ))}
@@ -127,6 +147,19 @@ export default function VideosSection({ videos = defaultVideos }: VideosSectionP
               <path d="M5 12h14M12 5l7 7-7 7"/>
             </svg>
           </button>
+          
+          <div className="videos-nav">
+            <button className="nav-btn nav-prev" aria-label="Vídeo anterior">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+            <button className="nav-btn nav-next" aria-label="Próximo vídeo">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
     </section>
