@@ -22,7 +22,7 @@ function sanitize(v) {
 }
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 const JWT_SECRET = process.env.JWT_SECRET || "dev-secret-change-me";
 
 const pool = new Pool({

@@ -24,29 +24,27 @@ const pool = new Pool({ connectionString, ssl: { rejectUnauthorized: false } })
 
 async function main(){
   const emailArg = process.argv[2]
+  const passwordArg = process.argv[3]
+  const usernameArg = process.argv[4]
   const ts = Date.now()
   const email = emailArg || `seed_${ts}@example.com`
-  const username = 'SeedUser_' + ts
-  const password = 'Senha123!'
+  const username = usernameArg || 'SeedUser_' + ts
+  const password = passwordArg || 'Senha123!'
   const hash = await bcrypt.hash(password, 10)
   await pool.query('BEGIN')
   try {
     const r = await pool.query(
-      'INSERT INTO users (email, username, password_hash) VALUES ($1,$2,$3) RETURNING id, email, username, created_at',
+      'INSERT INTO users (email, username, password_hash) VALUES ($1,$2,$3) ON CONFLICT (email) DO UPDATE SET password_hash = $3, username = $2 RETURNING id, email, username, created_at',
       [email, username, hash]
     )
     await pool.query('COMMIT')
-    console.log('Usuario criado:')
+    console.log('Usuario criado/atualizado:')
     console.log(r.rows[0])
     console.log('Credenciais:')
     console.log({ email, password })
   } catch(err){
     await pool.query('ROLLBACK')
-    if(err?.code === '23505'){
-      console.error('Email já existe, execute novamente para gerar outro.')
-    } else {
-      console.error('Erro ao inserir usuário:', err)
-    }
+    console.error('Erro ao inserir/atualizar usuário:', err)
     process.exitCode = 1
   } finally {
     pool.end()
