@@ -5,7 +5,7 @@ import QuizSection from './QuizSection';
 import FerramentaEspecialistasSection from './FerramentaEspecialistasSection';
 // ProfissionaisSection removido
 import ProfissionaisDisponiveisSection from './ProfissionaisDisponiveisSection';
-import ConsultasSection from './ConsultasSection';
+import AjudaProfissionalSection from './AjudaProfissionalSection';
 import EstrabismoSection from './EstrabismoSection';
 import VejaTambemSection from './VejaTambemSection';
 import { useAuth } from '../context/AuthContext';
@@ -106,7 +106,7 @@ const PaginaInicial: React.FC = () => {
 
 	// Se o usuário sair manualmente enquanto está numa rota protegida, manda para home
 	useEffect(() => {
-		if (!isLoggedIn && (location.pathname === '/educacao' || location.pathname === '/consultas')) {
+		if (!isLoggedIn && (location.pathname === '/educacao' || location.pathname === '/ajudaprofissional')) {
 			navigate('/');
 		}
 	}, [isLoggedIn, location.pathname, navigate]);
@@ -137,12 +137,12 @@ const PaginaInicial: React.FC = () => {
 							Educação
 						</Link>
 						<Link
-							to="/consultas"
+							to="/ajudaprofissional"
 							onClick={(e) => {
 								if (!isLoggedIn) { e.preventDefault(); setShowAuthModal(true); }
 							}}
 						>
-							Consultas
+							Ajuda Profissional
 						</Link>
 						<Link to="/contato">Contato</Link>
 					</nav>
@@ -393,8 +393,8 @@ const PaginaInicial: React.FC = () => {
 			{/* Seção PROFISSIONAIS SEMPRE A DISPOSIÇÃO (final) */}
 			<ProfissionaisDisponiveisSection />
 
-			{/* Nova Seção CONSULTAS ONLINE */}
-			<ConsultasSection onImageError={handleImageError} />
+			{/* Seção AJUDA PROFISSIONAL */}
+			<AjudaProfissionalSection onImageError={handleImageError} />
 
 			{/* Seção TIPOS DE ESTRABISMO */}
 			<EstrabismoSection onImageError={handleImageError} />

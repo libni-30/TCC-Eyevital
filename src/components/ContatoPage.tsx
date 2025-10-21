@@ -31,12 +31,12 @@ const ContatoPage: React.FC = () => {
               Educação
             </Link>
             <Link
-              to="/consultas"
+              to="/ajudaprofissional"
               onClick={(e) => {
                 if (!isLoggedIn) { e.preventDefault(); setShowAuthModal(true); }
               }}
             >
-              Consultas
+              Ajuda Profissional
             </Link>
             <Link to="/contato" aria-current="page" className="active">Contato</Link>
           </nav>

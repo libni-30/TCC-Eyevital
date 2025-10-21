@@ -5,16 +5,16 @@ import AuthModal from './AuthModal'
 import UserProfileDropdown from './UserProfileDropdown'
 import ChatIntro from './ChatIntro'
 import FaqGrid from './FaqGrid'
-import './ConsultasPage.css'
+import './AjudaProfissionalPage.css'
 
-export default function ConsultasPage() {
+export default function AjudaProfissionalPage() {
   const { user } = useAuth()
   const isLoggedIn = !!user
   const [showAuthModal, setShowAuthModal] = useState(false)
 
 
   return (
-    <div className="consultas-page">
+    <div className="ajuda-profissional-page">
       {/* Header replicado para permitir navegação entre páginas */}
       <header className="header">
         <nav className="nav-container">
@@ -33,14 +33,14 @@ export default function ConsultasPage() {
               Educação
             </Link>
             <Link
-              to="/consultas"
+              to="/ajudaprofissional"
               aria-current="page"
               className="active"
               onClick={(e) => {
                 if (!isLoggedIn) { e.preventDefault(); setShowAuthModal(true) }
               }}
             >
-              Consultas
+              Ajuda Profissional
             </Link>
             <Link to="/contato">Contato</Link>
           </nav>
@@ -56,15 +56,15 @@ export default function ConsultasPage() {
       </header>
 
       {/* Espaço para compensar o header fixo */}
-      <div className="consultas-hero-spacer" />
+      <div className="ajuda-profissional-hero-spacer" />
       <main style={{ paddingBottom: 64 }}>
         {/* Bloco de chat abaixo do header */}
         <ChatIntro limit={10} />
         
         <section style={{ maxWidth: 1180, margin: '0 auto', padding: '0 24px' }}>
-          <h1 style={{ fontSize: '2rem', fontWeight: 700, marginBottom: 24 }}>Área de Consultas</h1>
+          <h1 style={{ fontSize: '2rem', fontWeight: 700, marginBottom: 24 }}>Ajuda Profissional</h1>
           <p style={{ marginBottom: 40, lineHeight: 1.5 }}>
-            Agendamento e acompanhamento de consultas com profissionais parceiros.
+            Tire suas dúvidas com profissionais especializados em saúde ocular e receba orientações personalizadas.
           </p>
         </section>
 

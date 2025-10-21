@@ -1,6 +1,6 @@
 /* Espaço para o header fixo + herdar estilos globais de header/nav */
-.consultas-page { background: #ffffff; min-height: 100vh; display: flex; flex-direction: column; }
-.consultas-hero-spacer { height: 0; }
+.ajuda-profissional-page { background: #ffffff; min-height: 100vh; display: flex; flex-direction: column; }
+.ajuda-profissional-hero-spacer { height: 0; }
 
 /* Chat intro styles */
 .chat-section { background: #eaf6ff; padding: 90px 0 24px; }

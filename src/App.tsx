@@ -4,7 +4,7 @@ import { HashRouter, Routes, Route } from 'react-router-dom'
 import AuthPage from './components/AuthPage'
 import ProtectedRoute from './components/ProtectedRoute'
 import EducacaoPage from './components/EducacaoPage'
-import ConsultasPage from './components/ConsultasPage'
+import AjudaProfissionalPage from './components/AjudaProfissionalPage'
 
 // Exemplo de uso da API (opcional):
 // import { get } from './lib/api'
@@ -35,10 +35,10 @@ function App() {
     }
   />
   <Route
-    path="/consultas"
+    path="/ajudaprofissional"
     element={
       <ProtectedRoute>
-        <ConsultasPage />
+        <AjudaProfissionalPage />
       </ProtectedRoute>
     }
   />
