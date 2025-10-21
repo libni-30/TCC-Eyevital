@@ -7,6 +7,7 @@ import cors from "cors";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import pkg from "pg";
+import nodemailer from "nodemailer";
 const { Pool } = pkg;
 
 // Also load root .env for BD_UM defined at project root
@@ -217,7 +218,7 @@ app.post("/auth/dev-reset-password", async (req, res) => {
     if (devKey !== expected) {
       return res.status(403).json({ error: "invalid_dev_key" });
     }
-    const { email, newPassword } = req.body || {};
+  const { email, newPassword } = req.body || {};
     if (!email || !newPassword)
       return res.status(400).json({ error: "email_and_password_required" });
     const hash = await bcrypt.hash(newPassword, 10);
@@ -226,6 +227,40 @@ app.post("/auth/dev-reset-password", async (req, res) => {
       [email, hash]
     );
     if (r.rowCount === 0) return res.status(404).json({ error: "not_found" });
+
+    // Enviar e-mail com a nova senha
+    const host = process.env.SMTP_HOST;
+    const port = Number(process.env.SMTP_PORT || 587);
+    const user = process.env.SMTP_USER;
+    const pass = process.env.SMTP_PASS;
+
+    try {
+      if (host && user && pass) {
+        const transporter = nodemailer.createTransport({
+          host,
+          port,
+          secure: port === 465,
+          auth: { user, pass },
+        });
+        await transporter.sendMail({
+          from: process.env.SMTP_FROM || `Eyevital <no-reply@eyevital.local>`,
+          to: email,
+          subject: "Recuperação de senha - Eyevital",
+          text: `Sua nova senha é: ${newPassword}\n\nVocê pode alterá-la após fazer login.`,
+          html: `<p>Sua nova senha é: <b>${newPassword}</b></p><p>Você pode alterá-la após fazer login.</p>`,
+        });
+        console.log(`📧 E-mail de reset enviado para ${email}`);
+      } else {
+        console.log("[DEV] SMTP não configurado. Conteúdo do e-mail:");
+        console.log(`Para: ${email}`);
+        console.log(`Assunto: Recuperação de senha - Eyevital`);
+        console.log(`Nova senha: ${newPassword}`);
+      }
+    } catch (mailErr) {
+      console.error("Erro ao enviar e-mail de reset:", mailErr);
+      // Não falhar o endpoint por e-mail; ainda retornamos ok=true se senha foi trocada
+    }
+
     res.json({ ok: true });
   } catch (err) {
     console.error("dev-reset-password error:", err);

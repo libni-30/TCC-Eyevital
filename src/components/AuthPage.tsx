@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useLocation, useNavigate } from 'react-router-dom';
 import './AuthPage.css';
+import ForgotPasswordModal from './ForgotPasswordModal';
 
 interface FormData {
   email: string;
@@ -30,6 +31,7 @@ const AuthPage = () => {
 
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [forgotOpen, setForgotOpen] = useState(false);
 
   // Precarrega email e flag de "lembrar" do localStorage
   useEffect(() => {
@@ -177,7 +179,9 @@ const AuthPage = () => {
               {isLoginView && (
                 <div className="extras">
                   <label className="remember"><input type="checkbox" name="rememberMe" checked={formData.rememberMe} onChange={handleInputChange} /> <span>Lembre-me</span></label>
-                  <a href="#" className="forgot">Esqueceu sua senha?</a>
+                  <button type="button" className="forgot" onClick={() => setForgotOpen(true)}>
+                    Esqueceu sua senha?
+                  </button>
                 </div>
               )}
               <button type="submit" className="submit-btn" disabled={loading}>
@@ -187,6 +191,7 @@ const AuthPage = () => {
           </div>
         </div>
       </div>
+      <ForgotPasswordModal open={forgotOpen} onClose={() => setForgotOpen(false)} />
     </main>
   )
 };

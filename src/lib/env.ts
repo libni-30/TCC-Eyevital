@@ -8,6 +8,7 @@ type Env = {
   VITE_AUTH_LOGOUT_PATH?: string
   VITE_SUPABASE_URL?: string
   VITE_SUPABASE_ANON_KEY?: string
+  VITE_DEV_RESET_KEY?: string
   // Acrescente aqui outras chaves se necessário
 }
 
@@ -42,6 +43,10 @@ export function getSupabaseConfig() {
     return { url, key }
   }
   return undefined
+}
+
+export function getDevResetKey() {
+  return env.VITE_DEV_RESET_KEY?.trim() || 'devkey'
 }
 
 export default env

@@ -1,5 +1,5 @@
 import { get, post } from './api'
-import { getAuthPaths, getSupabaseConfig } from './env'
+import { getAuthPaths, getSupabaseConfig, getDevResetKey } from './env'
 
 export type User = {
   id: string
@@ -73,4 +73,24 @@ export async function logout(): Promise<void> {
   await post<void, Record<string, never>>(path, {})
   try { localStorage.removeItem('token') } catch {}
   try { sessionStorage.removeItem('token') } catch {}
+}
+
+// DEV/local only: solicita reset de senha
+export async function requestPasswordReset(email: string): Promise<{ ok: boolean; message: string }> {
+  if (supabase) {
+    const { error } = await supabase.auth.resetPasswordForEmail(email)
+    if (error) throw error
+    return { ok: true, message: 'Enviamos instruções de reset para seu e-mail.' }
+  }
+  // backend dev endpoint cria uma nova senha e aplica direto
+  const newPassword = Math.random().toString(36).slice(-8)
+  const res = await post<{ ok: boolean }>(
+    '/auth/dev-reset-password',
+    { email, newPassword },
+    { headers: { 'x-dev-key': getDevResetKey() } }
+  )
+  if (res?.ok) {
+    return { ok: true, message: `Sua nova senha foi gerada e enviada para ${email}.` }
+  }
+  return { ok: false, message: 'Não foi possível resetar a senha.' }
 }
