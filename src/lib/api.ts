@@ -2,6 +2,8 @@ import { getApiBaseUrl } from './env'
 
 function getToken() {
   try {
+    const session = sessionStorage.getItem('token')
+    if (session) return session
     return localStorage.getItem('token') || undefined
   } catch {
     return undefined

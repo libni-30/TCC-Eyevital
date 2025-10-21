@@ -21,15 +21,24 @@ const AuthPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [formData, setFormData] = useState<FormData>({
-    email: '',
+  email: '',
     password: '',
     username: '',
     confirmPassword: '',
-    rememberMe: false
+  rememberMe: false
   });
 
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+
+  // Precarrega email e flag de "lembrar" do localStorage
+  useEffect(() => {
+    try {
+      const remembered = localStorage.getItem('rememberMe') === 'true'
+      const rememberedEmail = localStorage.getItem('rememberEmail') || ''
+      setFormData(prev => ({ ...prev, rememberMe: remembered, email: remembered ? rememberedEmail : prev.email }))
+    } catch {}
+  }, [])
 
   useEffect(() => {
     if (user) {
@@ -46,7 +55,16 @@ const AuthPage = () => {
     setLoading(true);
     try {
       if (isLoginView) {
-        await login(formData.email, formData.password);
+        await login(formData.email, formData.password, formData.rememberMe);
+        // Persistir preferências de lembrar email
+        try {
+          localStorage.setItem('rememberMe', String(formData.rememberMe))
+          if (formData.rememberMe) {
+            localStorage.setItem('rememberEmail', formData.email)
+          } else {
+            localStorage.removeItem('rememberEmail')
+          }
+        } catch {}
       } else {
         if (formData.password !== formData.confirmPassword) {
           setError('As senhas não coincidem');

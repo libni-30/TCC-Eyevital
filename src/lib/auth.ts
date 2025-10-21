@@ -72,4 +72,5 @@ export async function logout(): Promise<void> {
   const { logout: path } = getAuthPaths()
   await post<void, Record<string, never>>(path, {})
   try { localStorage.removeItem('token') } catch {}
+  try { sessionStorage.removeItem('token') } catch {}
 }

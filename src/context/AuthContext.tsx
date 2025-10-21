@@ -11,7 +11,7 @@ type ToastData = {
 type AuthState = {
   user: User | null
   loading: boolean
-  login: (email: string, password: string) => Promise<void>
+  login: (email: string, password: string, rememberMe?: boolean) => Promise<void>
   register: (email: string, password: string, username?: string) => Promise<void>
   logout: () => Promise<void>
 }
@@ -31,10 +31,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     })()
   }, [])
 
-  async function login(email: string, password: string) {
+  async function login(email: string, password: string, rememberMe: boolean = false) {
     setLoading(true)
     try {
       const { user } = await loginFn(email, password)
+      // Se não for lembrar, mover token para sessão
+      try {
+        const token = localStorage.getItem('token')
+        if (token) {
+          if (!rememberMe) {
+            sessionStorage.setItem('token', token)
+            localStorage.removeItem('token')
+          }
+        }
+      } catch {}
       setUser(user)
       // Mostrar toast de sucesso no login
       setToast({
