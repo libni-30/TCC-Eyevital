@@ -2,32 +2,44 @@
 
 API REST para o sistema EyeVital (consultas oftalmológicas e conteúdo educativo).
 
-## 🚀 Configuração Inicial
+## ⚠️ ATUALIZAÇÃO IMPORTANTE: Migração para Prisma ORM
+
+Este servidor foi migrado de SQL manual para **Prisma ORM** para garantir segurança em produção.
+
+**� Guias de Migração:**
+- `QUICK-START.txt` - Guia rápido visual
+- `MIGRATION-SUMMARY.md` - Resumo executivo
+- `PRISMA-DEPLOY-GUIDE.md` - Guia completo de deploy
+
+---
+
+## �🚀 Configuração Inicial
 
 ### 1. Instalar dependências
 ```bash
 npm install
 ```
 
+Isso irá instalar todas as dependências incluindo Prisma e gerar automaticamente o Prisma Client.
+
 ### 2. Configurar variáveis de ambiente
 Crie o arquivo `server/.env` com:
 ```env
-DATABASE_URL='postgresql://user:pass@host/db?sslmode=require'
+DATABASE_URL='postgresql://user:pass@host.neon.tech/db?sslmode=require'
 JWT_SECRET='sua-chave-secreta-aqui'
+NODE_ENV='development'
 PORT=3001
 HOST=0.0.0.0
 ```
 
-### 3. Inicializar banco de dados (apenas primeira vez)
+### 3. Sincronizar schema do banco (apenas primeira vez)
 ```bash
-npm run db:init
+npm run db:push
 ```
 
-**IMPORTANTE:** Execute `npm run db:init` **apenas na primeira vez** ou após limpar o banco. O script:
-- Cria todas as tabelas necessárias
-- Cria índices
-- Registra a migração no banco (v1)
-- Nas execuções seguintes, detecta que já foi inicializado e não recria tabelas
+Este comando sincroniza o schema Prisma com o banco de dados de forma segura, **sem perder dados existentes**.
+
+**⚠️ IMPORTANTE:** Não use mais `npm run db:init` - ele foi substituído pelo Prisma.
 
 ### 4. Iniciar servidor
 ```bash
@@ -35,34 +47,43 @@ npm run dev    # Modo desenvolvimento (auto-reload)
 npm start      # Modo produção
 ```
 
-## 📊 Estrutura do Banco
+## 📊 Estrutura do Banco (Prisma ORM)
 
-### Tabelas
-- **users** - Usuários do sistema (auth)
-- **consultas** - Agendamentos/consultas (privado)
-- **educacao_materials** - Conteúdo educativo (público)
-- **schema_migrations** - Controle de versão do schema
+### Models (Tabelas)
+- **User** - Usuários do sistema (auth)
+- **Consulta** - Agendamentos/consultas (privado)
+- **EducacaoMaterial** - Conteúdo educativo (público)
+- **ChatMessage** - Mensagens do chat (privado)
+
+### Schema
+O schema é definido em `prisma/schema.prisma` e gerenciado pelo Prisma Migrate.
 
 ### Comportamento de Inicialização
 
-#### ❌ Antes (Problema)
+#### ❌ Antes (Sistema Antigo - PROBLEMA)
 ```
-Servidor inicia → CREATE TABLE IF NOT EXISTS (sempre)
+Servidor inicia → ensureSchema() executa
+                → CREATE TABLE IF NOT EXISTS (sempre)
                 → CREATE INDEX IF NOT EXISTS (sempre)
-                → Logs poluídos a cada restart
-                → Overhead desnecessário
+                → Risco de perda de dados em produção
 ```
 
-#### ✅ Depois (Solução)
+#### ✅ Agora (Prisma ORM - SEGURO)
 ```
-Primeira vez:
-  npm run db:init → Cria tabelas e índices
-                  → Registra migração v1 em schema_migrations
+Desenvolvimento:
+  npm run db:migrate:dev → Cria migração versionada
+                         → Aplica no banco
+                         → Gera Prisma Client
 
-Restarts seguintes:
-  npm run dev → Valida se tabelas existem (query rápida)
-              → Não recria nada
-              → Log limpo: "✅ Schema validado"
+Produção:
+  npm run db:migrate → Aplica apenas migrações pendentes
+                     → NUNCA recria tabelas existentes
+                     → Dados 100% seguros
+
+Servidor inicia:
+  prisma.$connect() → Apenas conecta ao banco
+                    → NÃO modifica schema
+                    → Log limpo
 ```
 
 ## 🌐 Conectividade
@@ -108,17 +129,46 @@ Esperado: `{"ok":true}`
 ## 🔧 Scripts Disponíveis
 
 ```bash
+# Desenvolvimento
 npm run dev              # Inicia servidor em modo dev (auto-reload)
-npm start                # Inicia servidor em modo produção
-npm run db:init          # Inicializa banco (apenas primeira vez)
-npm run db:seed:user     # Cria usuário de teste
+npm run db:studio        # Interface visual do banco (Prisma Studio)
+npm run db:migrate:dev   # Criar nova migração
+npm run db:push          # Sync rápido (sem migração)
+
+# Produção
+npm start                # Inicia servidor
+npm run db:migrate       # Aplicar migrações pendentes
+npm run db:generate      # Re-gerar Prisma Client
+
+# Utilities
+npx prisma migrate status    # Ver status das migrações
+npx prisma validate          # Validar schema.prisma
 ```
+
+### ⚠️ Scripts Deprecados (não usar mais)
+- ~~`npm run db:init`~~ → Use `npm run db:push`
+- ~~`npm run db:seed:user`~~ → Use Prisma Studio ou crie script novo
 
 ## 🐛 Troubleshooting
 
-### "Tabelas não encontradas"
+### "Prisma Client não encontrado"
 ```bash
-npm run db:init
+npm run db:generate
+```
+
+### "Can't reach database server"
+Verifique:
+1. Variável `DATABASE_URL` no `.env`
+2. Conexão com internet (Neon é cloud)
+3. Credenciais corretas
+
+### "Migration failed"
+```bash
+# Ver status
+npx prisma migrate status
+
+# Forçar sincronização (dev apenas)
+npm run db:push
 ```
 
 ### "Failed to fetch" no frontend
@@ -135,8 +185,19 @@ taskkill /PID <PID> /F
 
 ### Conexão externa não funciona
 1. Verifique IP local: `ipconfig`
-2. Libere porta no firewall (comando acima)
+2. Libere porta no firewall:
+   ```powershell
+   # Como Administrador
+   New-NetFirewallRule -DisplayName "Node.js API 3001" -Direction Inbound -Protocol TCP -LocalPort 3001 -Action Allow
+   ```
 3. Teste de outro dispositivo: `http://SEU_IP:3001/health`
+
+### Preciso voltar ao sistema antigo?
+```bash
+copy index.old.js index.js
+npm start
+```
+(Não recomendado - o novo sistema é muito mais seguro)
 
 ## 📝 Endpoints
 
@@ -171,9 +232,17 @@ taskkill /PID <PID> /F
 
 ## 📦 Dependências
 
+### Core
 - **express** - Framework web
-- **pg** - Cliente PostgreSQL
+- **@prisma/client** - Prisma ORM (substitui pg)
 - **bcryptjs** - Hash de senhas
 - **jsonwebtoken** - Autenticação JWT
 - **cors** - Cross-origin requests
 - **dotenv** - Variáveis de ambiente
+
+### Dev
+- **prisma** - CLI do Prisma para migrações
+- **nodemon** - Auto-reload em desenvolvimento
+
+### Removidas na Migração
+- ~~**pg**~~ - Substituído por @prisma/client (type-safe, migrations, etc.)

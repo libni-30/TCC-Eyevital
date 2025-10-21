@@ -1,0 +1,68 @@
+// Prisma Schema para TCC-EyeVital
+// Este schema substitui o SQL manual e previne recriação de tabelas em produção
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            BigInt         @id @default(autoincrement())
+  email         String         @unique
+  username      String?
+  passwordHash  String         @map("password_hash")
+  createdAt     DateTime       @default(now()) @map("created_at")
+  
+  // Relações
+  chatMessages  ChatMessage[]
+  consultas     Consulta[]
+  
+  @@index([createdAt])
+  @@map("users")
+}
+
+model EducacaoMaterial {
+  id         BigInt    @id @default(autoincrement())
+  titulo     String
+  conteudo   String?
+  categoria  String?
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @default(now()) @updatedAt @map("updated_at")
+  
+  @@index([createdAt])
+  @@map("educacao_materials")
+}
+
+model ChatMessage {
+  id         BigInt    @id @default(autoincrement())
+  userId     BigInt    @map("user_id")
+  message    String
+  sender     String    @default("user")
+  createdAt  DateTime  @default(now()) @map("created_at")
+  
+  // Relação com User
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@map("chat_messages")
+}
+
+model Consulta {
+  id          BigInt    @id @default(autoincrement())
+  userId      BigInt    @map("user_id")
+  titulo      String
+  descricao   String?
+  dataHorario DateTime? @map("data_horario")
+  status      String    @default("pendente")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  
+  // Relação com User
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@map("consultas")
+}
