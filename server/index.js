@@ -229,10 +229,10 @@ app.get("/educacao", async (req, res) => {
         id: true,
         titulo: true,
         categoria: true,
-        created_at: true,
-        updated_at: true
+        createdAt: true,
+        updatedAt: true
       },
-      orderBy: { created_at: "desc" },
+      orderBy: { createdAt: "desc" },
       take: 200
     });
     res.json(materials);
@@ -251,8 +251,8 @@ app.get("/educacao/:id", async (req, res) => {
         titulo: true,
         conteudo: true,
         categoria: true,
-        created_at: true,
-        updated_at: true
+        createdAt: true,
+        updatedAt: true
       }
     });
     if (!material) return res.status(404).json({ error: "not_found" });
@@ -270,14 +270,14 @@ app.get("/educacao/:id", async (req, res) => {
 app.get("/chat/messages", authMiddleware, async (req, res) => {
   try {
     const messages = await prisma.chatMessage.findMany({
-      where: { user_id: BigInt(req.user.id) },
+      where: { userId: BigInt(req.user.id) },
       select: {
         id: true,
         message: true,
         sender: true,
-        created_at: true
+        createdAt: true
       },
-      orderBy: { created_at: "asc" }
+      orderBy: { createdAt: "asc" }
     });
     res.json(messages);
   } catch (err) {
@@ -291,7 +291,7 @@ app.get("/chat/count", authMiddleware, async (req, res) => {
   try {
     const count = await prisma.chatMessage.count({
       where: {
-        user_id: BigInt(req.user.id),
+        userId: BigInt(req.user.id),
         sender: "user"
       }
     });
@@ -313,7 +313,7 @@ app.post("/chat/send", authMiddleware, async (req, res) => {
     // Verificar quantas perguntas o usuário já fez
     const count = await prisma.chatMessage.count({
       where: {
-        user_id: BigInt(req.user.id),
+        userId: BigInt(req.user.id),
         sender: "user"
       }
     });
@@ -328,7 +328,7 @@ app.post("/chat/send", authMiddleware, async (req, res) => {
     // Salvar mensagem do usuário
     const userMsg = await prisma.chatMessage.create({
       data: {
-        user_id: BigInt(req.user.id),
+        userId: BigInt(req.user.id),
         message: message.trim(),
         sender: "user"
       },
@@ -336,7 +336,7 @@ app.post("/chat/send", authMiddleware, async (req, res) => {
         id: true,
         message: true,
         sender: true,
-        created_at: true
+        createdAt: true
       }
     });
 
@@ -346,7 +346,7 @@ app.post("/chat/send", authMiddleware, async (req, res) => {
 
     const specialistMsg = await prisma.chatMessage.create({
       data: {
-        user_id: BigInt(req.user.id),
+        userId: BigInt(req.user.id),
         message: autoResponse,
         sender: "specialist"
       },
@@ -354,7 +354,7 @@ app.post("/chat/send", authMiddleware, async (req, res) => {
         id: true,
         message: true,
         sender: true,
-        created_at: true
+        createdAt: true
       }
     });
 
@@ -373,7 +373,7 @@ app.post("/chat/send", authMiddleware, async (req, res) => {
 app.delete("/chat/clear", authMiddleware, async (req, res) => {
   try {
     await prisma.chatMessage.deleteMany({
-      where: { user_id: BigInt(req.user.id) }
+      where: { userId: BigInt(req.user.id) }
     });
     res.json({ ok: true, message: "Histórico limpo com sucesso" });
   } catch (err) {
@@ -386,16 +386,16 @@ app.delete("/chat/clear", authMiddleware, async (req, res) => {
 app.get("/consultas", authMiddleware, async (req, res) => {
   try {
     const consultas = await prisma.consulta.findMany({
-      where: { user_id: BigInt(req.user.id) },
+      where: { userId: BigInt(req.user.id) },
       select: {
         id: true,
         titulo: true,
         descricao: true,
-        data_horario: true,
+        dataHorario: true,
         status: true,
-        created_at: true
+        createdAt: true
       },
-      orderBy: { created_at: "desc" }
+      orderBy: { createdAt: "desc" }
     });
     res.json(consultas);
   } catch (err) {
@@ -410,18 +410,18 @@ app.post("/consultas", authMiddleware, async (req, res) => {
     if (!titulo) return res.status(400).json({ error: "titulo_required" });
     const consulta = await prisma.consulta.create({
       data: {
-        user_id: BigInt(req.user.id),
+        userId: BigInt(req.user.id),
         titulo,
         descricao: descricao || null,
-        data_horario: data_horario ? new Date(data_horario) : null
+        dataHorario: data_horario ? new Date(data_horario) : null
       },
       select: {
         id: true,
         titulo: true,
         descricao: true,
-        data_horario: true,
+        dataHorario: true,
         status: true,
-        created_at: true
+        createdAt: true
       }
     });
     res.status(201).json(consulta);
@@ -436,16 +436,16 @@ app.get("/consultas/:id", authMiddleware, async (req, res) => {
     const consulta = await prisma.consulta.findFirst({
       where: {
         id: BigInt(req.params.id),
-        user_id: BigInt(req.user.id)
+        userId: BigInt(req.user.id)
       },
       select: {
         id: true,
-        user_id: true,
+        userId: true,
         titulo: true,
         descricao: true,
-        data_horario: true,
+        dataHorario: true,
         status: true,
-        created_at: true
+        createdAt: true
       }
     });
     if (!consulta) return res.status(404).json({ error: "not_found" });
@@ -468,7 +468,7 @@ app.put("/consultas/:id", authMiddleware, async (req, res) => {
     const consulta = await prisma.consulta.updateMany({
       where: {
         id: BigInt(req.params.id),
-        user_id: BigInt(req.user.id)
+        userId: BigInt(req.user.id)
       },
       data: dataToUpdate
     });
@@ -482,9 +482,9 @@ app.put("/consultas/:id", authMiddleware, async (req, res) => {
         id: true,
         titulo: true,
         descricao: true,
-        data_horario: true,
+        dataHorario: true,
         status: true,
-        created_at: true
+        createdAt: true
       }
     });
     
@@ -500,7 +500,7 @@ app.delete("/consultas/:id", authMiddleware, async (req, res) => {
     const result = await prisma.consulta.deleteMany({
       where: {
         id: BigInt(req.params.id),
-        user_id: BigInt(req.user.id)
+        userId: BigInt(req.user.id)
       }
     });
     if (result.count === 0) return res.status(404).json({ error: "not_found" });

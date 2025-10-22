@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import AuthModal from './AuthModal'
 import UserProfileDropdown from './UserProfileDropdown'
-import QuizSection from './QuizSection'
 import EstrabismoSection from './EstrabismoSection'
 import VideosSection from './VideosSection'
 import './EducacaoPage.css'
@@ -69,12 +68,11 @@ export default function EducacaoPage() {
         <section style={{ maxWidth: 1180, margin: '0 auto', padding: '0 24px', marginTop: 60 }}>
           <h1 style={{ fontSize: '2rem', fontWeight: 700, marginBottom: 24 }}>Área de Educação</h1>
           <p style={{ marginBottom: 40, lineHeight: 1.5 }}>
-            Conteúdos interativos, quizzes e materiais para apoiar o seu aprendizado sobre saúde visual.
+            Conteúdos educativos e materiais para apoiar o seu aprendizado sobre saúde visual.
           </p>
         </section>
 
         <div style={{ maxWidth: 1180, margin: '0 auto', padding: '0 24px', display: 'grid', gap: 48 }}>
-          <QuizSection onImageError={handleImageError} />
           <EstrabismoSection onImageError={handleImageError} />
         </div>
       </main>
