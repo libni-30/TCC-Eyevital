@@ -1,6 +1,9 @@
 #root {
   /* Removido max-width, margin e padding para não interferir nas páginas */
   text-align: center;
+  min-height: auto;
+  height: auto;
+  overflow: visible;
 }
 
 .logo {

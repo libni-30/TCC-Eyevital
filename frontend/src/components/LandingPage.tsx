@@ -1,15 +1,41 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import './LandingPage.css';
-
-// Aplicar estilos globais para a landing page
-if (typeof document !== 'undefined') {
-  document.body.style.paddingTop = '0';
-}
+import AuthModal from './AuthModal';
+import QuizSection from './QuizSection';
+import FerramentaEspecialistasSection from './FerramentaEspecialistasSection';
+import ProfissionaisDisponiveisSection from './ProfissionaisDisponiveisSection';
+import AjudaProfissionalSection from './AjudaProfissionalSection';
+import EstrabismoSection from './EstrabismoSection';
+import VejaTambemSection from './VejaTambemSection';
 
 const LandingPage: React.FC = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const sectionsRef = useRef<NodeListOf<HTMLElement> | null>(null);
+  const [showAuthModal, setShowAuthModal] = useState<boolean>(false);
+
+  // Redirecionar usuários logados para /home
+  useEffect(() => {
+    if (user) {
+      navigate('/home');
+    }
+  }, [user, navigate]);
+
+  // Aplicar estilos ao body quando o componente montar
+  useEffect(() => {
+    document.body.style.paddingTop = '0';
+    document.body.style.overflow = 'visible';
+    document.body.style.height = 'auto';
+    
+    return () => {
+      // Limpar estilos ao desmontar
+      document.body.style.paddingTop = '';
+      document.body.style.overflow = '';
+      document.body.style.height = '';
+    };
+  }, []);
 
   useEffect(() => {
     // Observador de interseção para atualizar menu ativo durante scroll
@@ -45,46 +71,32 @@ const LandingPage: React.FC = () => {
     });
   };
 
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, sectionId: string) => {
-    e.preventDefault();
-    
-    removeAllActive();
-    e.currentTarget.classList.add('active');
-    e.currentTarget.setAttribute('aria-current', 'page');
-    
-    const section = document.querySelector(sectionId);
-    if (section) {
-      section.scrollIntoView({ behavior: 'smooth' });
-    } else {
-      showDevelopmentMessage();
-    }
-  };
-
-  const showDevelopmentMessage = () => {
-    const message = document.createElement('div');
-    message.className = 'development-message';
-    message.textContent = 'Esta seção está em desenvolvimento';
-    message.style.cssText = `
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: #fff;
-      padding: 15px 25px;
-      border-radius: 8px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      z-index: 1000;
-      animation: fadeOut 3s forwards;
-    `;
-    document.body.appendChild(message);
-    setTimeout(() => message.remove(), 3000);
-  };
-
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
     e.currentTarget.src = '/assets/images/placeholder.png';
   };
 
+  const handleImageErrorDirect = (img: HTMLImageElement): void => {
+    img.onerror = null;
+    img.src = '/assets/images/placeholder.png';
+  };
+
   const handleAuthClick = (type: 'login' | 'register') => {
     navigate('/auth', { state: { initialTab: type } });
+  };
+
+  const handleMenuClick = (page: 'sobre' | 'educacao' | 'ajuda' | 'contato') => {
+    if (page === 'sobre') {
+      // Scroll para seção "quem-somos" na própria página
+      const section = document.querySelector('#quem-somos');
+      if (section) {
+        section.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else if (page === 'educacao' || page === 'ajuda') {
+      // Mostra modal pedindo login para páginas protegidas
+      setShowAuthModal(true);
+    } else if (page === 'contato') {
+      navigate('/contato');
+    }
   };
 
   return (
@@ -96,10 +108,10 @@ const LandingPage: React.FC = () => {
             <div className="logo-text">EYEVITAL</div>
           </div>
           <nav className="nav-menu" role="navigation" aria-label="Menu principal">
-            <a href="#quem-somos" className="active" aria-current="page" onClick={(e) => handleNavClick(e, '#quem-somos')}>Sobre nós</a>
-            <a href="#educacao" onClick={(e) => handleNavClick(e, '#educacao')}>Educação</a>
-            <a href="#consultas" onClick={(e) => handleNavClick(e, '#consultas')}>Consultas</a>
-            <a href="#contato" onClick={(e) => handleNavClick(e, '#contato')}>Contato</a>
+            <a href="#quem-somos" className="active" aria-current="page" onClick={(e) => { e.preventDefault(); handleMenuClick('sobre'); }}>Sobre nós</a>
+            <a href="#" onClick={(e) => { e.preventDefault(); handleMenuClick('educacao'); }}>Educação</a>
+            <a href="#" onClick={(e) => { e.preventDefault(); handleMenuClick('ajuda'); }}>Ajuda Profissional</a>
+            <a href="#" onClick={(e) => { e.preventDefault(); handleMenuClick('contato'); }}>Contato</a>
           </nav>
           <div className="auth-buttons">
             <button onClick={() => handleAuthClick('login')} className="login-btn">Login</button>
@@ -107,6 +119,11 @@ const LandingPage: React.FC = () => {
           </div>
         </nav>
       </header>
+
+      {/* Modal de autenticação */}
+      <AuthModal open={showAuthModal} onClose={() => setShowAuthModal(false)}>
+        Você precisa estar logado para acessar esta área. Caso ainda não tenha uma conta, registre-se e depois faça login.
+      </AuthModal>
 
       <main className="hero-section">
         <div className="hero-container">
@@ -298,9 +315,46 @@ const LandingPage: React.FC = () => {
         </div>
       </section>
 
-      <footer className="footer">
-        <div className="footer-content">
-          <p className="copyright">&copy; 2025 Eyevital - Todos os direitos reservados</p>
+      {/* Seção TESTE SEU CONHECIMENTO */}
+      <QuizSection onImageError={handleImageErrorDirect} />
+
+      {/* Seção FERRAMENTA DOS ESPECIALISTAS */}
+      <FerramentaEspecialistasSection />
+
+      {/* Seção PROFISSIONAIS SEMPRE A DISPOSIÇÃO */}
+      <ProfissionaisDisponiveisSection />
+
+      {/* Seção AJUDA PROFISSIONAL */}
+      <AjudaProfissionalSection onImageError={handleImageErrorDirect} />
+
+      {/* Seção TIPOS DE ESTRABISMO */}
+      <EstrabismoSection onImageError={handleImageErrorDirect} />
+
+      {/* Seção VEJA TAMBÉM */}
+      <VejaTambemSection />
+
+      <footer className="site-footer">
+        <div className="footer-inner">
+          <div className="footer-top">
+            <div className="footer-brand">
+              <div className="footer-logo" aria-label="Eyevital">
+                <span className="footer-diamond" aria-hidden="true"></span>
+                <span className="footer-name">EYEVITAL</span>
+              </div>
+              <span className="footer-sep" aria-hidden="true"></span>
+              <p className="footer-tagline">Cuide da sua visão com inovação e simplicidade</p>
+            </div>
+          </div>
+          <div className="footer-bottom">
+            <nav className="footer-links" aria-label="Links do rodapé">
+              <a href="#">Careers</a>
+              <span className="footer-divider" aria-hidden="true">|</span>
+              <a href="#">Privacy Policy</a>
+              <span className="footer-divider" aria-hidden="true">|</span>
+              <a href="#">Terms &amp; Conditions</a>
+            </nav>
+            <p className="footer-copy">&copy; 2025 Eyevital. Todos os direitos reservados.</p>
+          </div>
         </div>
       </footer>
     </>

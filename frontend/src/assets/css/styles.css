@@ -413,9 +413,6 @@ body {
     background: #ffffff;
     padding: 90px 0 40px;
     position: relative;
-    display: block !important;
-    visibility: visible !important;
-    width: 100%;
 }
 .aprendizado-container {
     max-width: 1400px;
@@ -1788,12 +1785,6 @@ body {
     background-color: var(--secondary-color);
     color: var(--text-color);
     padding: 4rem 2rem;
-    width: 100%;
-    clear: both;
-    display: block !important;
-    visibility: visible !important;
-    position: relative;
-    z-index: 10;
 }
 
 .footer-content {
@@ -2042,60 +2033,52 @@ body {
 
 /* .visao-section - container principal */
 .visao-section {
-  display: block !important;
-  padding: 80px 20px;
-  margin: 0 auto;
-  max-width: 100%;
-  width: 100%;
-  background: #ffffff;
-  visibility: visible !important;
-  overflow: visible;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+    gap: 120px; /* espaçamento amplo anterior */
+    margin: 80px auto;
+    max-width: 1400px; /* largura externa ampla */
 }
 .visao-container {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 60px;
+  justify-content: center;
+  gap: 80px;
   max-width: 1200px;
   margin: 0 auto;
-  width: 100%;
-  padding: 0 40px;
-  flex-wrap: wrap;
 }
 /* Texto à esquerda */
 .visao-texto {
-    flex: 1 1 45%;
-    min-width: 300px;
-    max-width: 600px;
+    flex: 1 1 720px; /* cresce antes de quebrar */
+    max-width: 800px; /* manter largura ampliada anterior */
+    padding-left: 60px; /* recuo maior original */
     text-align: left;
+    margin-right: 20px; /* espaço adicional antes da imagem */
 }
 .visao-texto h2 {
-    font-size: 2.2rem;
-    line-height: 1.2;
+    font-size: 2.35rem; /* reduzido para caber em uma linha */
+    line-height: 1.12; /* ligeiramente mais compacto mantendo legibilidade */
     font-weight: 700;
     color: #24304a;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
+    white-space: normal; /* garante fluxo natural sem forçar quebras estranhas */
 }
 .visao-texto p {
   color: #4a4a68;
-  font-size: 1.05rem;
+  font-size: 1.08rem;
   line-height: 1.7;
 }
 /* Imagem à direita */
 .visao-imagem {
-    flex: 1 1 45%;
-    min-width: 300px;
-    max-width: 500px;
+    flex: 1;
     display: flex;
     justify-content: center;
     position: relative;
 }
 .visao-imagem img {
-    width: 100%;
     max-width: 100%;
-    height: auto;
     border-radius: 12px;
-    display: block;
 }
 /* Ícone play centralizado */
 .play-btn {
