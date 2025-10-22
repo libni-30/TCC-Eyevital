@@ -51,6 +51,42 @@ const defaultVideos: Video[] = [
     category: 'Alimentação',
     duration: '20 min',
     icon: '🥕'
+  },
+  {
+    id: '5',
+    title: 'Exercícios para relaxar a visão',
+    description: 'Aprenda exercícios simples que podem ser feitos em casa para relaxar os olhos e reduzir o cansaço visual.',
+    thumbnail: '/videos/exercicios.jpg',
+    category: 'Exercícios',
+    duration: '8 min',
+    icon: '💪'
+  },
+  {
+    id: '6',
+    title: 'Como prevenir a miopia em crianças',
+    description: 'Entenda os fatores de risco e aprenda estratégias eficazes para prevenir o desenvolvimento da miopia infantil.',
+    thumbnail: '/videos/miopia-infantil.jpg',
+    category: 'Prevenção',
+    duration: '12 min',
+    icon: '👶'
+  },
+  {
+    id: '7',
+    title: 'Lentes de contato: uso correto',
+    description: 'Descubra as melhores práticas para usar lentes de contato com segurança e evitar problemas oculares.',
+    thumbnail: '/videos/lentes.jpg',
+    category: 'Cuidados',
+    duration: '7 min',
+    icon: '🔍'
+  },
+  {
+    id: '8',
+    title: 'Sinais de alerta para problemas de visão',
+    description: 'Conheça os sintomas que indicam a necessidade de consultar um oftalmologista imediatamente.',
+    thumbnail: '/videos/sinais-alerta.jpg',
+    category: 'Saúde ocular',
+    duration: '9 min',
+    icon: '⚠️'
   }
 ]
 
@@ -60,6 +96,31 @@ export default function VideosSection({ videos = defaultVideos }: VideosSectionP
     const stored = localStorage.getItem('watchedVideos')
     return stored ? new Set(JSON.parse(stored)) : new Set()
   })
+
+  // Estado para controlar o índice do carrossel
+  const [currentIndex, setCurrentIndex] = useState(0)
+
+  // Número de vídeos visíveis por vez (responsivo)
+  const [videosPerView, setVideosPerView] = useState(4)
+
+  // Atualizar número de vídeos visíveis baseado no tamanho da tela
+  useEffect(() => {
+    const updateVideosPerView = () => {
+      if (window.innerWidth < 768) {
+        setVideosPerView(1)
+      } else if (window.innerWidth < 1024) {
+        setVideosPerView(2)
+      } else if (window.innerWidth < 1280) {
+        setVideosPerView(3)
+      } else {
+        setVideosPerView(4)
+      }
+    }
+
+    updateVideosPerView()
+    window.addEventListener('resize', updateVideosPerView)
+    return () => window.removeEventListener('resize', updateVideosPerView)
+  }, [])
 
   // Salvar no localStorage quando o estado mudar
   useEffect(() => {
@@ -74,6 +135,27 @@ export default function VideosSection({ videos = defaultVideos }: VideosSectionP
   // Verificar se vídeo foi assistido
   const isWatched = (videoId: string) => watchedVideos.has(videoId)
 
+  // Navegar para o próximo conjunto de vídeos
+  const handleNext = () => {
+    if (currentIndex + videosPerView < videos.length) {
+      setCurrentIndex(currentIndex + 1)
+    }
+  }
+
+  // Navegar para o conjunto anterior de vídeos
+  const handlePrev = () => {
+    if (currentIndex > 0) {
+      setCurrentIndex(currentIndex - 1)
+    }
+  }
+
+  // Calcular se as setas devem estar desabilitadas
+  const isPrevDisabled = currentIndex === 0
+  const isNextDisabled = currentIndex + videosPerView >= videos.length
+
+  // Vídeos visíveis no momento
+  const visibleVideos = videos.slice(currentIndex, currentIndex + videosPerView)
+
   return (
     <section className="videos-section">
       <div className="videos-container">
@@ -82,7 +164,7 @@ export default function VideosSection({ videos = defaultVideos }: VideosSectionP
         </div>
 
         <div className="videos-grid">
-          {videos.map((video) => (
+          {visibleVideos.map((video) => (
             <article key={video.id} className="video-card" data-watched={isWatched(video.id)}>
               <div className="video-thumbnail">
                 <div className="video-placeholder">
@@ -149,12 +231,24 @@ export default function VideosSection({ videos = defaultVideos }: VideosSectionP
           </button>
           
           <div className="videos-nav">
-            <button className="nav-btn nav-prev" aria-label="Vídeo anterior">
+            <button 
+              className="nav-btn nav-prev" 
+              aria-label="Vídeo anterior"
+              onClick={handlePrev}
+              disabled={isPrevDisabled}
+              style={{ opacity: isPrevDisabled ? 0.5 : 1, cursor: isPrevDisabled ? 'not-allowed' : 'pointer' }}
+            >
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                 <path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </button>
-            <button className="nav-btn nav-next" aria-label="Próximo vídeo">
+            <button 
+              className="nav-btn nav-next" 
+              aria-label="Próximo vídeo"
+              onClick={handleNext}
+              disabled={isNextDisabled}
+              style={{ opacity: isNextDisabled ? 0.5 : 1, cursor: isNextDisabled ? 'not-allowed' : 'pointer' }}
+            >
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                 <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
