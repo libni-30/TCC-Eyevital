@@ -5,43 +5,29 @@ echo    TCC EyeVital - Iniciando Projeto
 echo ========================================
 echo.
 
-REM Verificar se as dependencias estao instaladas
-if not exist "node_modules\" (
+REM Verificar dependencias
+if not exist "frontend\node_modules\" (
     echo [ERRO] Dependencias do frontend nao encontradas!
-    echo Execute: npm install
+    echo Execute: cd frontend && npm install
     pause
     exit /b 1
 )
 
-if not exist "server\node_modules\" (
+if not exist "backend\node_modules\" (
     echo [ERRO] Dependencias do backend nao encontradas!
-    echo Execute: cd server ^&^& npm install
-    pause
-    exit /b 1
-)
-
-REM Verificar se os arquivos .env existem
-if not exist ".env" (
-    echo [AVISO] Arquivo .env nao encontrado na raiz!
-    echo Copie .env.example para .env e configure.
-    pause
-)
-
-if not exist "server\.env" (
-    echo [ERRO] Arquivo server\.env nao encontrado!
-    echo Copie server\.env.example para server\.env e configure DATABASE_URL.
+    echo Execute: cd backend && npm install
     pause
     exit /b 1
 )
 
 echo [1/3] Iniciando Backend (porta 3001)...
-start "EyeVital Backend" cmd /k "cd /d %~dp0server && node index.js"
+start "EyeVital Backend" cmd /k "cd /d %~dp0backend && node index.js"
 
 echo [2/3] Aguardando backend inicializar...
 timeout /t 3 /nobreak > nul
 
 echo [3/3] Iniciando Frontend (porta 5173)...
-start "EyeVital Frontend" cmd /k "cd /d %~dp0 && npm run dev"
+start "EyeVital Frontend" cmd /k "cd /d %~dp0frontend && npm run dev"
 
 echo.
 echo ========================================

@@ -1,4 +1,5 @@
 import PaginaInicial from './components/PaginaInicial'
+import LandingPage from './components/LandingPage'
 import ContatoPage from './components/ContatoPage'
 import { HashRouter, Routes, Route } from 'react-router-dom'
 import AuthPage from './components/AuthPage'
@@ -22,10 +23,11 @@ function App() {
   return (
     <HashRouter>
       <Routes>
-  <Route path="/" element={<PaginaInicial />} />
+  <Route path="/" element={<LandingPage />} />
+  <Route path="/home" element={<PaginaInicial />} />
   {/* Suporta acesso direto via /paginainicial.html e /pagina-inicial.html */}
   <Route path="/paginainicial.html" element={<PaginaInicial />} />
-  <Route path="/pagina-inicial.html" element={<PaginaInicial />} />
+  <Route path="/pagina-inicial.html" element={<LandingPage />} />
   <Route
     path="/educacao"
     element={
@@ -44,8 +46,8 @@ function App() {
   />
   <Route path="/auth" element={<AuthPage />} />
         <Route path="/contato" element={<ContatoPage />} />
-  {/* Fallback: qualquer rota desconhecida renderiza a home */}
-  <Route path="*" element={<PaginaInicial />} />
+  {/* Fallback: qualquer rota desconhecida renderiza a landing page */}
+  <Route path="*" element={<LandingPage />} />
       </Routes>
     </HashRouter>
   )
