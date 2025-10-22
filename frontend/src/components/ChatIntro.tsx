@@ -145,7 +145,8 @@ export default function ChatIntro({ limit = 10 }: ChatIntroProps) {
                   padding: "10px",
                   borderRadius: "8px",
                   backgroundColor:
-                    msg.sender === "user" ? "#e3f2fd" : "#f1f8e9",
+                    msg.sender === "user" ? "#17C0D1" : "#ffffff",
+                  border: msg.sender === "user" ? "none" : "1px solid #17C0D1",
                   textAlign: msg.sender === "user" ? "right" : "left"
                 }}
               >
@@ -154,16 +155,19 @@ export default function ChatIntro({ limit = 10 }: ChatIntroProps) {
                     fontWeight: "bold",
                     fontSize: "0.85rem",
                     marginBottom: "4px",
-                    color: "#555"
+                    color: msg.sender === "user" ? "#ffffff" : "#2a2f3a"
                   }}
                 >
                   {msg.sender === "user" ? "Você" : "Especialista"}
                 </div>
-                <div style={{ fontSize: "0.95rem" }}>{msg.message}</div>
+                <div style={{ 
+                  fontSize: "0.95rem",
+                  color: msg.sender === "user" ? "#ffffff" : "#2a2f3a"
+                }}>{msg.message}</div>
                 <div
                   style={{
                     fontSize: "0.75rem",
-                    color: "#999",
+                    color: msg.sender === "user" ? "#e0f7fa" : "#666",
                     marginTop: "4px"
                   }}
                 >

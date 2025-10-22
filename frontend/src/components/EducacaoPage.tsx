@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import AuthModal from './AuthModal'
 import UserProfileDropdown from './UserProfileDropdown'
-import EstrabismoSection from './EstrabismoSection'
 import VideosSection from './VideosSection'
 import './EducacaoPage.css'
 
@@ -11,11 +10,6 @@ export default function EducacaoPage() {
   const { user } = useAuth()
   const isLoggedIn = !!user
   const [showAuthModal, setShowAuthModal] = useState(false)
-
-  const handleImageError = (img: HTMLImageElement): void => {
-    img.onerror = null
-    img.src = 'assets/images/placeholder.png'
-  }
   return (
     <div className="educacao-page">
       {/* Header replicado para permitir navegação entre páginas */}
@@ -71,10 +65,6 @@ export default function EducacaoPage() {
             Conteúdos educativos e materiais para apoiar o seu aprendizado sobre saúde visual.
           </p>
         </section>
-
-        <div style={{ maxWidth: 1180, margin: '0 auto', padding: '0 24px', display: 'grid', gap: 48 }}>
-          <EstrabismoSection onImageError={handleImageError} />
-        </div>
       </main>
 
       {/* Rodapé padrão do site */}
