@@ -22,6 +22,8 @@ if (supaCfg) {
 }
 
 export async function register(email: string, password: string, username?: string): Promise<AuthResponse> {
+  email = (email || '').trim().toLowerCase()
+  password = (password || '').trim()
   if (supabase) {
     const { data, error } = await supabase.auth.signUp({ email, password, options: { data: { username } } })
     if (error) throw error
@@ -36,6 +38,8 @@ export async function register(email: string, password: string, username?: strin
 }
 
 export async function login(email: string, password: string): Promise<AuthResponse> {
+  email = (email || '').trim().toLowerCase()
+  password = (password || '').trim()
   if (supabase) {
     const { data, error } = await supabase.auth.signInWithPassword({ email, password })
     if (error) throw error
