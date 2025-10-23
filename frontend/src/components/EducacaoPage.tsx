@@ -55,16 +55,9 @@ export default function EducacaoPage() {
       {/* Espaço para compensar o header fixo */}
       <div className="educacao-hero-spacer" />
 
-      <main style={{ paddingBottom: 64 }}>
+      <main style={{ paddingBottom: 0 }}>
         {/* Seção de Vídeos Educativos colada ao header */}
         <VideosSection />
-
-        <section style={{ maxWidth: 1180, margin: '0 auto', padding: '0 24px', marginTop: 60 }}>
-          <h1 style={{ fontSize: '2rem', fontWeight: 700, marginBottom: 24 }}>Área de Educação</h1>
-          <p style={{ marginBottom: 40, lineHeight: 1.5 }}>
-            Conteúdos educativos e materiais para apoiar o seu aprendizado sobre saúde visual.
-          </p>
-        </section>
       </main>
 
       {/* Rodapé padrão do site */}
