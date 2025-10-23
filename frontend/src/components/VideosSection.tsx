@@ -9,10 +9,87 @@ interface Video {
   category: string
   duration: string
   icon: string
+  youtubeUrl?: string
 }
 
 interface VideosSectionProps {
   videos?: Video[]
+}
+
+interface VideoCardProps {
+  video: Video
+  isWatched: boolean
+  onWatch: (video: Video) => void
+}
+
+function VideoCard({ video, isWatched, onWatch }: VideoCardProps) {
+  const [isExpanded, setIsExpanded] = useState(false)
+
+  return (
+    <article 
+      className={`video-card ${isExpanded ? 'card-hovered' : ''}`}
+      data-watched={isWatched}
+      onMouseEnter={() => setIsExpanded(true)}
+      onMouseLeave={() => setIsExpanded(false)}
+    >
+      <div className="video-thumbnail">
+        <div className="video-placeholder">
+          <span className="video-icon">{video.icon}</span>
+        </div>
+        <button className="video-play-btn" aria-label={`Assistir ${video.title}`}>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M8 5v14l11-7z"/>
+          </svg>
+        </button>
+      </div>
+      
+      <div className="video-content">
+        <div className="video-meta">
+          <span className="video-category">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+            {video.category}
+          </span>
+          <span className="video-duration">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+            {video.duration}
+          </span>
+        </div>
+        
+        <h3 className="video-title">{video.title}</h3>
+        <p 
+          className={`video-description ${isExpanded ? 'video-description-expanded' : ''}`}
+        >
+          {video.description}
+        </p>
+        
+        <div className="video-footer">
+          <button 
+            className="video-watch-btn"
+            onClick={() => onWatch(video)}
+          >
+            <span>Assistir</span>
+          </button>
+          
+          <button 
+            className={`video-eye-indicator ${isWatched ? 'watched' : 'unwatched'}`}
+            aria-label={isWatched ? 'Vídeo já assistido' : 'Vídeo não assistido'}
+            title={isWatched ? 'Você já assistiu este vídeo' : 'Você ainda não assistiu este vídeo'}
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </article>
+  )
 }
 
 const defaultVideos: Video[] = [
@@ -22,8 +99,9 @@ const defaultVideos: Video[] = [
     description: 'Aprenda práticas simples e eficazes para manter seus olhos limpos e protegidos contra infecções dia a dia.',
     thumbnail: '/videos/higiene-ocular.jpg',
     category: 'Higiene ocular',
-    duration: '5 min',
-    icon: '👁️'
+    duration: '1:11 min',
+    icon: '👁️',
+    youtubeUrl: 'https://www.youtube.com/embed/Hk7U5PRQbP0'
   },
   {
     id: '2',
@@ -32,7 +110,8 @@ const defaultVideos: Video[] = [
     thumbnail: '/videos/oculos-escuros.jpg',
     category: 'Mitos e vedades',
     duration: '15 min',
-    icon: '🕶️'
+    icon: '🕶️',
+    youtubeUrl: 'https://www.youtube.com/embed/VIDEO_ID_2'
   },
   {
     id: '3',
@@ -41,7 +120,8 @@ const defaultVideos: Video[] = [
     thumbnail: '/videos/conjuntivite.jpg',
     category: 'Doenças comuns',
     duration: '10 min',
-    icon: '🔬'
+    icon: '🔬',
+    youtubeUrl: 'https://www.youtube.com/embed/VIDEO_ID_3'
   },
   {
     id: '4',
@@ -50,7 +130,8 @@ const defaultVideos: Video[] = [
     thumbnail: '/videos/alimentacao.jpg',
     category: 'Alimentação',
     duration: '20 min',
-    icon: '🥕'
+    icon: '🥕',
+    youtubeUrl: 'https://www.youtube.com/embed/VIDEO_ID_4'
   },
   {
     id: '5',
@@ -59,7 +140,8 @@ const defaultVideos: Video[] = [
     thumbnail: '/videos/exercicios.jpg',
     category: 'Exercícios',
     duration: '8 min',
-    icon: '💪'
+    icon: '💪',
+    youtubeUrl: 'https://www.youtube.com/embed/VIDEO_ID_5'
   },
   {
     id: '6',
@@ -68,7 +150,8 @@ const defaultVideos: Video[] = [
     thumbnail: '/videos/miopia-infantil.jpg',
     category: 'Prevenção',
     duration: '12 min',
-    icon: '👶'
+    icon: '👶',
+    youtubeUrl: 'https://www.youtube.com/embed/VIDEO_ID_6'
   },
   {
     id: '7',
@@ -77,7 +160,8 @@ const defaultVideos: Video[] = [
     thumbnail: '/videos/lentes.jpg',
     category: 'Cuidados',
     duration: '7 min',
-    icon: '🔍'
+    icon: '🔍',
+    youtubeUrl: 'https://www.youtube.com/embed/VIDEO_ID_7'
   },
   {
     id: '8',
@@ -86,7 +170,8 @@ const defaultVideos: Video[] = [
     thumbnail: '/videos/sinais-alerta.jpg',
     category: 'Saúde ocular',
     duration: '9 min',
-    icon: '⚠️'
+    icon: '⚠️',
+    youtubeUrl: 'https://www.youtube.com/embed/VIDEO_ID_8'
   }
 ]
 
@@ -102,6 +187,9 @@ export default function VideosSection({ videos = defaultVideos }: VideosSectionP
 
   // Estado para controlar se está mostrando todos os vídeos
   const [showAllVideos, setShowAllVideos] = useState(false)
+
+  // Estado para controlar o modal de vídeo
+  const [selectedVideo, setSelectedVideo] = useState<Video | null>(null)
 
   // Número de vídeos visíveis por vez (responsivo)
   const [videosPerView, setVideosPerView] = useState(4)
@@ -137,6 +225,19 @@ export default function VideosSection({ videos = defaultVideos }: VideosSectionP
 
   // Verificar se vídeo foi assistido
   const isWatched = (videoId: string) => watchedVideos.has(videoId)
+
+  // Abrir vídeo
+  const handleWatchVideo = (video: Video) => {
+    markAsWatched(video.id)
+    if (video.youtubeUrl) {
+      setSelectedVideo(video)
+    }
+  }
+
+  // Fechar modal de vídeo
+  const handleCloseVideo = () => {
+    setSelectedVideo(null)
+  }
 
   // Navegar para o próximo conjunto de vídeos
   const handleNext = () => {
@@ -191,60 +292,12 @@ export default function VideosSection({ videos = defaultVideos }: VideosSectionP
             padding: '24px 0'
           }}>
             {videos.map((video) => (
-              <article key={video.id} className="video-card" data-watched={isWatched(video.id)}>
-                <div className="video-thumbnail">
-                  <div className="video-placeholder">
-                    <span className="video-icon">{video.icon}</span>
-                  </div>
-                  <button className="video-play-btn" aria-label={`Assistir ${video.title}`}>
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M8 5v14l11-7z"/>
-                    </svg>
-                  </button>
-                </div>
-                
-                <div className="video-content">
-                  <div className="video-meta">
-                    <span className="video-category">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <circle cx="12" cy="12" r="10"/>
-                        <polyline points="12 6 12 12 16 14"/>
-                      </svg>
-                      {video.category}
-                    </span>
-                    <span className="video-duration">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <circle cx="12" cy="12" r="10"/>
-                        <polyline points="12 6 12 12 16 14"/>
-                      </svg>
-                      {video.duration}
-                    </span>
-                  </div>
-                  
-                  <h3 className="video-title">{video.title}</h3>
-                  <p className="video-description">{video.description}</p>
-                  
-                  <div className="video-footer">
-                    <button 
-                      className="video-watch-btn"
-                      onClick={() => markAsWatched(video.id)}
-                    >
-                      <span>Assistir</span>
-                    </button>
-                    
-                    <button 
-                      className={`video-eye-indicator ${isWatched(video.id) ? 'watched' : 'unwatched'}`}
-                      aria-label={isWatched(video.id) ? 'Vídeo já assistido' : 'Vídeo não assistido'}
-                      title={isWatched(video.id) ? 'Você já assistiu este vídeo' : 'Você ainda não assistiu este vídeo'}
-                    >
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                        <circle cx="12" cy="12" r="3"/>
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-              </article>
+              <VideoCard 
+                key={video.id}
+                video={video}
+                isWatched={isWatched(video.id)}
+                onWatch={handleWatchVideo}
+              />
             ))}
           </div>
         </div>
@@ -261,60 +314,12 @@ export default function VideosSection({ videos = defaultVideos }: VideosSectionP
 
         <div className="videos-grid">
           {visibleVideos.map((video) => (
-            <article key={video.id} className="video-card" data-watched={isWatched(video.id)}>
-              <div className="video-thumbnail">
-                <div className="video-placeholder">
-                  <span className="video-icon">{video.icon}</span>
-                </div>
-                <button className="video-play-btn" aria-label={`Assistir ${video.title}`}>
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M8 5v14l11-7z"/>
-                  </svg>
-                </button>
-              </div>
-              
-              <div className="video-content">
-                <div className="video-meta">
-                  <span className="video-category">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <circle cx="12" cy="12" r="10"/>
-                      <polyline points="12 6 12 12 16 14"/>
-                    </svg>
-                    {video.category}
-                  </span>
-                  <span className="video-duration">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <circle cx="12" cy="12" r="10"/>
-                      <polyline points="12 6 12 12 16 14"/>
-                    </svg>
-                    {video.duration}
-                  </span>
-                </div>
-                
-                <h3 className="video-title">{video.title}</h3>
-                <p className="video-description">{video.description}</p>
-                
-                <div className="video-footer">
-                  <button 
-                    className="video-watch-btn"
-                    onClick={() => markAsWatched(video.id)}
-                  >
-                    <span>Assistir</span>
-                  </button>
-                  
-                  <button 
-                    className={`video-eye-indicator ${isWatched(video.id) ? 'watched' : 'unwatched'}`}
-                    aria-label={isWatched(video.id) ? 'Vídeo já assistido' : 'Vídeo não assistido'}
-                    title={isWatched(video.id) ? 'Você já assistiu este vídeo' : 'Você ainda não assistiu este vídeo'}
-                  >
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                      <circle cx="12" cy="12" r="3"/>
-                    </svg>
-                  </button>
-                </div>
-              </div>
-            </article>
+            <VideoCard 
+              key={video.id}
+              video={video}
+              isWatched={isWatched(video.id)}
+              onWatch={handleWatchVideo}
+            />
           ))}
         </div>
 
@@ -355,6 +360,31 @@ export default function VideosSection({ videos = defaultVideos }: VideosSectionP
           </div>
         </div>
       </div>
+
+      {/* Modal de vídeo */}
+      {selectedVideo && selectedVideo.youtubeUrl && (
+        <div className="video-modal-overlay" onClick={handleCloseVideo}>
+          <div className="video-modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="video-modal-close" onClick={handleCloseVideo}>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M18 6L6 18M6 6l12 12" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+            <h3 className="video-modal-title">{selectedVideo.title}</h3>
+            <div className="video-modal-player">
+              <iframe
+                width="100%"
+                height="100%"
+                src={selectedVideo.youtubeUrl}
+                title={selectedVideo.title}
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              ></iframe>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   )
 }
