@@ -1339,17 +1339,18 @@ body {
 }
 
 .floating-card.metrics {
-    top: 18%;
-    right: 10%;
-    min-width: 160px;
+    top: 12%;
+    left: 5%;
+    max-width: 160px;
+    width: auto;
     display: flex;
     align-items: center;
     gap: 12px;
 }
 
 .floating-card.doctor {
-    bottom: 8%;
-    left: 5%;
+    bottom: 20%;
+    left: 8%;
     min-width: 250px;
 }
 
@@ -1463,10 +1464,13 @@ body {
 
 /* Cartão de parabéns */
 .floating-card.congrats {
-    top: 35%;
-    right: 20%;
+    top: 72%;
+    right: 5%;
     background: rgba(255, 255, 255, 0.95);
     padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
 }
 
 .card-title {
@@ -1482,8 +1486,8 @@ body {
 
 /* Cartão do doutor */
 .floating-card.doctor {
-    bottom: 30%;
-    right: 15%;
+    bottom: 28%;
+    left: 12%;
     background: rgba(255, 255, 255, 0.95);
     padding: 16px;
     width: 260px;
