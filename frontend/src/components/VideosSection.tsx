@@ -8,7 +8,6 @@ interface Video {
   thumbnail: string
   category: string
   duration: string
-  icon: string
   youtubeUrl?: string
 }
 
@@ -25,6 +24,14 @@ interface VideoCardProps {
 function VideoCard({ video, isWatched, onWatch }: VideoCardProps) {
   const [isExpanded, setIsExpanded] = useState(false)
 
+  // Extrair o ID do vídeo do YouTube da URL
+  const getYouTubeThumbnail = (youtubeUrl?: string) => {
+    if (!youtubeUrl) return video.thumbnail
+    const videoId = youtubeUrl.split('/embed/')[1]
+    // Usar hqdefault (sempre disponível em todos os vídeos)
+    return `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`
+  }
+
   return (
     <article 
       className={`video-card ${isExpanded ? 'card-hovered' : ''}`}
@@ -33,14 +40,11 @@ function VideoCard({ video, isWatched, onWatch }: VideoCardProps) {
       onMouseLeave={() => setIsExpanded(false)}
     >
       <div className="video-thumbnail">
-        <div className="video-placeholder">
-          <span className="video-icon">{video.icon}</span>
-        </div>
-        <button className="video-play-btn" aria-label={`Assistir ${video.title}`}>
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M8 5v14l11-7z"/>
-          </svg>
-        </button>
+        <img 
+          src={getYouTubeThumbnail(video.youtubeUrl)} 
+          alt={video.title} 
+          className="video-thumbnail-img"
+        />
       </div>
       
       <div className="video-content">
@@ -95,83 +99,75 @@ function VideoCard({ video, isWatched, onWatch }: VideoCardProps) {
 const defaultVideos: Video[] = [
   {
     id: '1',
-    title: 'Cuidados com a higiene ocular',
-    description: 'Aprenda práticas simples e eficazes para manter seus olhos limpos e protegidos contra infecções dia a dia.',
-    thumbnail: '/videos/higiene-ocular.jpg',
+    title: 'Cuidados com os olhos: Dicas para uma visão saudável',
+    description: 'Neste vídeo, descubra práticas simples e eficazes para manter seus olhos limpos, protegidos e funcionando bem no dia a dia. São dicas de higiene ocular essenciais para prevenir infecções, irritações e outros problemas visuais.',
+    thumbnail: '/videos/video-thumb.jpg',
     category: 'Higiene ocular',
     duration: '1:11 min',
-    icon: '👁️',
     youtubeUrl: 'https://www.youtube.com/embed/Hk7U5PRQbP0'
   },
   {
     id: '2',
-    title: 'Óculos escuros: proteção ou ilusão?',
-    description: 'Descubra como escolher óculos escuros de verdade, entenda sua função e evite riscos para a saúde dos seus olhos.',
-    thumbnail: '/videos/oculos-escuros.jpg',
+    title: 'Óculos Escuros: Proteção Ocular que Você Não Pode Ignorar',
+    description: 'Os óculos escuros vão além da moda: este vídeo explica como escolher lentes que realmente protegem seus olhos dos raios UV e mudanças do dia a dia — e alerta sobre o uso inadequado que pode gerar riscos à visão.',
+    thumbnail: '/videos/video-thumb.jpg',
     category: 'Mitos e vedades',
-    duration: '15 min',
-    icon: '🕶️',
-    youtubeUrl: 'https://www.youtube.com/embed/VIDEO_ID_2'
+    duration: '4:51 min',
+    youtubeUrl: 'https://www.youtube.com/embed/ULUfbZDZ8pQ'
   },
   {
     id: '3',
-    title: 'O que é Conjuntivite? Causas e tratamentos',
-    description: 'Conheça os principais tipos de conjuntivite, suas causas, sintomas e como agir corretamente para prevenir e tratar a doença.',
-    thumbnail: '/videos/conjuntivite.jpg',
+    title: ' O que é Conjuntivite? Causas, Sintomas e Cuidados',
+    description: 'Saiba o que é a conjuntivite, quais são suas causas, como identificá-la e quais cuidados tomar para evitar complicações. Ideal para entender essa condição comum e proteger sua saúde ocular.',
+    thumbnail: '/videos/video-thumb.jpg',
     category: 'Doenças comuns',
-    duration: '10 min',
-    icon: '🔬',
-    youtubeUrl: 'https://www.youtube.com/embed/VIDEO_ID_3'
+    duration: '12:45 min',
+    youtubeUrl: 'https://www.youtube.com/embed/qMRhNjUfUjc'
   },
   {
     id: '4',
-    title: 'Alimentos para melhorar a visão e a saúde dos olhos',
-    description: 'Veja quais alimentos fortalecem a saúde ocular, ajudam a prevenir doenças e garantem uma visão mais nítida e saudável.',
-    thumbnail: '/videos/alimentacao.jpg',
+    title: 'Alimentos para Melhorar a Visão e a Saúde dos Olhos ',
+    description: 'Confira quais alimentos favorecem a saúde dos seus olhos, fortalecem a visão e ajudam na prevenção de doenças oculares. Uma abordagem prática para inserir bons hábitos nutricionais no seu dia a dia.',
+    thumbnail: '/videos/video-thumb.jpg',
     category: 'Alimentação',
-    duration: '20 min',
-    icon: '🥕',
-    youtubeUrl: 'https://www.youtube.com/embed/VIDEO_ID_4'
+    duration: '14:28 min',
+    youtubeUrl: 'https://www.youtube.com/embed/aMCLuXfjNXo'
   },
   {
     id: '5',
-    title: 'Exercícios para relaxar a visão',
-    description: 'Aprenda exercícios simples que podem ser feitos em casa para relaxar os olhos e reduzir o cansaço visual.',
-    thumbnail: '/videos/exercicios.jpg',
-    category: 'Exercícios',
-    duration: '8 min',
-    icon: '💪',
-    youtubeUrl: 'https://www.youtube.com/embed/VIDEO_ID_5'
+    title: 'Cuidados com os Olhos',
+    description: 'Um vídeo curto e educativo que mostra de forma simples e divertida os principais cuidados que devemos ter para proteger nossos olhos no dia a dia, evitando acidentes e mantendo uma boa saúde ocular.',
+    thumbnail: '/videos/video-thumb.jpg',
+    category: 'Higiene ocular',
+    duration: '1:55 min',
+    youtubeUrl: 'https://www.youtube.com/embed/kn3FjTaw-38'
   },
   {
     id: '6',
-    title: 'Como prevenir a miopia em crianças',
-    description: 'Entenda os fatores de risco e aprenda estratégias eficazes para prevenir o desenvolvimento da miopia infantil.',
-    thumbnail: '/videos/miopia-infantil.jpg',
-    category: 'Prevenção',
-    duration: '12 min',
-    icon: '👶',
-    youtubeUrl: 'https://www.youtube.com/embed/VIDEO_ID_6'
+    title: 'O Que Acontece Dentro dos Seus Olhos',
+    description: 'Você já se perguntou o que realmente acontece dentro dos seus olhos? Este vídeo explica, de forma visual e educativa, como o olho humano funciona, abordando estruturas internas, como a pupila e o cristalino, e revelando curiosidades que desvendam muitos mitos sobre a visão.',
+    thumbnail: '/videos/video-thumb.jpg',
+    category: 'Mitos e vedades',
+    duration: '8:40 min',
+    youtubeUrl: 'https://www.youtube.com/embed/VI3Qyjmuo0s'
   },
   {
     id: '7',
-    title: 'Lentes de contato: uso correto',
-    description: 'Descubra as melhores práticas para usar lentes de contato com segurança e evitar problemas oculares.',
-    thumbnail: '/videos/lentes.jpg',
-    category: 'Cuidados',
-    duration: '7 min',
-    icon: '🔍',
-    youtubeUrl: 'https://www.youtube.com/embed/VIDEO_ID_7'
+    title: 'Diagnóstico precoce pode evitar perda de visão',
+    description: 'Entenda como doenças como Glaucoma, Catarata e complicações da diabetes podem afetar sua visão — e como o diagnóstico precoce e medidas simples de prevenção podem fazer a diferença.',
+    thumbnail: '/videos/video-thumb.jpg',
+    category: 'Doenças comuns',
+    duration: '38:36 min',
+    youtubeUrl: 'https://www.youtube.com/embed/g13uQmHXw_A'
   },
   {
     id: '8',
-    title: 'Sinais de alerta para problemas de visão',
-    description: 'Conheça os sintomas que indicam a necessidade de consultar um oftalmologista imediatamente.',
-    thumbnail: '/videos/sinais-alerta.jpg',
-    category: 'Saúde ocular',
-    duration: '9 min',
-    icon: '⚠️',
-    youtubeUrl: 'https://www.youtube.com/embed/VIDEO_ID_8'
+    title: 'Alimentos bons para os Olhos – os 6 Melhores',
+    description: 'Descubra quais são os seis melhores alimentos para a saúde dos olhos, como eles funcionam no organismo e por que incluí-los na sua dieta pode ajudar a manter uma visão mais clara e saudável.',
+    thumbnail: '/videos/video-thumb.jpg',
+    category: 'Alimentação',
+    duration: '19:56 min',
+    youtubeUrl: 'https://www.youtube.com/embed/eW90n5xtuRw'
   }
 ]
 
@@ -228,9 +224,13 @@ export default function VideosSection({ videos = defaultVideos }: VideosSectionP
 
   // Abrir vídeo
   const handleWatchVideo = (video: Video) => {
+    console.log('Abrindo vídeo:', video.title, 'URL:', video.youtubeUrl)
     markAsWatched(video.id)
     if (video.youtubeUrl) {
       setSelectedVideo(video)
+      console.log('Modal aberto para:', video.title)
+    } else {
+      console.log('Vídeo sem URL do YouTube')
     }
   }
 

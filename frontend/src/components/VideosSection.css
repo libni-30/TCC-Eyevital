@@ -79,6 +79,17 @@
   padding-top: 56.25%; /* 16:9 ratio */
   background: linear-gradient(135deg, #0891b2 0%, #06b6d4 100%);
   overflow: hidden;
+  border-radius: 12px;
+}
+
+.video-thumbnail-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .video-placeholder {
