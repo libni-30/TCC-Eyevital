@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import QuickTestModal from './QuickTestModal';
 
 interface EstrabismoSectionProps {
   onImageError?: (img: HTMLImageElement) => void;
@@ -8,6 +9,8 @@ const EstrabismoSection: React.FC<EstrabismoSectionProps> = ({ onImageError }) =
   const handleError = (e: React.SyntheticEvent<HTMLImageElement>) => {
     if (onImageError) onImageError(e.currentTarget);
   };
+
+  const [open, setOpen] = useState(false)
 
   return (
     <section id="estrabismo" className="estrabismo-section" aria-labelledby="estrabismo-titulo">
@@ -20,7 +23,7 @@ const EstrabismoSection: React.FC<EstrabismoSectionProps> = ({ onImageError }) =
           <h2 id="estrabismo-titulo" className="estrabismo-titulo">Você consegue responder?</h2>
           <p className="estrabismo-descricao">Os termos apresentados se referem a qual condição ocular?</p>
           <div className="estrabismo-cta">
-            <button type="button" className="estrabismo-btn">
+            <button type="button" className="estrabismo-btn" onClick={() => setOpen(true)}>
               <span className="estrabismo-btn-text">Envie sua resposta</span>
               <span className="estrabismo-btn-icon" aria-hidden="true">→</span>
             </button>
@@ -37,6 +40,7 @@ const EstrabismoSection: React.FC<EstrabismoSectionProps> = ({ onImageError }) =
           <div className="estrabismo-decor-dot" aria-hidden="true" />
         </figure>
       </div>
+  <QuickTestModal open={open} onClose={() => setOpen(false)} />
     </section>
   );
 };

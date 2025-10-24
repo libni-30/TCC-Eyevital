@@ -91,7 +91,8 @@ app.get("/db/info", async (req, res) => {
 
 app.post("/auth/register", async (req, res) => {
   try {
-    const { email, password, username } = req.body || {};
+  let { email, password, username } = req.body || {};
+  email = typeof email === 'string' ? email.trim().toLowerCase() : email;
     if (!email || !password)
       return res.status(400).json({ error: "email_and_password_required" });
     const hash = await bcrypt.hash(password, 10);
@@ -120,7 +121,8 @@ app.post("/auth/register", async (req, res) => {
 
 app.post("/auth/login", async (req, res) => {
   try {
-    const { email, password } = req.body || {};
+  let { email, password } = req.body || {};
+  email = typeof email === 'string' ? email.trim().toLowerCase() : email;
     if (!email || !password)
       return res.status(400).json({ error: "email_and_password_required" });
     const row = await prisma.user.findUnique({
