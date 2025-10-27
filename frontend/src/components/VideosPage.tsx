@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import './VideosSection.css'
+import { useAuth } from '../context/AuthContext'
+import UserProfileDropdown from './UserProfileDropdown'
+import './VideosPage.css'
 
 interface Video {
   id: string
@@ -10,10 +12,6 @@ interface Video {
   category: string
   duration: string
   youtubeUrl?: string
-}
-
-interface VideosSectionProps {
-  videos?: Video[]
 }
 
 interface VideoCardProps {
@@ -29,7 +27,6 @@ function VideoCard({ video, isWatched, onWatch }: VideoCardProps) {
   const getYouTubeThumbnail = (youtubeUrl?: string) => {
     if (!youtubeUrl) return video.thumbnail
     const videoId = youtubeUrl.split('/embed/')[1]
-    // Usar hqdefault (sempre disponível em todos os vídeos)
     return `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`
   }
 
@@ -86,7 +83,7 @@ function VideoCard({ video, isWatched, onWatch }: VideoCardProps) {
             aria-label={isWatched ? 'Vídeo já assistido' : 'Vídeo não assistido'}
             title={isWatched ? 'Você já assistiu este vídeo' : 'Você ainda não assistiu este vídeo'}
           >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
               <circle cx="12" cy="12" r="3"/>
             </svg>
@@ -97,7 +94,7 @@ function VideoCard({ video, isWatched, onWatch }: VideoCardProps) {
   )
 }
 
-const defaultVideos: Video[] = [
+const allVideos: Video[] = [
   {
     id: '1',
     title: 'Cuidados com os olhos: Dicas para uma visão saudável',
@@ -172,40 +169,18 @@ const defaultVideos: Video[] = [
   }
 ]
 
-export default function VideosSection({ videos = defaultVideos }: VideosSectionProps) {
-  // Estado para rastrear vídeos assistidos (armazenado no localStorage)
+export default function VideosPage() {
+  const { user } = useAuth()
+  const isLoggedIn = !!user
+
+  // Estado para rastrear vídeos assistidos
   const [watchedVideos, setWatchedVideos] = useState<Set<string>>(() => {
     const stored = localStorage.getItem('watchedVideos')
     return stored ? new Set(JSON.parse(stored)) : new Set()
   })
 
-  // Estado para controlar o índice do carrossel
-  const [currentIndex, setCurrentIndex] = useState(0)
-
   // Estado para controlar o modal de vídeo
   const [selectedVideo, setSelectedVideo] = useState<Video | null>(null)
-
-  // Número de vídeos visíveis por vez (responsivo)
-  const [videosPerView, setVideosPerView] = useState(4)
-
-  // Atualizar número de vídeos visíveis baseado no tamanho da tela
-  useEffect(() => {
-    const updateVideosPerView = () => {
-      if (window.innerWidth < 768) {
-        setVideosPerView(1)
-      } else if (window.innerWidth < 1024) {
-        setVideosPerView(2)
-      } else if (window.innerWidth < 1280) {
-        setVideosPerView(3)
-      } else {
-        setVideosPerView(4)
-      }
-    }
-
-    updateVideosPerView()
-    window.addEventListener('resize', updateVideosPerView)
-    return () => window.removeEventListener('resize', updateVideosPerView)
-  }, [])
 
   // Salvar no localStorage quando o estado mudar
   useEffect(() => {
@@ -222,13 +197,9 @@ export default function VideosSection({ videos = defaultVideos }: VideosSectionP
 
   // Abrir vídeo
   const handleWatchVideo = (video: Video) => {
-    console.log('Abrindo vídeo:', video.title, 'URL:', video.youtubeUrl)
     markAsWatched(video.id)
     if (video.youtubeUrl) {
       setSelectedVideo(video)
-      console.log('Modal aberto para:', video.title)
-    } else {
-      console.log('Vídeo sem URL do YouTube')
     }
   }
 
@@ -237,82 +208,88 @@ export default function VideosSection({ videos = defaultVideos }: VideosSectionP
     setSelectedVideo(null)
   }
 
-  // Navegar para o próximo conjunto de vídeos
-  const handleNext = () => {
-    if (currentIndex + videosPerView < videos.length) {
-      setCurrentIndex(currentIndex + 1)
-    }
-  }
-
-  // Navegar para o conjunto anterior de vídeos
-  const handlePrev = () => {
-    if (currentIndex > 0) {
-      setCurrentIndex(currentIndex - 1)
-    }
-  }
-
-  // Calcular se as setas devem estar desabilitadas
-  const isPrevDisabled = currentIndex === 0
-  const isNextDisabled = currentIndex + videosPerView >= videos.length
-
-  // Vídeos visíveis no momento
-  const visibleVideos = videos.slice(currentIndex, currentIndex + videosPerView)
-
   return (
-    <section className="videos-section">
-      <div className="videos-container">
-        <div className="videos-header">
-          <h2 className="videos-title">VÍDEOS</h2>
-        </div>
+    <div className="videos-page">
+      {/* Header */}
+      <header className="header">
+        <nav className="nav-container">
+          <div className="logo">
+            <div className="logo-diamond"></div>
+            <Link className="logo-text" to="/">EYEVITAL</Link>
+          </div>
+          <nav className="nav-menu" role="navigation" aria-label="Menu principal">
+            <Link to="/">Sobre nós</Link>
+            <Link to="/educacao">Educação</Link>
+            <Link to="/ajudaprofissional">Ajuda Profissional</Link>
+            <Link to="/contato">Contato</Link>
+          </nav>
+          {isLoggedIn ? (
+            <UserProfileDropdown />
+          ) : (
+            <div className="auth-buttons">
+              <Link to="/auth?mode=login" className="login-btn">Login</Link>
+              <Link to="/auth?mode=register" className="register-btn">Registrar</Link>
+            </div>
+          )}
+        </nav>
+      </header>
 
-        <div className="videos-grid">
-          {visibleVideos.map((video) => (
-            <VideoCard 
-              key={video.id}
-              video={video}
-              isWatched={isWatched(video.id)}
-              onWatch={handleWatchVideo}
-            />
-          ))}
-        </div>
+      {/* Espaço para compensar o header fixo */}
+      <div className="videos-hero-spacer" />
 
-        <div className="videos-footer">
-          <Link 
-            to="/educacao/videos"
-            className="videos-see-all"
-          >
-            Ver tudo
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M5 12h14M12 5l7 7-7 7"/>
-            </svg>
-          </Link>
-          
-          <div className="videos-nav">
-            <button 
-              className="nav-btn nav-prev" 
-              aria-label="Vídeo anterior"
-              onClick={handlePrev}
-              disabled={isPrevDisabled}
-              style={{ opacity: isPrevDisabled ? 0.5 : 1, cursor: isPrevDisabled ? 'not-allowed' : 'pointer' }}
-            >
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      <main className="videos-main">
+        <div className="videos-page-container">
+          <div className="videos-page-header">
+            <h1 className="videos-page-title">VÍDEOS</h1>
+            <Link to="/educacao" className="videos-back-link">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
               </svg>
-            </button>
-            <button 
-              className="nav-btn nav-next" 
-              aria-label="Próximo vídeo"
-              onClick={handleNext}
-              disabled={isNextDisabled}
-              style={{ opacity: isNextDisabled ? 0.5 : 1, cursor: isNextDisabled ? 'not-allowed' : 'pointer' }}
-            >
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </button>
+              Voltar
+            </Link>
+            <p className="videos-page-subtitle">
+              Explore todos os vídeos educativos sobre saúde ocular
+            </p>
+          </div>
+
+          <div className="videos-page-grid">
+            {allVideos.map((video) => (
+              <VideoCard 
+                key={video.id}
+                video={video}
+                isWatched={isWatched(video.id)}
+                onWatch={handleWatchVideo}
+              />
+            ))}
           </div>
         </div>
-      </div>
+      </main>
+
+      {/* Rodapé */}
+      <footer className="site-footer">
+        <div className="footer-inner">
+          <div className="footer-top">
+            <div className="footer-brand">
+              <div className="footer-logo" aria-label="Eyevital">
+                <span className="footer-diamond" aria-hidden="true"></span>
+                <span className="footer-name">EYEVITAL</span>
+              </div>
+              <span className="footer-sep" aria-hidden="true"></span>
+              <p className="footer-tagline">Cuide da sua visão com inovação e simplicidade</p>
+            </div>
+          </div>
+          <div className="footer-bottom">
+            <nav className="footer-links" aria-label="Links do rodapé">
+              <a href="#">Careers</a>
+              <span className="footer-divider" aria-hidden="true">|</span>
+              <a href="#">Privacy Policy</a>
+              <span className="footer-divider" aria-hidden="true">|</span>
+              <a href="#">Terms &amp; Conditions</a>
+            </nav>
+            <p className="footer-copy">&copy; 2025 Eyevital. Todos os direitos reservados.</p>
+          </div>
+        </div>
+      </footer>
 
       {/* Modal de vídeo */}
       {selectedVideo && selectedVideo.youtubeUrl && (
@@ -338,6 +315,6 @@ export default function VideosSection({ videos = defaultVideos }: VideosSectionP
           </div>
         </div>
       )}
-    </section>
+    </div>
   )
 }

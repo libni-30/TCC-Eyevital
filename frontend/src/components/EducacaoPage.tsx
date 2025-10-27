@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext'
 import AuthModal from './AuthModal'
 import UserProfileDropdown from './UserProfileDropdown'
 import VideosSection from './VideosSection'
+import ArticlesSection from './ArticlesSection'
 import './EducacaoPage.css'
 
 export default function EducacaoPage() {
@@ -58,6 +59,9 @@ export default function EducacaoPage() {
       <main style={{ paddingBottom: 0 }}>
         {/* Seção de Vídeos Educativos colada ao header */}
         <VideosSection />
+
+        {/* Seção de Artigos Educativos logo abaixo dos vídeos */}
+        <ArticlesSection />
       </main>
 
       {/* Rodapé padrão do site */}
