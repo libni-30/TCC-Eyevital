@@ -193,6 +193,14 @@
   overflow: hidden;
 }
 
+.article-card:hover .article-title {
+  display: block;
+  -webkit-line-clamp: unset;
+  line-clamp: unset;
+  -webkit-box-orient: unset;
+  overflow: visible;
+}
+
 .article-description {
   font-size: 14px;
   line-height: 1.6;
@@ -200,6 +208,21 @@
   display: -webkit-box;
   -webkit-line-clamp: 3;
   line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  flex: 1;
+}
+
+.article-card:hover .article-description {
+  display: block;
+  -webkit-line-clamp: unset;
+  line-clamp: unset;
+  -webkit-box-orient: unset;
+  overflow: visible;
+}
+
+.article-description-expanded {
   -webkit-box-orient: vertical;
   overflow: hidden;
   transition: all 0.3s ease;

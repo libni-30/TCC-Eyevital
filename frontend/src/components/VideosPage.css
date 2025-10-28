@@ -196,6 +196,14 @@
   overflow: hidden;
 }
 
+.video-card:hover .video-title {
+  display: block;
+  -webkit-line-clamp: unset;
+  line-clamp: unset;
+  -webkit-box-orient: unset;
+  overflow: visible;
+}
+
 .video-description {
   font-size: 14px;
   line-height: 1.6;

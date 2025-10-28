@@ -182,6 +182,14 @@
   overflow: hidden;
 }
 
+.video-card:hover .video-title {
+  display: block;
+  -webkit-line-clamp: unset;
+  line-clamp: unset;
+  -webkit-box-orient: unset;
+  overflow: visible;
+}
+
 .video-description {
   font-size: 0.9375rem;
   color: #000000 !important;
@@ -194,6 +202,15 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.video-card:hover .video-description {
+  display: block;
+  -webkit-line-clamp: unset;
+  line-clamp: unset;
+  -webkit-box-orient: unset;
+  overflow: visible;
+  text-overflow: clip;
 }
 
 /* Classe específica para expandir - com máxima prioridade */
@@ -478,7 +495,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.85);
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -497,7 +514,7 @@
 }
 
 .video-modal-content {
-  background: white;
+  background: white !important;
   border-radius: 16px;
   width: 100%;
   max-width: 1000px;
@@ -522,22 +539,24 @@
   position: absolute;
   top: 16px;
   right: 16px;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
-  background: #f1f1f1;
+  background: rgba(255, 255, 255, 0.95);
   border: none;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   z-index: 10;
 }
 
 .video-modal-close:hover {
-  background: #e0e0e0;
-  transform: rotate(90deg);
+  background: white;
+  transform: rotate(90deg) scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .video-modal-close svg {

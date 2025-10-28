@@ -109,6 +109,14 @@
   overflow: hidden;
 }
 
+.article-card:hover .article-title {
+  display: block;
+  -webkit-line-clamp: unset;
+  line-clamp: unset;
+  -webkit-box-orient: unset;
+  overflow: visible;
+}
+
 .article-description {
   font-size: 0.9375rem;
   color: #000000 !important;
@@ -121,6 +129,15 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.article-card:hover .article-description {
+  display: block;
+  -webkit-line-clamp: unset;
+  line-clamp: unset;
+  -webkit-box-orient: unset;
+  overflow: visible;
+  text-overflow: clip;
 }
 
 .article-description.article-description-expanded {
