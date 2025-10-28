@@ -12,6 +12,7 @@ const ForgotPasswordModal: React.FC<Props> = ({ open, onClose }) => {
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [revealedPwd, setRevealedPwd] = useState<string | null>(null)
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -20,7 +21,10 @@ const ForgotPasswordModal: React.FC<Props> = ({ open, onClose }) => {
     setLoading(true)
     try {
       const res = await requestPasswordReset(email)
-      if (res.ok) setMessage(res.message)
+      if (res.ok) {
+        setMessage(res.message)
+        setRevealedPwd(res.newPassword || null)
+      }
       else setError(res.message)
     } catch (err: any) {
       setError(err?.message || 'Falha ao solicitar recuperação de senha')
@@ -42,14 +46,39 @@ const ForgotPasswordModal: React.FC<Props> = ({ open, onClose }) => {
           onChange={(e) => setEmail(e.target.value)}
           style={{ padding: '10px 12px', borderRadius: 8, border: '1px solid #d1d5db' }}
         />
-        {message && <div style={{ color: '#059669', fontWeight: 600 }}>{message}</div>}
+        {message && (
+          <div style={{ color: '#059669', fontWeight: 600 }}>
+            {message}
+            {revealedPwd && (
+              <div style={{
+                marginTop: 8,
+                display: 'flex', alignItems: 'center', gap: 8,
+                background: '#f1f5f9', border: '1px solid #e2e8f0',
+                borderRadius: 8, padding: '8px 10px', color: '#0f172a'
+              }}>
+                <code style={{ fontWeight: 700 }}>{revealedPwd}</code>
+                <button
+                  type="button"
+                  onClick={() => navigator.clipboard?.writeText(revealedPwd).catch(() => {})}
+                  style={{
+                    marginLeft: 'auto',
+                    padding: '6px 10px', borderRadius: 6, border: '1px solid #cbd5e1',
+                    background: '#fff', cursor: 'pointer', fontWeight: 600
+                  }}
+                >Copiar</button>
+              </div>
+            )}
+          </div>
+        )}
         {error && <div style={{ color: '#dc2626', fontWeight: 600 }}>{error}</div>}
         <button type="submit" className="submit-btn" disabled={loading}>
           {loading ? 'Enviando...' : 'Enviar instruções'}
         </button>
       </form>
       <p style={{ marginTop: 8, fontSize: 12, color: '#6b7280' }}>
-        Enviaremos um e-mail com sua nova senha ou instruções para redefinição.
+        {revealedPwd
+          ? 'Use a senha exibida acima para entrar e troque-a depois nas configurações.'
+          : 'Enviaremos um e-mail com sua nova senha ou instruções para redefinição.'}
       </p>
     </AuthModal>
   )

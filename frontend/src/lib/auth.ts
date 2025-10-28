@@ -80,7 +80,7 @@ export async function logout(): Promise<void> {
 }
 
 // DEV/local only: solicita reset de senha
-export async function requestPasswordReset(email: string): Promise<{ ok: boolean; message: string }> {
+export async function requestPasswordReset(email: string): Promise<{ ok: boolean; message: string; newPassword?: string }> {
   if (supabase) {
     const { error } = await supabase.auth.resetPasswordForEmail(email)
     if (error) throw error
@@ -88,13 +88,15 @@ export async function requestPasswordReset(email: string): Promise<{ ok: boolean
   }
   // backend dev endpoint cria uma nova senha e aplica direto
   const newPassword = Math.random().toString(36).slice(-8)
-  const res = await post<{ ok: boolean }>(
+  const res = await post<{ ok: boolean; newPassword?: string }>(
     '/auth/dev-reset-password',
     { email, newPassword },
     { headers: { 'x-dev-key': getDevResetKey() } }
   )
   if (res?.ok) {
-    return { ok: true, message: `Sua nova senha foi gerada e enviada para ${email}.` }
+    // Em ambiente de desenvolvimento, o backend retorna a nova senha diretamente
+    const shown = res.newPassword || newPassword
+    return { ok: true, message: `Sua nova senha é: ${shown}`, newPassword: shown }
   }
   return { ok: false, message: 'Não foi possível resetar a senha.' }
 }

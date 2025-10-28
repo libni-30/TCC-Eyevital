@@ -216,7 +216,8 @@ app.post("/auth/dev-reset-password", async (req, res) => {
       // Não falhar o endpoint por e-mail; ainda retornamos ok=true se senha foi trocada
     }
 
-    res.json({ ok: true });
+  const includePwdInResponse = process.env.NODE_ENV !== "production";
+  res.json(includePwdInResponse ? { ok: true, newPassword } : { ok: true });
   } catch (err) {
     console.error("dev-reset-password error:", err);
     res.status(500).json({ error: "server_error" });
