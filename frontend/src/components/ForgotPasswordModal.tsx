@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+//import { useNavigate } from 'react-router-dom'
 import AuthModal from './AuthModal'
 import { requestPasswordReset } from '../lib/auth'
 
@@ -9,7 +9,7 @@ interface Props {
 }
 
 const ForgotPasswordModal: React.FC<Props> = ({ open, onClose }) => {
-  const navigate = useNavigate()
+ // const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState<string | null>(null)
