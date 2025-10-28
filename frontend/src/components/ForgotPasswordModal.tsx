@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import AuthModal from './AuthModal'
 import { requestPasswordReset } from '../lib/auth'
 
@@ -8,6 +9,7 @@ interface Props {
 }
 
 const ForgotPasswordModal: React.FC<Props> = ({ open, onClose }) => {
+  const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState<string | null>(null)
@@ -21,8 +23,12 @@ const ForgotPasswordModal: React.FC<Props> = ({ open, onClose }) => {
     setLoading(true)
     try {
   const emailNorm = (email || '').trim().toLowerCase()
-  const res = await requestPasswordReset(emailNorm)
-  if (res.ok) setMessage(`Sua nova senha foi gerada e enviada para ${emailNorm}.`)
+      const res = await requestPasswordReset(emailNorm)
+      if (res.ok) {
+        setMessage(`Enviamos um link de redefinição para ${emailNorm}.`)
+        // Redireciona para página de instruções
+        setTimeout(() => navigate(`/reset-requested?email=${encodeURIComponent(emailNorm)}`), 800)
+      }
       else setError(res.message)
     } catch (err: any) {
       setError(err?.message || 'Falha ao solicitar recuperação de senha')
@@ -51,7 +57,7 @@ const ForgotPasswordModal: React.FC<Props> = ({ open, onClose }) => {
         </button>
       </form>
       <p style={{ marginTop: 8, fontSize: 12, color: '#6b7280' }}>
-        Enviaremos um e-mail com sua nova senha ou instruções para redefinição.
+        Enviaremos um e-mail com um link para redefinir sua senha. O link expira em 30 minutos.
       </p>
     </AuthModal>
   )

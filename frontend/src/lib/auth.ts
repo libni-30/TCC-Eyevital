@@ -86,13 +86,21 @@ export async function requestPasswordReset(email: string): Promise<{ ok: boolean
     if (error) throw error
     return { ok: true, message: 'Enviamos instruções de reset para seu e-mail.' }
   }
-  // endpoint padrão que envia a nova senha por e-mail
+  // agora envia link com token
   const res = await post<{ ok: boolean; message?: string }>(
-    '/auth/reset-password',
+    '/auth/request-password-reset',
     { email }
   )
   if (res?.ok) {
     return { ok: true, message: res.message || `Se existir uma conta para ${email}, enviaremos instruções por e-mail.` }
   }
   return { ok: false, message: 'Não foi possível resetar a senha.' }
+}
+
+export async function resetPassword(token: string, newPassword: string): Promise<{ ok: boolean; message?: string }> {
+  const res = await post<{ ok: boolean }>(
+    '/auth/reset-password',
+    { token, newPassword }
+  )
+  return res?.ok ? { ok: true } : { ok: false, message: 'Falha ao redefinir a senha.' }
 }

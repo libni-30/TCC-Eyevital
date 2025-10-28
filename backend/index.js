@@ -7,6 +7,7 @@ import cors from "cors";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
+import crypto from "node:crypto";
 import { PrismaClient } from "@prisma/client";
 
 // Also load root .env for BD_UM defined at project root
@@ -57,6 +58,47 @@ function generatePassword(length = 10) {
   let out = "";
   for (let i = 0; i < length; i++) out += chars[Math.floor(Math.random() * chars.length)];
   return out;
+}
+
+// In-memory fallback for password reset tokens (DEV ONLY)
+const memoryResetStore = new Map(); // token -> { userId, expiresAt, usedAt }
+
+async function saveResetToken(userId, token, expiresAt) {
+  try {
+    await prisma.passwordResetToken.create({ data: { userId: BigInt(userId), token, expiresAt } });
+    return true;
+  } catch (e) {
+    console.warn("[DEV] Falling back to in-memory reset token store:", e?.code || e?.message || e);
+    memoryResetStore.set(token, { userId: BigInt(userId), expiresAt, usedAt: null });
+    return false;
+  }
+}
+
+async function getResetToken(token) {
+  try {
+    const row = await prisma.passwordResetToken.findUnique({ where: { token } });
+    if (row) return row;
+  } catch {
+    // ignore
+  }
+  const v = memoryResetStore.get(token);
+  if (!v) return null;
+  return { id: null, userId: v.userId, token, expiresAt: v.expiresAt, usedAt: v.usedAt };
+}
+
+async function consumeResetToken(token) {
+  try {
+    await prisma.passwordResetToken.update({ where: { token }, data: { usedAt: new Date() } });
+    return true;
+  } catch {
+    const v = memoryResetStore.get(token);
+    if (v) {
+      v.usedAt = new Date();
+      memoryResetStore.set(token, v);
+      return true;
+    }
+    return false;
+  }
 }
 
 function signToken(user) {
@@ -176,7 +218,8 @@ app.post("/auth/logout", (req, res) => {
 });
 
 // Reset de senha via e-mail (comportamento padrão)
-app.post("/auth/reset-password", async (req, res) => {
+// Solicita reset: gera token e envia link por e-mail (não envia senha)
+app.post("/auth/request-password-reset", async (req, res) => {
   try {
     let { email } = req.body || {};
     email = typeof email === "string" ? email.trim().toLowerCase() : email;
@@ -188,15 +231,18 @@ app.post("/auth/reset-password", async (req, res) => {
       return res.json({ ok: true, message: `Se existir uma conta para ${email}, enviaremos instruções por e-mail.` });
     }
 
-    const newPassword = generatePassword(10);
-    const hash = await bcrypt.hash(newPassword, 10);
-    await prisma.user.update({ where: { email }, data: { passwordHash: hash } });
+    // cria token de reset (válido por 30 minutos)
+    const token = crypto.randomBytes(32).toString("hex");
+    const expiresAt = new Date(Date.now() + 30 * 60 * 1000);
+  await saveResetToken(userRow.id, token, expiresAt);
 
     // Enviar e-mail
     const host = process.env.SMTP_HOST;
     const port = Number(process.env.SMTP_PORT || 587);
     const user = process.env.SMTP_USER;
     const pass = process.env.SMTP_PASS;
+    const frontendBase = process.env.FRONTEND_BASE_URL || "http://localhost:5173";
+    const resetUrl = `${frontendBase.replace(/\/$/, '')}/#/reset-password?token=${token}`;
 
     try {
       if (host && user && pass) {
@@ -209,25 +255,44 @@ app.post("/auth/reset-password", async (req, res) => {
         await transporter.sendMail({
           from: process.env.SMTP_FROM || `Eyevital <no-reply@eyevital.local>`,
           to: email,
-          subject: "Recuperação de senha - Eyevital",
-          text: `Sua nova senha foi gerada: ${newPassword}\n\nVocê pode alterá-la após fazer login.`,
-          html: `<p>Sua nova senha foi gerada: <b>${newPassword}</b></p><p>Você pode alterá-la após fazer login.</p>`,
+          subject: "Redefinição de senha - Eyevital",
+          text: `Para redefinir sua senha, acesse: ${resetUrl}\n\nEste link expira em 30 minutos.`,
+          html: `<p>Para redefinir sua senha, clique no link abaixo:</p><p><a href="${resetUrl}">Redefinir senha</a></p><p>Este link expira em 30 minutos.</p>`,
         });
-        console.log(`📧 E-mail de reset enviado para ${email}`);
+        console.log(`📧 Link de reset enviado para ${email}`);
       } else {
-        console.log("[DEV] SMTP não configurado. Simulando envio de e-mail de reset:");
+        console.log("[DEV] SMTP não configurado. Simulando envio de link de reset:");
         console.log(`Para: ${email}`);
-        console.log(`Assunto: Recuperação de senha - Eyevital`);
-        console.log(`Nova senha: ${newPassword}`);
+        console.log(`Assunto: Redefinição de senha - Eyevital`);
+        console.log(`Reset URL: ${resetUrl}`);
       }
     } catch (mailErr) {
       console.error("Erro ao enviar e-mail de reset:", mailErr);
       // Continua mesmo que o envio falhe para não expor existência do e-mail
     }
 
-    return res.json({ ok: true, message: `Sua nova senha foi gerada e enviada para ${email}.` });
+    return res.json({ ok: true, message: `Enviamos instruções para ${email}.` });
   } catch (err) {
     console.error("reset-password error:", err);
+    res.status(500).json({ error: "server_error" });
+  }
+});
+
+// Confirma reset: aplica nova senha usando token
+app.post("/auth/reset-password", async (req, res) => {
+  try {
+    const { token, newPassword } = req.body || {};
+    if (!token || !newPassword) return res.status(400).json({ error: "token_and_password_required" });
+  const row = await getResetToken(token);
+    if (!row || row.usedAt || new Date(row.expiresAt).getTime() < Date.now()) {
+      return res.status(400).json({ error: "invalid_or_expired_token" });
+    }
+    const hash = await bcrypt.hash(newPassword, 10);
+  await prisma.user.update({ where: { id: row.userId }, data: { passwordHash: hash } });
+  await consumeResetToken(token);
+    return res.json({ ok: true });
+  } catch (err) {
+    console.error("confirm reset error:", err);
     res.status(500).json({ error: "server_error" });
   }
 });

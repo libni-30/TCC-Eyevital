@@ -8,6 +8,9 @@ import EducacaoPage from './components/EducacaoPage'
 import ArticlesPage from './components/ArticlesPage'
 import VideosPage from './components/VideosPage'
 import AjudaProfissionalPage from './components/AjudaProfissionalPage'
+import ResetPasswordPage from './components/ResetPasswordPage'
+import ResetSuccessPage from './components/ResetSuccessPage'
+import ResetRequestedPage from './components/ResetRequestedPage'
 
 // Exemplo de uso da API (opcional):
 // import { get } from './lib/api'
@@ -63,6 +66,9 @@ function App() {
     }
   />
   <Route path="/auth" element={<AuthPage />} />
+  <Route path="/reset-password" element={<ResetPasswordPage />} />
+  <Route path="/reset-success" element={<ResetSuccessPage />} />
+  <Route path="/reset-requested" element={<ResetRequestedPage />} />
         <Route path="/contato" element={<ContatoPage />} />
   {/* Fallback: qualquer rota desconhecida renderiza a landing page */}
   <Route path="*" element={<LandingPage />} />
