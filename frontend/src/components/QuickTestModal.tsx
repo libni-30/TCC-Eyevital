@@ -3,6 +3,8 @@ import React, { useEffect, useMemo, useState } from 'react'
 type Props = {
   open: boolean
   onClose: () => void
+  // Quando fornecido, aplica regra: usuário logado só responde 1x
+  userId?: string
 }
 
 function normalize(str: string) {
@@ -33,11 +35,20 @@ const explanation = (
   </div>
 )
 
-const QuickTestModal: React.FC<Props> = ({ open, onClose }) => {
+const STORAGE_PREFIX = 'quicktest:estrabismo:'
+
+type SavedAttempt = {
+  answer: string
+  at: number
+}
+
+const QuickTestModal: React.FC<Props> = ({ open, onClose, userId }) => {
   const [answer, setAnswer] = useState('')
   const normalized = useMemo(() => normalize(answer), [answer])
   const isAnswered = normalized.length > 0
   const [showResult, setShowResult] = useState(false)
+  const [locked, setLocked] = useState(false) // bloqueio por já ter respondido (apenas logado)
+  const [showAlreadyMsg, setShowAlreadyMsg] = useState(false)
   const isCorrect = showResult && isAnswered && (
     CORRECT_ANSWERS.some(a => normalized === normalize(a) || normalized.includes('estrabism'))
   )
@@ -49,6 +60,50 @@ const QuickTestModal: React.FC<Props> = ({ open, onClose }) => {
     if (open) window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   }, [open, onClose])
+
+  // Carrega tentativa salva (se houver) para usuário logado e aplica bloqueio
+  useEffect(() => {
+    if (!open) return
+    if (!userId) {
+      // visitante: sem bloqueio
+      setLocked(false)
+      setShowAlreadyMsg(false)
+      return
+    }
+    try {
+      const raw = localStorage.getItem(STORAGE_PREFIX + userId)
+      if (raw) {
+        const saved = JSON.parse(raw) as SavedAttempt
+        setAnswer(saved?.answer || '')
+        // Mostra sempre o resultado e mensagem de já respondido
+        setShowResult(true)
+        setLocked(true)
+        setShowAlreadyMsg(true)
+      } else {
+        // primeira vez desse usuário
+        setLocked(false)
+        setShowAlreadyMsg(false)
+        setShowResult(false)
+        setAnswer('')
+      }
+    } catch {
+      // Em caso de erro de parse, não bloquear
+      setLocked(false)
+      setShowAlreadyMsg(false)
+    }
+  }, [open, userId])
+
+  function persistIfEligible() {
+    if (!userId) return // visitantes não persistem
+    // Se ainda não havia tentativa salva, salvar a primeira
+    try {
+      const key = STORAGE_PREFIX + userId
+      if (!localStorage.getItem(key)) {
+        const payload: SavedAttempt = { answer, at: Date.now() }
+        localStorage.setItem(key, JSON.stringify(payload))
+      }
+    } catch {}
+  }
 
   if (!open) return null
 
@@ -66,6 +121,7 @@ const QuickTestModal: React.FC<Props> = ({ open, onClose }) => {
       <div
         onClick={(e) => e.stopPropagation()}
         style={{
+          position: 'relative',
           width: 'min(620px, 92vw)', background: '#fff', borderRadius: 16,
           boxShadow: '0 15px 40px rgba(0,0,0,.22)', padding: '22px 22px 18px'
         }}
@@ -76,18 +132,35 @@ const QuickTestModal: React.FC<Props> = ({ open, onClose }) => {
           .qtm-close:hover { background: #e2e8f0; }
           .qtm-clear:hover { background: #f1f5f9; }
         `}</style>
+        {/* Mensagem de já respondido (apenas logado) */}
+        {showAlreadyMsg && (
+          <div style={{
+            marginBottom: 10,
+            padding: '10px 12px',
+            borderRadius: 10,
+            background: 'rgba(2,132,199,.08)',
+            border: '1px solid rgba(2,132,199,.35)',
+            color: '#0f172a',
+            fontSize: 14
+          }}>
+            Você já respondeu este teste com sua conta. Não é possível enviar outra resposta.
+          </div>
+        )}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
           <h3 id="quicktest-title" style={{ margin: 0, fontSize: 20, fontWeight: 700 }}>Responda ao teste rápido</h3>
+      {/* Botão X sempre no canto superior direito */}
           <button
             aria-label="Fechar"
             title="Fechar"
             onClick={onClose}
             className="qtm-close"
-            style={{
-              width: 32, height: 32, borderRadius: 9999,
-              background: '#f8fafc', border: '1px solid #e2e8f0',
-              color: '#0f172a', fontSize: 20, lineHeight: 1,
-              display: 'grid', placeItems: 'center', cursor: 'pointer'
+      style={{
+        position: 'absolute', top: -10, right: -10, zIndex: 2,
+        width: 40, height: 40, borderRadius: 9999,
+        background: '#ffffff', border: '2px solid #cbd5e1',
+        color: '#0f172a', fontSize: 22, lineHeight: 1,
+        display: 'grid', placeItems: 'center', cursor: 'pointer',
+        boxShadow: '0 2px 6px rgba(0,0,0,.12)'
             }}
           >
             ×
@@ -101,7 +174,10 @@ const QuickTestModal: React.FC<Props> = ({ open, onClose }) => {
         <div style={{ position: 'relative', marginTop: 6 }}>
       <input
             value={answer}
-            onChange={(e) => setAnswer(e.target.value)}
+            onChange={(e) => {
+              if (locked) return
+              setAnswer(e.target.value)
+            }}
             placeholder="Digite sua resposta aqui..."
             autoFocus
             className="qtm-input"
@@ -109,8 +185,9 @@ const QuickTestModal: React.FC<Props> = ({ open, onClose }) => {
               width: '100%', fontSize: 16, padding: '12px 44px 12px 14px',
               borderRadius: 12, outline: 'none', color: '#0f172a',
         border: showResult && isAnswered ? (isCorrect ? '2px solid #16a34a' : '2px solid #dc2626') : '1px solid #cbd5e1',
-              background: '#ffffff'
+              background: locked ? '#f8fafc' : '#ffffff'
             }}
+            disabled={locked}
           />
 
           {showResult && isAnswered && (
@@ -152,19 +229,32 @@ const QuickTestModal: React.FC<Props> = ({ open, onClose }) => {
 
         <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8, marginTop: 16 }}>
           <button
-            onClick={() => { setAnswer(''); setShowResult(false) }}
+            onClick={() => { if (!locked) { setAnswer(''); setShowResult(false) } }}
             className="qtm-clear"
             style={{
-              padding: '10px 14px', borderRadius: 10, border: '1px solid #cbd5e1', background: '#fff', cursor: 'pointer',
+              padding: '10px 14px', borderRadius: 10, border: '1px solid #cbd5e1', background: locked ? '#f1f5f9' : '#fff', cursor: locked ? 'not-allowed' : 'pointer',
               color: '#0f172a', fontWeight: 600
             }}
+            disabled={locked}
           >Limpar</button>
           <button
-            onClick={() => setShowResult(true)}
+            onClick={() => {
+              setShowResult(true)
+              if (!locked) {
+                // salva primeira tentativa do usuário logado (se houver)
+                persistIfEligible()
+                // se estava logado, trave próximas tentativas
+                if (userId) {
+                  setLocked(true)
+                  setShowAlreadyMsg(true)
+                }
+              }
+            }}
             style={{
               padding: '10px 16px', borderRadius: 10, border: 0,
-              background: '#06b6d4', color: '#fff', cursor: 'pointer', fontWeight: 600
+              background: locked ? '#94a3b8' : '#06b6d4', color: '#fff', cursor: locked ? 'not-allowed' : 'pointer', fontWeight: 600
             }}
+            disabled={locked && !!userId}
           >Concluir</button>
         </div>
       </div>

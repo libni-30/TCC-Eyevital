@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import QuickTestModal from './QuickTestModal';
+import { useAuth } from '../context/AuthContext';
 
 interface EstrabismoSectionProps {
   onImageError?: (img: HTMLImageElement) => void;
 }
 
 const EstrabismoSection: React.FC<EstrabismoSectionProps> = ({ onImageError }) => {
+  const { user } = useAuth()
   const handleError = (e: React.SyntheticEvent<HTMLImageElement>) => {
     if (onImageError) onImageError(e.currentTarget);
   };
@@ -40,7 +42,7 @@ const EstrabismoSection: React.FC<EstrabismoSectionProps> = ({ onImageError }) =
           <div className="estrabismo-decor-dot" aria-hidden="true" />
         </figure>
       </div>
-  <QuickTestModal open={open} onClose={() => setOpen(false)} />
+  <QuickTestModal open={open} onClose={() => setOpen(false)} userId={user?.id} />
     </section>
   );
 };
