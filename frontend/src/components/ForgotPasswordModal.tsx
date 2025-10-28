@@ -22,14 +22,14 @@ const ForgotPasswordModal: React.FC<Props> = ({ open, onClose }) => {
     setMessage(null)
     setLoading(true)
     try {
-  const emailNorm = (email || '').trim().toLowerCase()
+      const emailNorm = (email || '').trim().toLowerCase()
       const res = await requestPasswordReset(emailNorm)
       if (res.ok) {
-        setMessage(`Enviamos um link de redefinição para ${emailNorm}.`)
-        // Redireciona para página de instruções
-        setTimeout(() => navigate(`/reset-requested?email=${encodeURIComponent(emailNorm)}`), 800)
+        // Exibe a confirmação no próprio modal, sem navegar para outra página
+        setMessage(`Enviamos um link de redefinição para ${emailNorm}. O link expira em 30 minutos.`)
+      } else {
+        setError(res.message)
       }
-      else setError(res.message)
     } catch (err: any) {
       setError(err?.message || 'Falha ao solicitar recuperação de senha')
     } finally {
@@ -39,26 +39,38 @@ const ForgotPasswordModal: React.FC<Props> = ({ open, onClose }) => {
 
   return (
     <AuthModal open={open} onClose={onClose} title="Recuperar senha">
-      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-        <label htmlFor="fp-email" style={{ fontWeight: 600 }}>Seu e-mail</label>
-        <input
-          id="fp-email"
-          type="email"
-          required
-          placeholder="seuemail@exemplo.com"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          style={{ padding: '10px 12px', borderRadius: 8, border: '1px solid #d1d5db' }}
-        />
-  {message && (<div style={{ color: '#059669', fontWeight: 600 }}>{message}</div>)}
-        {error && <div style={{ color: '#dc2626', fontWeight: 600 }}>{error}</div>}
-        <button type="submit" className="submit-btn" disabled={loading}>
-          {loading ? 'Enviando...' : 'Enviar instruções'}
-        </button>
-      </form>
-      <p style={{ marginTop: 8, fontSize: 12, color: '#6b7280' }}>
-        Enviaremos um e-mail com um link para redefinir sua senha. O link expira em 30 minutos.
-      </p>
+      {message ? (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <div style={{ color: '#059669', fontWeight: 700, lineHeight: 1.5 }}>
+            {message}
+          </div>
+          <button type="button" className="submit-btn" onClick={onClose}>
+            Fechar
+          </button>
+        </div>
+      ) : (
+        <>
+          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+            <label htmlFor="fp-email" style={{ fontWeight: 600 }}>Seu e-mail</label>
+            <input
+              id="fp-email"
+              type="email"
+              required
+              placeholder="seuemail@exemplo.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              style={{ padding: '10px 12px', borderRadius: 8, border: '1px solid #d1d5db' }}
+            />
+            {error && <div style={{ color: '#dc2626', fontWeight: 600 }}>{error}</div>}
+            <button type="submit" className="submit-btn" disabled={loading}>
+              {loading ? 'Enviando...' : 'Enviar instruções'}
+            </button>
+          </form>
+          <p style={{ marginTop: 8, fontSize: 12, color: '#6b7280' }}>
+            Enviaremos um e-mail com um link para redefinir sua senha. O link expira em 30 minutos.
+          </p>
+        </>
+      )}
     </AuthModal>
   )
 }
