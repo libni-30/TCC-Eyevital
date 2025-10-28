@@ -34,7 +34,14 @@ BigInt.prototype.toJSON = function() {
 };
 
 // CORS: ambiente de desenvolvimento — refletir qualquer origin (localhost, 127.0.0.1, etc.)
-app.use(cors({ origin: true, credentials: false }));
+const corsOptions = {
+  origin: true,
+  credentials: false,
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization", "x-dev-key"],
+};
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
 app.use(express.json());
 
 // Log de todas as requests
@@ -44,6 +51,13 @@ app.use((req, res, next) => {
 });
 
 // Prisma já gerencia o schema automaticamente - não precisa ensureSchema()
+
+function generatePassword(length = 10) {
+  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789!@#$%";
+  let out = "";
+  for (let i = 0; i < length; i++) out += chars[Math.floor(Math.random() * chars.length)];
+  return out;
+}
 
 function signToken(user) {
   return jwt.sign(
@@ -159,6 +173,63 @@ app.get("/auth/me", authMiddleware, async (req, res) => {
 app.post("/auth/logout", (req, res) => {
   // Para JWT, logout é no cliente; mantemos endpoint para compatibilidade
   res.json({ ok: true });
+});
+
+// Reset de senha via e-mail (comportamento padrão)
+app.post("/auth/reset-password", async (req, res) => {
+  try {
+    let { email } = req.body || {};
+    email = typeof email === "string" ? email.trim().toLowerCase() : email;
+    if (!email) return res.status(400).json({ error: "email_required" });
+
+    // Não revelar existência do e-mail; sempre responder ok
+    const userRow = await prisma.user.findUnique({ where: { email }, select: { id: true } });
+    if (!userRow) {
+      return res.json({ ok: true, message: `Se existir uma conta para ${email}, enviaremos instruções por e-mail.` });
+    }
+
+    const newPassword = generatePassword(10);
+    const hash = await bcrypt.hash(newPassword, 10);
+    await prisma.user.update({ where: { email }, data: { passwordHash: hash } });
+
+    // Enviar e-mail
+    const host = process.env.SMTP_HOST;
+    const port = Number(process.env.SMTP_PORT || 587);
+    const user = process.env.SMTP_USER;
+    const pass = process.env.SMTP_PASS;
+
+    try {
+      if (host && user && pass) {
+        const transporter = nodemailer.createTransport({
+          host,
+          port,
+          secure: port === 465,
+          auth: { user, pass },
+        });
+        await transporter.sendMail({
+          from: process.env.SMTP_FROM || `Eyevital <no-reply@eyevital.local>`,
+          to: email,
+          subject: "Recuperação de senha - Eyevital",
+          text: `Sua nova senha foi gerada: ${newPassword}\n\nVocê pode alterá-la após fazer login.`,
+          html: `<p>Sua nova senha foi gerada: <b>${newPassword}</b></p><p>Você pode alterá-la após fazer login.</p>`,
+        });
+        console.log(`📧 E-mail de reset enviado para ${email}`);
+      } else {
+        console.log("[DEV] SMTP não configurado. Simulando envio de e-mail de reset:");
+        console.log(`Para: ${email}`);
+        console.log(`Assunto: Recuperação de senha - Eyevital`);
+        console.log(`Nova senha: ${newPassword}`);
+      }
+    } catch (mailErr) {
+      console.error("Erro ao enviar e-mail de reset:", mailErr);
+      // Continua mesmo que o envio falhe para não expor existência do e-mail
+    }
+
+    return res.json({ ok: true, message: `Sua nova senha foi gerada e enviada para ${email}.` });
+  } catch (err) {
+    console.error("reset-password error:", err);
+    res.status(500).json({ error: "server_error" });
+  }
 });
 
 // DEV ONLY: reset de senha para ambiente local (NÃO habilitar em produção)
