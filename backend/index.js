@@ -360,6 +360,54 @@ app.post("/auth/dev-reset-password", async (req, res) => {
   }
 });
 
+// DEV: teste rápido de e-mail via SMTP (NÃO habilitar em produção)
+app.post("/email/test", async (req, res) => {
+  try {
+    if (process.env.NODE_ENV === "production") {
+      return res.status(403).json({ error: "forbidden_in_production" });
+    }
+    const devKey = req.headers["x-dev-key"];
+    const expected = process.env.DEV_RESET_KEY || "devkey";
+    if (devKey !== expected) {
+      return res.status(403).json({ error: "invalid_dev_key" });
+    }
+
+    const {
+      to,
+      subject = "Teste de SMTP - EyeVital",
+      text = "Este é um e-mail de teste do EyeVital.",
+      html,
+    } = req.body || {};
+
+    const host = process.env.SMTP_HOST;
+    const port = Number(process.env.SMTP_PORT || 587);
+    const user = process.env.SMTP_USER;
+    const pass = process.env.SMTP_PASS;
+    const from = process.env.SMTP_FROM || `Eyevital <no-reply@eyevital.local>`;
+
+    if (!host || !user || !pass) {
+      return res.status(400).json({
+        error: "smtp_not_configured",
+        message: "Defina SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS e SMTP_FROM no backend/.env",
+      });
+    }
+
+    const transporter = nodemailer.createTransport({
+      host,
+      port,
+      secure: port === 465,
+      auth: { user, pass },
+    });
+
+    const toAddress = to || user;
+    await transporter.sendMail({ from, to: toAddress, subject, text, html });
+    return res.json({ ok: true, to: toAddress });
+  } catch (err) {
+    console.error("email/test error:", err);
+    return res.status(500).json({ error: "server_error", details: err?.message });
+  }
+});
+
 // ------------------ EDUCACAO (publico leitura) ------------------
 app.get("/educacao", async (req, res) => {
   try {
