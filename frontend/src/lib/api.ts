@@ -18,7 +18,7 @@ export async function api<T = unknown>(
 ): Promise<T> {
   const base = getApiBaseUrl()
   if (!base) {
-  throw new Error('VABU não definida. Configure seu .env')
+  throw new Error('URL_BASE_DA_API_VITE não definida. Configure seu .env')
   }
 
   const url = `${base}${path.startsWith('/') ? '' : '/'}${path}`
