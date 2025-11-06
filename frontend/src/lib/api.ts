@@ -18,7 +18,7 @@ export async function api<T = unknown>(
 ): Promise<T> {
   const base = getApiBaseUrl()
   if (!base) {
-  throw new Error('URL_BASE_DA_API_VITE não definida. Configure seu .env')
+  throw new Error('URL da API não definida. Configure VITE_API_BASE_URL (local) ou URL_BASE_API_VITE (Vercel) no .env')
   }
 
   const url = `${base}${path.startsWith('/') ? '' : '/'}${path}`

@@ -3,6 +3,7 @@
 type Env = {
   VITE_API_BASE_URL?: string
   URL_BASE_API_VITE?: string  // Formato usado no Vercel
+  URL_BASE_DA_API_VITE?: string  // Formato antigo (compatibilidade)
   VITE_AUTH_LOGIN_PATH?: string
   VITE_AUTH_REGISTER_PATH?: string
   VITE_AUTH_ME_PATH?: string
@@ -16,8 +17,8 @@ type Env = {
 const env = import.meta.env as unknown as Env
 
 export function getApiBaseUrl(): string | undefined {
-  // Aceita ambos os formatos: local (VITE_API_BASE_URL) e Vercel (URL_BASE_API_VITE)
-  const url = (env.VITE_API_BASE_URL || env.URL_BASE_API_VITE)?.trim()
+  // Aceita todos os formatos: local (VITE_API_BASE_URL), Vercel (URL_BASE_API_VITE), e antigo (URL_BASE_DA_API_VITE)
+  const url = (env.VITE_API_BASE_URL || env.URL_BASE_API_VITE || env.URL_BASE_DA_API_VITE)?.trim()
   if (!url) return undefined
   try {
     // Normaliza e valida minimamente a URL
