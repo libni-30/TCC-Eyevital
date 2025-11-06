@@ -14,7 +14,11 @@ type Env = {
   // Acrescente aqui outras chaves se necessário
 }
 
-const env = import.meta.env as unknown as Env
+// Read Vite envs and allow a last-resort runtime fallback via window.__ENV__ (if present)
+const viteEnv = import.meta.env as unknown as Env
+// @ts-ignore
+const runtimeEnv = (typeof window !== 'undefined' ? (window as any).__ENV__ : undefined) as Partial<Env> | undefined
+const env = { ...(viteEnv || {}), ...(runtimeEnv || {}) } as Env
 
 export function getApiBaseUrl(): string | undefined {
   // Aceita todos os formatos: local (VITE_API_BASE_URL), Vercel (URL_BASE_API_VITE), e antigo (URL_BASE_DA_API_VITE)
