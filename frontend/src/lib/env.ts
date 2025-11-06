@@ -1,7 +1,8 @@
 // Utilitário para ler variáveis de ambiente do Vite com validação simples
 
 type Env = {
-  URL_BASE_DA_API_VITE?: string
+  VITE_API_BASE_URL?: string
+  URL_BASE_API_VITE?: string  // Formato usado no Vercel
   VITE_AUTH_LOGIN_PATH?: string
   VITE_AUTH_REGISTER_PATH?: string
   VITE_AUTH_ME_PATH?: string
@@ -15,14 +16,15 @@ type Env = {
 const env = import.meta.env as unknown as Env
 
 export function getApiBaseUrl(): string | undefined {
-  const url = env.URL_BASE_DA_API_VITE?.trim()
+  // Aceita ambos os formatos: local (VITE_API_BASE_URL) e Vercel (URL_BASE_API_VITE)
+  const url = (env.VITE_API_BASE_URL || env.URL_BASE_API_VITE)?.trim()
   if (!url) return undefined
   try {
     // Normaliza e valida minimamente a URL
     const u = new URL(url)
     return u.toString().replace(/\/$/, '')
   } catch {
-  console.warn('URL_BASE_DA_API_VITE inválida. Defina uma URL válida no .env')
+    console.warn('URL da API inválida. Defina VITE_API_BASE_URL ou URL_BASE_API_VITE no .env')
     return undefined
   }
 }
