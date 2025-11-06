@@ -700,8 +700,15 @@ app.delete("/consultas/:id", authMiddleware, async (req, res) => {
 
 // Bind em todas as interfaces para aceitar localhost e 127.0.0.1
 const HOST = process.env.HOST || "0.0.0.0";
-app.listen(PORT, HOST, () => {
-  console.log(`✅ API listening on http://localhost:${PORT}`);
-  console.log(`📡 Servidor pronto para receber conexões`);
-  console.log(`🗄️  Usando Prisma ORM para gerenciar banco de dados`);
-});
+
+// Para desenvolvimento local
+if (process.env.NODE_ENV !== "production") {
+  app.listen(PORT, HOST, () => {
+    console.log(`✅ API listening on http://localhost:${PORT}`);
+    console.log(`📡 Servidor pronto para receber conexões`);
+    console.log(`🗄️  Usando Prisma ORM para gerenciar banco de dados`);
+  });
+}
+
+// Para Vercel (serverless)
+export default app;
